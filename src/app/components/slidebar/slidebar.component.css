@@ -1,0 +1,32 @@
+.itme-slidebar{
+    /* background-blend-mode: soft-light; */
+    background-color: rgba(0, 0, 0, 0.089);
+    border-radius: 10px;
+    width: 95%;
+    &:hover{
+        background-color: rgba(0, 0, 0, 0.473);
+    }
+}
+
+.itme-slidebar a{
+    width: 100% !important;
+    color: white !important;
+}
+
+.despegable-menu{
+    width: 95%;
+}
+
+.icon-item, .text-item{
+    color: aliceblue;
+}
+
+.despegable-menu{
+    background-color: rgba(0, 0, 0, 0.233);
+}
+
+/* .itme-slidebar a{
+    color: black;
+    text-decoration: none;
+    font-family: 
+} */

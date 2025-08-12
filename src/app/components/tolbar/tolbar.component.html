@@ -1,0 +1,17 @@
+<mat-toolbar class="rounded-4 ms-4 shadow">
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <div class="tolbar-spacer">
+      <tui-avatar [matMenuTriggerFor]="menu" src="@tui.user" />
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="salirSesion()">
+          <mat-icon>exit_to_app</mat-icon>
+          Cerrar sesión</button>
+      </mat-menu>
+    </div>
+    <!-- <span class="example-spacer"></span> -->
+    <!-- <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon"> -->
+    <!-- </button> -->
+   
+</mat-toolbar> 

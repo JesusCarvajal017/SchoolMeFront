@@ -1,0 +1,25 @@
+<tui-root>
+  <mat-drawer-container class="container-page">
+    <mat-drawer #slidebar mode="side" opened class="slidebar" [style.width.px]="250">
+      <app-slidebar></app-slidebar>
+    </mat-drawer>
+    <mat-drawer-content class="main-container">
+      <app-tolbar class="tolbar-nav"></app-tolbar>
+
+      <div class="container">
+        <div tuiAppearance="floating" tuiCardLarge class="card-template m-2 shadow">
+            <router-outlet></router-outlet>
+
+            <app-autorizado rol="admin">
+              <ng-content autorizado>
+                <div>autorizado</div>
+              </ng-content>
+              <ng-content noautorizado>
+                <div>no autorizado</div>
+              </ng-content>
+            </app-autorizado>
+        </div>
+      </div>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</tui-root>

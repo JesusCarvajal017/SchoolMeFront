@@ -1,0 +1,53 @@
+<header tuiHeader>
+    <h1 tuiTitle>
+        User
+    </h1>
+    <aside tuiAccessories>
+      <div tuiAppearance="secondary" tuiButtonGroup>
+        <a class="btn-add" routerLink="/dashboard/user/crear">
+            <mat-icon>add_circle</mat-icon>
+            Add new register
+        </a>
+      </div>
+    </aside>
+</header>
+  <app-listado-generico [elements]="user">
+    <ng-content contenido>
+        <table class="table table-hover ">
+            <thead>
+              <tr>
+                <th>N°</th>
+                <th>Email</th>
+                <!-- <th>Name User</th> -->
+                <!-- <th>Fecha</th> -->
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of user; track $index) {
+                  <tr [ngClass]="{'': item.status == 1 , 'table-danger': item.status == 0 }">
+                      <th scope="row">{{ $index + 1  }}</th>
+                      <td scope="row">{{ item.email }}</td>
+                      <!-- <td scope="row">{{ item.userName }}</td> -->
+                      <!-- <td>{{ item.dateLanzamiento | date:"dd-MMMM-yyyy"  }}</td> -->
+
+                      <td><mat-slide-toggle [checked]="item.status" (change)="logical($event, item.id);"></mat-slide-toggle></td>
+                   
+                      <td>
+                        <a mat-button routerLink="/dashboard/user/editar/{{ item.id }}">
+                          <mat-icon>edit</mat-icon>
+                        </a>
+                        <button mat-button 
+                          [swal]="{title: 'Confirmacion', text: '¿Deseas borrar este registro?', showCancelButton: true}"
+                         (confirm)="deleteRegister(item.id)" >
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                      </td>
+                  </tr>
+              }
+            </tbody>
+          
+        </table>
+    </ng-content>
+  </app-listado-generico>

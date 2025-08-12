@@ -1,0 +1,16 @@
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { CreateModelPerson, Person } from '../models/person.model';
+import { ModelLogicalDelete } from '../global/model/logicalDelete.model';
+import { GenericService } from './api/generic.service';
+
+@Injectable({
+  providedIn: 'root'
+})
+
+export class PersonService extends GenericService<Person, CreateModelPerson, ModelLogicalDelete> {
+  constructor() { 
+    super('Person')
+  }
+}

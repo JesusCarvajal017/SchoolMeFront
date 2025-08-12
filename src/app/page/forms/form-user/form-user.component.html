@@ -1,0 +1,53 @@
+<header tuiHeader>
+    <h1 tuiTitle>
+        {{title}}
+    </h1>
+</header>
+<form (submit)="emitirValoresForm()" [formGroup]="form" class="form-page">
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-6 p-2">
+                <mat-form-field appearance="outline">
+                    <mat-label>Person</mat-label>
+                    <!-- [(value)]="personId" -->
+                    <mat-select appearance="outline" [formControl]="form.controls.personId">
+                        @for (item of personas; track $index) {
+                            <mat-option [value]="item.id" >{{item.name}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-6 p-2">
+                <mat-form-field appearance="outline">
+                    <mat-label>Name User</mat-label>
+                    <input type="text" matInput [formControl]="form.controls.userName"/>
+                </mat-form-field>
+            </div>
+            <div class="col-6 p-2">
+                <mat-form-field appearance="outline">
+                    <mat-label>Password</mat-label>
+                    <input matInput [type]="hideP() ? 'password' : 'text'" [formControl]="form.controls.password"/>
+                    <button
+                        mat-icon-button
+                        matSuffix
+                        (click)="clickEvent($event)"
+                        [attr.aria-label]="'Hide password'"
+                        [attr.aria-pressed]="hideP()"
+                        >
+                        <mat-icon>{{hideP() ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                </mat-form-field>
+            </div>
+            <div class="col-6">
+                <label class="form-label">Status</label>
+                <br>
+                <mat-slide-toggle [formControl]="form.controls.status" ></mat-slide-toggle>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <button type="submit" class="m-1" mat-flat-button [disabled]="form.invalid">{{actionDescription}}</button>
+        <a class="m-1" mat-stroked-button routerLink="/dashboard/user">cancelar</a>
+    </div>
+</form>
