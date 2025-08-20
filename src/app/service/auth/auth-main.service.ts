@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, RESPONSE_INIT } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { CredencialesUsuario, RespondAuth } from '../../global/dtos/seguridad';
-import { Observable, pipe, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +15,7 @@ export class AuthMainService {
 
   private readonly llaveToken = 'toke';
   private readonly llaveExpiracion = 'token-expiracion';
+  private readonly llaveRol = 'user-rol';
 
   login(credenciales : CredencialesUsuario) : Observable<RespondAuth>{
     return this.http.post<RespondAuth>(`${this.urlBase}/Auth`, credenciales)
@@ -48,15 +49,23 @@ export class AuthMainService {
   logout(){
     localStorage.removeItem(this.llaveToken);
     localStorage.removeItem(this.llaveExpiracion);
+    localStorage.removeItem(this.llaveRol);
   }
 
-  obtenerRol() : string {
-    return 'admin'
+  obtenerRol() : string | null {
+    return localStorage.getItem(this.llaveRol);
+  }
+
+  setUserRole(rol: string) {
+    localStorage.setItem(this.llaveRol, rol);
   }
 
   obtenerToken() : string | null{
     return localStorage.getItem(this.llaveToken);
   }
 
+  // Petición al backend para obtener los roles del usuario
+  getUserRoles(userId: string): Observable<string[]> {
+    return this.http.get<string[]>(`${this.urlBase}/Auth/roles/${userId}`);
+  }
 }
-

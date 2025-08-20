@@ -6,6 +6,7 @@ export interface CredencialesUsuario {
 export interface RespondAuth {
     token : string; 
     expiracion : Date;
+
 }
 
 export interface ResponseNoAutorizado {

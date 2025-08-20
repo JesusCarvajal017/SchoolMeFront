@@ -13,19 +13,22 @@ import { Router, RouterLink } from '@angular/router';
 import { CredencialesUsuario } from '../../../global/dtos/seguridad';
 import {TuiRoot} from '@taiga-ui/core';
 
+
+
 @Component({
   selector: 'app-login-main',
+  standalone: true,
   imports: [
     ReactiveFormsModule,
     // TuiInputModule, 
     TuiIcon, 
     TuiPassword, 
     TuiTextfield,
-    TuiCardLarge,
+    // TuiCardLarge,
     TuiError,
     MatProgressSpinnerModule,
     TuiRoot, 
-    RouterLink
+    // RouterLink
   ],
   templateUrl: './login-main.component.html',
   styleUrl: './login-main.component.css'

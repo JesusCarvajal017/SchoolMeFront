@@ -1,0 +1,25 @@
+nav {
+  width: 100%;
+}
+.mat-list-item, .mat-expansion-panel-header {
+  cursor: pointer;
+}
+.ms-1 {
+  margin-left: 8px;
+
+}
+
+.logo-sidebar{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* height: auto; */
+  width: 100%;
+  
+}
+
+.logo-sidebar img{
+ 
+  width: 130px;
+  
+}
