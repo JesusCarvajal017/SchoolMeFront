@@ -1,33 +1,16 @@
-// src/app/services/persona.service.ts
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { CreateModelPerson, Person } from '../models/person.model';
+import { ModelLogicalDelete } from '../global/model/logicalDelete.model';
+import { GenericService } from './api/generic.service';
 
-export interface Persona {
-  id: number;
-  tipoId: string;
-  numeroId: string;
-  nombres: string;
-  genero: string;
-  telefono: string;
-  correo: string;
-}
+@Injectable({
+  providedIn: 'root'
+})
 
-@Injectable({ providedIn: 'root' })
-export class PersonaService {
-  private apiUrl = '/Person';
-
-  constructor(private http: HttpClient) {}
-
-  getPersonas(): Observable<Persona[]> {
-    return this.http.get<Persona[]>(this.apiUrl);
-  }
-
-  updatePersona(id: number, persona: Persona): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, persona);
-  }
-
-  deletePersona(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+export class PersonService extends GenericService<Person, CreateModelPerson, ModelLogicalDelete> {
+  constructor() { 
+    super('Person')
   }
 }

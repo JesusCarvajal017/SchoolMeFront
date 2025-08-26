@@ -40,12 +40,15 @@ export class FormPersonComponent implements OnInit,OnChanges {
   private readonly formBuilder = inject(FormBuilder);
 
   form = this.formBuilder.nonNullable.group({
-    name: ['', {validators: [Validators.required]}],
-    lastName: ['', {validators: [Validators.required]}],
-    email: ['', {validators: [Validators.required]}],
+    fisrtName: ['', {validators: [Validators.required]}],
+    secondName: ['', {validators: [Validators.required]}],
+    secondLastName: ['', {validators: [Validators.required]}],
+    nation: ['', {validators: [Validators.required]}],
     identification: ['', {validators: [Validators.required]}],
+    phone: ['', {validators: [Validators.required]}],
+    lastName: ['', {validators: [Validators.required]}],
+    gender: ['', {validators: [Validators.required]}],
     age: [0, {validators: [Validators.required]}],
-    nameComplet: [''],
     status: [true],
   });
 

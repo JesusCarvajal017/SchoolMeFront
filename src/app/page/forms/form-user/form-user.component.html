@@ -12,7 +12,7 @@
                     <!-- [(value)]="personId" -->
                     <mat-select appearance="outline" [formControl]="form.controls.personId">
                         @for (item of personas; track $index) {
-                            <mat-option [value]="item.id" >{{item.name}}</mat-option>
+                            <mat-option [value]="item.id" >{{item.fisrtName}}</mat-option>
                         }
                     </mat-select>
                 </mat-form-field>

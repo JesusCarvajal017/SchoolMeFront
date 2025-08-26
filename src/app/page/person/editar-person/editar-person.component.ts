@@ -47,17 +47,20 @@ export class EditarPersonComponent implements OnInit {
   }
 
   editEntity(data: CreateModelPerson){
-    let { name, lastName, email, identification, age, status } = data;
+    let { fisrtName, secondName, lastName, secondLastName, nation, identification, phone, gender, age, status } = data;
 
     let pre_data : Person = {
-      id: this.id,
-      name,
-      lastName,
-      email,
-      identification,
-      age,
-      nameComplet: '',
-      status: status ? 1 : 0, // convertir el valor booleano a un valor numerico
+    id: this.id,
+    identification,
+    fisrtName,
+    secondName,
+    lastName,
+    secondLastName,
+    nation,
+    phone,
+    gender,
+    age,
+    status: status ? 1 : 0, // convertir el valor booleano a un valor numerico
     }
 
     // console.log(data);

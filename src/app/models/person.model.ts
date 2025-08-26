@@ -1,20 +1,27 @@
 export interface Person{
     id: number;
-    name: string;
-    nameComplet: string;
-    lastName: string;
-    email: string;
     identification: string;
+    fisrtName: string;
+    secondName: string;
+    lastName: string;
+    secondLastName: string;
+    nation: string;
+    phone: string;
+    gender: string;
     age: number;
     status: number;
+ 
 }
 
 export interface CreateModelPerson{
-    name: string;
-    nameComplet?: string;
-    lastName: string;
-    email: string;
     identification: string;
+    fisrtName: string;
+    secondName: string;
+    lastName: string;
+    secondLastName: string;
+    nation: string;
+    phone: string;
+    gender: string;
     age: number;
     status: number;
 }

@@ -15,7 +15,7 @@ import { SidebarItem } from '../../models/sidebar-item.model';
     MatListModule,
     MatIconModule,
     MatExpansionModule,
-    RouterModule
+    RouterModule,
   ],
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
