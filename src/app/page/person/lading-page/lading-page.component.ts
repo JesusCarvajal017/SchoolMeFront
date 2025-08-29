@@ -53,7 +53,7 @@ export class LadingPageComponent implements OnInit {
 
   // paginación
   currentPage: number = 1;
-  pageSize: number = 5; // 10 por página
+  pageSize: number = 10; // 10 por página
   totalPages: number = 1;
 
   constructor(private serviceEntity: PersonService, private router: Router) {

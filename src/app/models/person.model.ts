@@ -1,27 +1,30 @@
 export interface Person{
     id: number;
+    documentTypeId: number;
     identification: string;
     fisrtName: string;
     secondName: string;
     lastName: string;
     secondLastName: string;
-    nation: string;
     phone: string;
-    gender: string;
-    age: number;
+    gender: number;
+    acronymDocument: string;
+    // age: number;
     status: number;
+
  
 }
 
 export interface CreateModelPerson{
+    id? : number;
     identification: string;
     fisrtName: string;
     secondName: string;
     lastName: string;
     secondLastName: string;
-    nation: string;
+    documentTypeId: number;
     phone: string;
     gender: string;
-    age: number;
+    // age: number;
     status: number;
 }

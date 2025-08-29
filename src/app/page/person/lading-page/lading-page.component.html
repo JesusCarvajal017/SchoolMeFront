@@ -4,7 +4,7 @@
   </h1>
   <aside tuiAccessories>
     <div tuiAppearance="secondary" tuiButtonGroup>
-      <a class="btn-add" routerLink="/dashboard/person/crear">
+      <a class="btn-add" routerLink="/dashboard/todos/crear">
         <mat-icon>add_circle</mat-icon>
         Crear persona
       </a>
@@ -40,10 +40,9 @@
     <thead>
       <tr>
         <th>#</th>
-        <th>Primer nombre</th>
-        <th>Segundo nombre</th>
-        <th>Primer apellido</th>
-        <th>Segundo apellido</th>
+        <th>Nombres</th>
+        <th>Apellidos</th>
+        <th>Tipo de identificacion</th>
         <th>Identificación</th>
         <th>Teléfono</th>
         <th>Status</th>
@@ -54,10 +53,9 @@
       @for (item of paginatedPersons; track $index) {
       <tr>
         <td>{{ ($index + 1) + (currentPage - 1) * pageSize }}</td>
-        <td>{{ item.fisrtName }}</td>
-        <td>{{ item.secondName }}</td>
-        <td>{{ item.lastName }}</td>
-        <td>{{ item.secondLastName }}</td>
+        <td>{{ item.fisrtName}} {{ item.secondName }}</td>
+        <td>{{ item.lastName }} {{ item.secondLastName }}</td>
+        <td>{{ item.acronymDocument }}</td>
         <td>{{ item.identification }}</td>
         <td>{{ item.phone }}</td>
         <td>
@@ -67,7 +65,7 @@
           ></mat-slide-toggle>
         </td>
         <td class="actions-col">
-          <a mat-icon-button routerLink="/dashboard/person/editar/{{ item.id }}">
+          <a mat-icon-button routerLink="/dashboard/todos/editar/{{ item.id }}">
             <mat-icon>edit</mat-icon>
           </a>
           <button

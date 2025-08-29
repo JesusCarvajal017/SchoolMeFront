@@ -23,10 +23,10 @@ export const routes: Routes = [
         component: DashboardComponent,
         canActivate: [esAdminGuard],
         children: [
-            { path: 'person', component: LadingPageComponent, canActivate: [esAdminGuard]  },
-            { path: 'person/crear', component: CrearPersonComponent },
-            { path: 'person/editar/:id', component: EditarPersonComponent, canActivate: [esAdminGuard]},
-            { path: 'user', component: LandingUserComponent , canActivate: [esAdminGuard]},
+            { path: 'todos', component: LadingPageComponent, canActivate: [esAdminGuard]  },
+            { path: 'todos/crear', component: CrearPersonComponent },
+            { path: 'todos/editar/:id', component: EditarPersonComponent, canActivate: [esAdminGuard]},
+            { path: 'usuarios', component: LandingUserComponent , canActivate: [esAdminGuard]},
             { path: 'user/crear', component: CrearUserComponent},
             { path: 'user/editar/:id', component: EditarUserComponent}
         ]

@@ -1,86 +1,138 @@
-
-import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 
+// angular material
+import { MatCardModule } from '@angular/material/card';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatButtonModule } from '@angular/material/button';
 
+// taiga-ui
+import { TuiHeader } from '@taiga-ui/layout';
+import { TuiButtonGroup } from '@taiga-ui/kit';
+import { TuiTitle, TuiAppearance, TuiAlertService } from '@taiga-ui/core';
+
+// terceros
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import Swal from 'sweetalert2';
 
-// agular material
-import {MatButtonModule} from '@angular/material/button';
-
-// taiga
-import {TuiButtonGroup} from '@taiga-ui/kit';
-import { TuiHeader} from '@taiga-ui/layout';
-import { TuiAlertService, TuiTitle } from '@taiga-ui/core';
-
+// servicios y modelos
 import { UserService } from '../../../service/user.service';
-import { ListadoGenericoComponent } from '../../../components/listado-generico/listado-generico.component';
-import { PersonService } from '../../../service/person.service';
 import { User } from '../../../models/user.model';
-import { NgClass } from '@angular/common';
 
 @Component({
+  standalone: true,
   selector: 'app-landing-user',
-  imports: [MatIconModule, ListadoGenericoComponent,
-            MatSlideToggleModule, RouterLink, 
-            SweetAlert2Module,MatButtonModule,
-            TuiButtonGroup, TuiHeader, TuiTitle, NgClass],
+  imports: [
+    CommonModule,
+    TuiTitle,
+    MatSidenavModule,
+    MatCardModule,
+    TuiHeader,
+    TuiButtonGroup,
+    TuiAppearance,
+    MatIconModule,
+    MatSlideToggleModule,
+    MatButtonModule,
+    RouterLink,
+    SweetAlert2Module
+  ],
   templateUrl: './landing-user.component.html',
-  styleUrl: './landing-user.component.css'
+  styleUrl: './landing-user.component.css',
 })
-export class LandingUserComponent {
-  user!: User[];
+export class LandingUserComponent implements OnInit {
+  private readonly alerts = inject(TuiAlertService);
 
-  serviceUser = inject(UserService);
-  servicesPerson = inject(PersonService);
+  user: User[] = [];
+  filteredUsers: User[] = [];
 
-  alerts = inject(TuiAlertService);
+  // búsqueda
+  searchTerm: string = '';
 
-  protected showNotification(message: string): void {
-    this.alerts
-        .open(message, {label: 'Se a cambiado el estado!'})
-        .subscribe();
-}
+  // paginación
+  currentPage: number = 1;
+  pageSize: number = 5; // 5 por página
+  totalPages: number = 1;
 
-
-  constructor(){
+  constructor(private serviceUser: UserService, private router: Router) {
     this.cargarData();
   }
 
-  cargarData(){
-    this.serviceUser.obtenerTodos().subscribe(data => {
+  ngOnInit(): void {}
+
+  // notificación de estado
+  protected showNotification(message: string): void {
+    this.alerts.open(message, { label: 'Se a cambiado el estado!' }).subscribe();
+  }
+
+  // cargar usuarios desde el servicio
+  cargarData() {
+    this.serviceUser.obtenerTodos().subscribe((data) => {
       this.user = data;
+      this.applyFilters();
     });
   }
 
-  logical(event: any, id : number){
-    let checked: number = event.checked ? 1 : 0;
+  // búsqueda
+  onSearch(term: string) {
+    this.searchTerm = term.toLowerCase();
+    this.applyFilters();
+  }
 
-    let dataStatus = {
-      status: checked
+  // aplicar búsqueda + paginación
+  applyFilters() {
+    let filtered = this.user;
+
+    if (this.searchTerm.trim() !== '') {
+      filtered = this.user.filter((u) =>
+        `${u.email}`
+          .toLowerCase()
+          .includes(this.searchTerm)
+      );
     }
 
-    this.serviceUser.eliminarLogico(id,dataStatus).subscribe({
-      next: ()=>{
+    this.filteredUsers = filtered;
+    this.totalPages = Math.ceil(this.filteredUsers.length / this.pageSize);
+
+    // corregir página actual si es mayor al total
+    if (this.currentPage > this.totalPages) {
+      this.currentPage = this.totalPages || 1;
+    }
+  }
+
+  // obtener usuarios de la página actual
+  get paginatedUsers() {
+    const start = (this.currentPage - 1) * this.pageSize;
+    return this.filteredUsers.slice(start, start + this.pageSize);
+  }
+
+  // cambiar de página
+  changePage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
+
+  // activar/desactivar usuario
+  logical(event: any, id: number) {
+    let value: number = event.checked ? 1 : 0;
+    let dataSend = { status: value };
+
+    this.serviceUser.eliminarLogico(id, dataSend).subscribe({
+      next: () => {
         this.cargarData();
-        this.showNotification("Se ha cambiado el estado");
-      }
-    }
-      
-    );
-
-  }
-
-  deleteRegister(id: number){
-    this.serviceUser.eliminar(id).subscribe({
-      next: ()=>{
-         Swal.fire("Exitoso", "El registro ha sido eliminado correctamente", "success");
-          this.cargarData();
-      }
+        this.showNotification('Se ha cambiado el estado');
+      },
     });
   }
 
+  // eliminar usuario
+  deleteRegister(id: number) {
+    this.serviceUser.eliminar(id).subscribe(() => {
+      Swal.fire('Exitoso', 'El registro ha sido eliminado correctamente', 'success');
+      this.cargarData();
+    });
+  }
 }

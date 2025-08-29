@@ -42,36 +42,54 @@ export class EditarPersonComponent implements OnInit {
   queryEntity(id: number){
     this.servviceEntity.obtenerPorId(id).subscribe(data =>{
       this.model = data;
+      console.log(data);
       // console.log(this.model);
     });
   }
 
   editEntity(data: CreateModelPerson){
-    let { fisrtName, secondName, lastName, secondLastName, nation, identification, phone, gender, age, status } = data;
+    let { fisrtName, secondName, lastName, secondLastName, identification, phone, gender, documentTypeId, status } = data;
 
-    let pre_data : Person = {
-    id: this.id,
-    identification,
-    fisrtName,
-    secondName,
-    lastName,
-    secondLastName,
-    nation,
-    phone,
-    gender,
-    age,
-    status: status ? 1 : 0, // convertir el valor booleano a un valor numerico
+    let pre_data : CreateModelPerson = {
+      id: this.id,
+      identification,
+      fisrtName,
+      secondName,
+      lastName,
+      secondLastName,
+      phone,
+      gender,
+      documentTypeId,
+      status: status ? 1 : 0, // convertir el valor booleano a un valor numerico
     }
+
+  //   {
+  //     "lastName": "Guerrerooooo",
+  //     "identification": 1077224695,
+  //     "fisrtName": "Juan",
+  //     "secondName": "Felipe",
+  //     "secondLastName": "Fandiñooooooooooooooo",
+  //     "documentTypeId": 1,
+  //     "nation": "string",
+  //     "phone": 3153686037,
+  //     "gender": 20,
+  //     "id": 6,
+  //     "status": 1
+  // }
+    console.log(this.model);
+    console.log(pre_data); 
 
     // console.log(data);
     this.servviceEntity.actualizar(pre_data).subscribe(
       {next: () => {
           // console.log('actualizado');
           Swal.fire("Exitoso", "Actualizacion exitosa", "success");
-          this.router.navigate(['/person']);
+          this.router.navigate(['dashboard/todos']);
   
     }});
   }
 
 
 }
+
+

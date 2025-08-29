@@ -66,6 +66,6 @@ export class AuthMainService {
 
   // Petición al backend para obtener los roles del usuario
   getUserRoles(userId: string): Observable<string[]> {
-    return this.http.get<string[]>(`${this.urlBase}/Auth/roles/${userId}`);
+    return this.http.get<string[]>(`${this.urlBase}/UserRol/RolesUsuario/${userId}`);
   }
 }

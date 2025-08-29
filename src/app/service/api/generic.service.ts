@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 
-export class GenericService<T, TCreate = T, TDeleteLogic = any> {
+export class GenericService<T, TCreate, TDeleteLogic = any> {
 
   protected http = inject(HttpClient);
   protected urlBase:string;
@@ -24,8 +24,8 @@ export class GenericService<T, TCreate = T, TDeleteLogic = any> {
     return this.http.post<T>(this.urlBase, entity);
   }
 
-  public actualizar(entity: T): Observable<T> {
-    return this.http.put<T>(`${this.urlBase}/update`, entity);
+  public actualizar(entity: TCreate): Observable<T> {
+    return this.http.put<T>(this.urlBase, entity);
   }
 
   public eliminar(id: number): Observable<void> {
