@@ -1,4 +1,16 @@
-<mat-toolbar class="rounded-4 ms-4 shadow">
+
+<div class="flex-grow-1 box-outline topbar d-flex align-items-center px-3">
+  <!-- <input type="text" class="form-control form-control-sm" placeholder="Buscar…"> -->
+
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="salirSesion()">
+      <mat-icon>exit_to_app</mat-icon>
+      Cerrar sesión</button>
+  </mat-menu>
+  
+</div>
+
+<!-- <mat-toolbar class="rounded-4 ms-4 shadow">
     <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
       <mat-icon>menu</mat-icon>
     </button>
@@ -9,9 +21,5 @@
           <mat-icon>exit_to_app</mat-icon>
           Cerrar sesión</button>
       </mat-menu>
-    </div>
-    <!-- <span class="example-spacer"></span> -->
-    <!-- <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon"> -->
-    <!-- </button> -->
-   
-</mat-toolbar> 
+    </div>   
+</mat-toolbar>  -->

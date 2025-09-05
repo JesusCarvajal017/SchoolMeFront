@@ -1,0 +1,69 @@
+/* Ícono de despliegue con animación suave */
+.icon-toggle {
+  display: inline-block;
+  transition: transform 0.1s ease;
+}
+
+.icon-toggle.rotate {
+  transform: rotate(180deg);
+}
+
+@media (min-width: 992px) {
+  .sticky-lg { position: sticky; top: 1rem; }
+}
+
+.sidebar-lg { 
+  min-height: calc(100vh - 2rem); 
+  background-color: #181552;
+  border-radius: 20px;
+}
+
+.list-group-item{
+  background-color: #181552;
+  border: #181552;
+  color: aliceblue;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: bold;
+  font-size: 12px;
+
+}
+
+/* === Logo === */
+.logo-sidebar {
+  display: flex;
+  justify-content: center;
+  /* margin-bottom: 25px; */
+  margin-top: 3%;
+}
+
+.logo-sidebar img {
+  width: 100px;
+  height: auto;
+}
+
+
+
+/* reformatear estilos de bootstrap */
+.list-group-item{
+  &:hover{
+    background-color: #17144b;
+    color: #fff;
+  }
+}
+
+
+.list-group-item[data-bs-toggle="collapse"] {
+  background-color: #181552 !important;
+  color: #fff;
+}
+
+.list-group-item[data-bs-toggle="collapse"]:hover,
+.list-group-item[data-bs-toggle="collapse"]:focus,
+.list-group-item[data-bs-toggle="collapse"].active {
+    background-color: #181552 !important;
+  color: #fff;
+}
+
+.list-item:focus {
+  box-shadow: #17144b !important;
+}

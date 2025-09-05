@@ -1,3 +1,7 @@
+.bg-dashboard{
+  background-color: rgb(233, 233, 233);
+}
+
 .container-page{
     height: 100vh;
     width: 100vw;
@@ -6,10 +10,11 @@
 
 .slidebar{
     border-radius: 20px;
-    /* border: 1px solid #000; */
-    /* padding: 20px; */
     margin: 10px;
     background-color: #1a2035;
+    /* border: 1px solid #000; */
+    /* padding: 20px; */
+    /* scroll */
 }
 
 .main-container{
@@ -22,6 +27,23 @@
 }
 
 .card-template{
-    width: 100%;
+    /* width: 100%; */
     /* box-shadow: 0 0 5px #000; */
 }
+
+
+
+/* Maquetacion del dasboard */
+
+/* Solo para emular el boceto (quítalo si no lo necesitas) */
+.box-outline { border: 2px solid #000; }
+
+.topbar { height: 56px; }
+
+.aside-menu{
+    border-radius: 30px !important;
+}
+
+.content-area { min-height: calc(100vh - 9rem); }
+
+

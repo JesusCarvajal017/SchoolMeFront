@@ -6,79 +6,147 @@
 
 <tui-root>
     <div class="container-fluid vh-100">
-        <div class="col-12 row p-0">
-            <div class="col-6 p-0">
-                <div class="caja-style"></div>
-                <figure class="img-log ">
-                    <img src="./logo_colegio.png" alt="imagen de logo colegio">
-                </figure>
-            </div>
-            <div class="col-6 p-0 d-flex justify-content-center align-items-center vh-100">
-                
-                <!-- <div class="login-app"> -->
-                    <!-- <div tuiAppearance="floating" tuiCardLarge class="card-template m-2 shadow"> -->
-                        <!-- <div class="col-12 d-flex justify-content-center ">
-                            <figure>
-                                <img src="img/perfil.png" alt="user" class="img-login">
-                            </figure>
-                        </div> -->
-                        <div class="col-12 row d-flex justify-content-center">
-                            <div class="col-12 mb-2">
-                                <h2 class="text-center">Login</h2>
+        
+        <!-- Muestra esto apartir de los 922 -->
+        <div class="d-block d-xl-none">
+            <div class="col-12 p-0 d-flex justify-content-center align-items-center vh-100">
+                <div class="col-12 row d-flex justify-content-center">
+                    <div class="col-12 mb-2">
+                        <h2 class="text-center">Login</h2>
+                    </div>
+                    <section class="container-login">
+                        <form (submit)="loguear()" class="form-login" [formGroup]="form" >
+                            <tui-textfield>
+                                <label tuiLabel>Email</label>
+                                <input
+                                    tuiTextfield
+                                    type="email"
+                                    [formControl]="form.controls.email"
+                                />
+                            </tui-textfield>
+    
+                            @if (form.controls.email.invalid && form.controls.email.touched) {
+                                <tui-error
+                                    [error]="obtenerErrorEmail()"
+                                />
+                            }
+                        
+                            <tui-textfield>
+                                <label tuiLabel>Password</label>
+                                <input
+                                    tuiTextfield
+                                    type="password"
+                                    [formControl]="form.controls.password"
+                                />
+                                <tui-icon tuiPassword />
+                            </tui-textfield>
+                            @if(form.controls.password.invalid && form.controls.email.touched){
+                                <tui-error
+                                    [error]="obtenerErrorPassword()"
+                                />
+                            }
+                            <div class="col-12 d-flex justify-content-end">
+                                <span class="fs-6"> <a class="a-enlace">¿Olvidaste tu contraseña?</a></span>
                             </div>
-                            <section class="container-login">
-                                <form (submit)="loguear()" class="form-login" [formGroup]="form" >
-                                    <tui-textfield>
-                                        <label tuiLabel>Email</label>
-                                        <input
-                                            tuiTextfield
-                                            type="email"
-                                            [formControl]="form.controls.email"
-                                        />
-                                    </tui-textfield>
-            
-                                    @if (form.controls.email.invalid && form.controls.email.touched) {
-                                        <tui-error
-                                            [error]="obtenerErrorEmail()"
-                                        />
-                                    }
+                            <div class="col-12 d-grid gap-1">
+                                <button [disabled]="form.invalid && !isLoader"  class="btn btn-primary w-100" type="submit">Ingresar</button>
+                                <!-- <button (click)="redirectToGoogle()" class="btn btn-light w-100" type="submit">
                                 
-                                    <tui-textfield>
-                                        <label tuiLabel>Password</label>
-                                        <input
-                                            tuiTextfield
-                                            type="password"
-                                            [formControl]="form.controls.password"
-                                        />
-                                        <tui-icon tuiPassword />
-                                    </tui-textfield>
-                                    @if(form.controls.password.invalid && form.controls.email.touched){
-                                        <tui-error
-                                            [error]="obtenerErrorPassword()"
-                                        />
-                                    }
-                                    <div class="col-12 d-flex justify-content-end">
-                                        <span class="fs-6"> <a class="a-enlace">¿Olvidaste tu contraseña?</a></span>
-                                    </div>
-                                    <div class="col-12 d-grid gap-1">
-                                        <button [disabled]="form.invalid && !isLoader"  class="btn btn-primary w-100" type="submit">Ingresar</button>
-                                        <!-- <button (click)="redirectToGoogle()" class="btn btn-light w-100" type="submit">
-                                        
-                                            <img src="img/google.png" alt="google oauth" class="google-icon m-2">
-                                            Continuar con google
-                                        </button> -->
-                                    </div>
-                                    <!-- <div class="col-12 d-flex justify-content-center">
-                                        <span class="fs-6"> <a routerLink="/register" class="a-enlace">¿No tienes cuenta?</a></span>
-                                    </div> -->
-                                </form>
-                            </section>
-
-                        </div>
-                    <!-- </div> -->
-                <!-- </div> -->
+                                    <img src="img/google.png" alt="google oauth" class="google-icon m-2">
+                                    Continuar con google
+                                </button> -->
+                            </div>
+                            <!-- <div class="col-12 d-flex justify-content-center">
+                                <span class="fs-6"> <a routerLink="/register" class="a-enlace">¿No tienes cuenta?</a></span>
+                            </div> -->
+                        </form>
+                    </section>
+                </div>
             </div>
         </div>
+
+
+
+
+        <!-- Muestra esto a partir de los 1200px  -->
+        <div class="d-none d-xl-block">
+            <div class="col-12 row p-0">
+                <div class="col-12"></div>
+                <div class="col-6 p-0">
+                    <div class="caja-style"></div>
+                    <figure class="img-log ">
+                        <img src="./logo_colegio.png" alt="imagen de logo colegio">
+                    </figure>
+                </div>
+                <div class="col-6 p-0 d-flex justify-content-center align-items-center vh-100">
+                    
+                    <!-- <div class="login-app"> -->
+                        <!-- <div tuiAppearance="floating" tuiCardLarge class="card-template m-2 shadow"> -->
+                            <!-- <div class="col-12 d-flex justify-content-center ">
+                                <figure>
+                                    <img src="img/perfil.png" alt="user" class="img-login">
+                                </figure>
+                            </div> -->
+                            <div class="col-12 row d-flex justify-content-center">
+                                <div class="col-12 mb-2">
+                                    <h2 class="text-center">Login</h2>
+                                </div>
+                                <section class="container-login">
+                                    <form (submit)="loguear()" class="form-login" [formGroup]="form" >
+                                        <tui-textfield>
+                                            <label tuiLabel>Email</label>
+                                            <input
+                                                tuiTextfield
+                                                type="email"
+                                                [formControl]="form.controls.email"
+                                            />
+                                        </tui-textfield>
+                
+                                        @if (form.controls.email.invalid && form.controls.email.touched) {
+                                            <tui-error
+                                                [error]="obtenerErrorEmail()"
+                                            />
+                                        }
+                                    
+                                        <tui-textfield>
+                                            <label tuiLabel>Password</label>
+                                            <input
+                                                tuiTextfield
+                                                type="password"
+                                                [formControl]="form.controls.password"
+                                            />
+                                            <tui-icon tuiPassword />
+                                        </tui-textfield>
+                                        @if(form.controls.password.invalid && form.controls.email.touched){
+                                            <tui-error
+                                                [error]="obtenerErrorPassword()"
+                                            />
+                                        }
+                                        <div class="col-12 d-flex justify-content-end">
+                                            <span class="fs-6"> <a class="a-enlace">¿Olvidaste tu contraseña?</a></span>
+                                        </div>
+                                        <div class="col-12 d-grid gap-1">
+                                            <button [disabled]="form.invalid && !isLoader"  class="btn btn-primary w-100" type="submit">Ingresar</button>
+                                            <!-- <button (click)="redirectToGoogle()" class="btn btn-light w-100" type="submit">
+                                            
+                                                <img src="img/google.png" alt="google oauth" class="google-icon m-2">
+                                                Continuar con google
+                                            </button> -->
+                                        </div>
+                                        <!-- <div class="col-12 d-flex justify-content-center">
+                                            <span class="fs-6"> <a routerLink="/register" class="a-enlace">¿No tienes cuenta?</a></span>
+                                        </div> -->
+                                    </form>
+                                </section>
+
+                            </div>
+                        <!-- </div> -->
+                    <!-- </div> -->
+                </div>
+            </div>
+        </div>
+        
+        
 
     </div>
 </tui-root>
