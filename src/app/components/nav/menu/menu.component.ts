@@ -1,6 +1,7 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, Input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
+import { SidebarItem } from '../../../models/sidebar-item.model';
 
 @Component({
   selector: 'app-menu',
@@ -10,24 +11,30 @@ import { RouterLink } from '@angular/router';
 })
 export class MenuComponent {
 
-   // Estado por id de cada collapse
-    isOpen: Record<string, boolean> = {
-      // Si quieres alguno abierto por defecto, pon true y añade la clase 'show' al div.collapse correspondiente
-      // submenu1: true,
-      // submenu1m: true
-    };
+  @Input() dataSlidebar: SidebarItem[] = [];
   
-    // Se dispara cuando un collapse termina de abrirse
-    @HostListener('document:shown.bs.collapse', ['$event'])
-    onShown(e: any) {
-      const id = e?.target?.id;
-      if (id) this.isOpen[id] = true;
-    }
+  @Input()
+  indicador!: number;
+
+  idMenu !: string ;
   
-    // Se dispara cuando un collapse termina de cerrarse
-    @HostListener('document:hidden.bs.collapse', ['$event'])
-    onHidden(e: any) {
-      const id = e?.target?.id;
-      if (id) this.isOpen[id] = false;
-    }
+  ngOnInit(): void{
+    this.idMenu = `sidebarAccordion${this.indicador}`; 
+
+  }
+
+
+  // isOpen: Record<string, boolean> = {};
+
+  // @HostListener('document:shown.bs.collapse', ['$event'])
+  // onShown(e: any) {
+  //   const id = e?.target?.id;
+  //   if (id) this.isOpen[id] = true;
+  // }
+
+  // @HostListener('document:hidden.bs.collapse', ['$event'])
+  // onHidden(e: any) {
+  //   const id = e?.target?.id;
+  //   if (id) this.isOpen[id] = false;
+  // }
 }

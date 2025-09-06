@@ -1,90 +1,90 @@
 <tui-root>
-   <div class="container-fluid py-2 bg-dashboard">
-    <div class="row g-3">
+   <div class="container-fluid py-2 bg-dashboard container-app">
 
-      <!-- Sidebar (móvil/tablet) -->
-      <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarOffcanvasLabel">
+     <!-- ===============================================  Sidebar (móvil/tablet) =============================================== -->
+      <div class="offcanvas offcanvas-start offcanvas-fullscreen canvas-app" tabindex="-1" id="sidebarOffcanvas"
+          aria-labelledby="sidebarOffcanvasLabel">
         <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="sidebarOffcanvasLabel">Menú</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+          <h5 class="offcanvas-title text-light" id="sidebarOffcanvasLabel">Menú</h5>
+          <button type="button" class="btn-close bg-white" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
         </div>
         <div class="offcanvas-body p-0">
-          <nav class="list-group list-group-flush">
-
-            <!-- Links simples -->
-            <a href="#" class="list-group-item list-group-item-action">Inicio</a>
-            <a href="#" class="list-group-item list-group-item-action">Perfil</a>
-
-            <!-- Desplegable 1 (móvil) -->
-            <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-              data-bs-toggle="collapse"
-              href="#submenu1m"
-              role="button"
-              [attr.aria-expanded]="isOpen['submenu1m'] ? 'true' : 'false'">
-              Configuración
-              <span class="icon-toggle ms-2" [class.rotate]="isOpen['submenu1m']">&#9662;</span>
-            </a>
-            <div class="collapse" id="submenu1m">
-              <div class="list-group list-group-flush">
-                <a href="#" class="list-group-item list-group-item-action ps-5">Cuenta</a>
-                <a href="#" class="list-group-item list-group-item-action ps-5">Seguridad</a>
-              </div>
-            </div>
-
-            <!-- Desplegable 2 (móvil) -->
-            <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-              data-bs-toggle="collapse"
-              href="#submenu2m"
-              role="button"
-              [attr.aria-expanded]="isOpen['submenu2m'] ? 'true' : 'false'">
-              Reportes
-              <span class="icon-toggle ms-2" [class.rotate]="isOpen['submenu2m']">&#9662;</span>
-            </a>
-            <div class="collapse" id="submenu2m">
-              <div class="list-group list-group-flush">
-                <a href="#" class="list-group-item list-group-item-action ps-5">Mensuales</a>
-                <a href="#" class="list-group-item list-group-item-action ps-5">Anuales</a>
-              </div>
-            </div>
-
-          </nav>
+          <!-- Reutilizamos el mismo componente de menú -->
+          <app-menu [dataSlidebar]="sidebarItems" [indicador]="2"></app-menu>
         </div>
       </div>
 
-      <!-- Sidebar (desktop) -->
-      <aside class="d-none d-lg-block col-lg-2">
-        <app-menu></app-menu>
+    <!-- contenido  de todo el dashboard -->
+    <div class="row g-3">
+      
+      <!-- =============================================== Sidebar (desktop) =============================================== -->
+      <aside class="d-none d-lg-block col-lg-2 slidebar-app" >
+
+        <figure class="logo-sidebar m-1">
+          <img src="./logo-colegio.png" alt="Logo Colegio">
+        </figure>
+
+        <app-menu [dataSlidebar]="sidebarItems" [indicador]="1"></app-menu>
       </aside>
 
-      <!-- Main  contenido del dasboard -->
+      <!-- Main contenido del dashboard -->
       <main class="col-12 col-lg-10">
         <!-- Topbar -->
         <div class="d-flex align-items-center gap-2 mb-3">
 
           <!-- Botón menú (móvil) -->
-          <button class="btn btn-outline-dark d-lg-none box-outline px-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas">
+          <button class="btn btn-outline-dark d-lg-none box-outline px-3"
+                  type="button"
+                  data-bs-toggle="offcanvas"
+                  data-bs-target="#sidebarOffcanvas">
             <mat-icon color="primary">menu</mat-icon>
           </button>
 
           <!-- Barra superior -->
-          <div class="flex-grow-1 box-outline topbar d-flex align-items-center px-3">
-            <!-- <input type="text" class="form-control form-control-sm" placeholder="Buscar…"> -->
-            
-          </div>
+          <div class="flex-grow-1 topbar d-flex align-items-center px-3">
+            <!-- aquí podrías poner buscador o botones -->
+            <!-- <div class=""></div> -->
+             <div class="col-12">
+               <div class="row">
+                  <div class="col-10"></div>
+                  <div class="col-2 d-flex justify-content-end">
+                    <tui-avatar tuiDropdownHover tuiDropdownMobile="Contact Us" tuiIconButton type="button" [tuiDropdown]="dropdown" src="@tui.user" size="m"/>
 
+                    <ng-template #dropdown>
+                        <tui-data-list>
+                            <a
+                                href="https://github.com/taiga-family/taiga-ui"
+                                iconStart="assets/icons/github.svg"
+                                new
+                                rel="noreferrer"
+                                target="_blank"
+                                tuiOption
+                            >
+                                <mat-icon class="m-1">exit_to_app</mat-icon>
+                                Salir
+                            </a>
+                            
+                        </tui-data-list>
+                    </ng-template>
+                    
+                  </div>
+                      <!-- </section> -->
+                  <!-- </div> -->
+               </div>
+             </div>
+
+          </div>
         </div>
 
-        <!-- Contenido -->
-        <section class="box-outline rounded content-area p-3">
-
-          <!-- sirve el cotenido por medio de las ruta  -->
-          <router-outlet></router-outlet>
-
+        <!-- Contenido dinámico (rutas) -->
+        <section class="rounded content-area p-2">
+          
+          <!-- <router-outlet></router-outlet> -->
+          
         </section>
       </main>
     </div>
   </div>
-
 
 
 </tui-root>

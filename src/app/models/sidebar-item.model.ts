@@ -1,10 +1,17 @@
 export interface SidebarItem {
-  label: string;
+  name: string;
+  path?: string;   
+  orden : number;  
   icon: string;
-  route?: string;
-  children?: SidebarItem[];
+  formularios?: FormItems[];
 }
 
+interface FormItems {
+  name: string;
+  permission: string;
+  path: string;   
+  orden: number;  
+}
 
 
 
