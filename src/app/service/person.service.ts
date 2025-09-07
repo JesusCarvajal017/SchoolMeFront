@@ -13,4 +13,8 @@ export class PersonService extends GenericService<Person, CreateModelPerson, Mod
   constructor() { 
     super('Person')
   }
+
+  override obtenerTodos(status: number = 1): Observable<Person[]> {
+    return this.http.get<Person[]>(`${this.urlBase}?status=${status}`);
+  }
 }

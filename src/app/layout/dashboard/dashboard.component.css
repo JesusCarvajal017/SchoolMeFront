@@ -27,6 +27,13 @@
     justify-content: center;
 }
 
+
+	.box {
+    inline-size: 16rem;
+    block-size: 9.75rem;
+    border: 1px solid;
+}
+
 .logo-sidebar img{
     width: 70px;
 }

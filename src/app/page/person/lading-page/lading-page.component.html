@@ -1,4 +1,4 @@
-<header tuiHeader>
+<header tuiHeader class="m-1">
   <h1 tuiTitle>
     Todos <span class="count">{{ persons.length }} personas</span>
   </h1>
@@ -14,25 +14,30 @@
 
 <section class="table-container">
   <!-- Tabs -->
-  <div class="tabs">
-    <button class="active">Activos</button>
-    <button>Inactivos</button>
-  </div>
-
-  <!-- Buscador y filtro -->
-  <div class="actions">
-    <div class="search-box">
-      <mat-icon>search</mat-icon>
-      <input
-        #searchInput
-        type="text"
-        placeholder="Buscar..."
-        (input)="onSearch(searchInput.value)"
-      />
+  <div class="col-12 row ">
+    <div class="col-6">
+      <div class="tabs">
+        <button class="active" >Activos</button>
+        <button>Inactivos</button>
+      </div>
     </div>
-    <button class="filter-btn">
-      <mat-icon>filter_list</mat-icon> Filter
-    </button>
+    <div class="col-6 d-flex justify-content-end">
+      <!-- Buscador y filtro -->
+      <div class="actions">
+        <div class="search-box m-1">
+          <mat-icon>search</mat-icon>
+          <input
+            #searchInput
+            type="text"
+            placeholder="Buscar..."
+            (input)="onSearch(searchInput.value)"
+          />
+        </div>
+        <!-- <button class="filter-btn">
+          <mat-icon>filter_list</mat-icon> Filter
+        </button> -->
+      </div>
+    </div>
   </div>
 
   <!-- Tabla -->

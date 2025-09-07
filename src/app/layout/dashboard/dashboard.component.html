@@ -17,15 +17,19 @@
     <!-- contenido  de todo el dashboard -->
     <div class="row g-3">
       
-      <!-- =============================================== Sidebar (desktop) =============================================== -->
+
+      	
       <aside class="d-none d-lg-block col-lg-2 slidebar-app" >
 
         <figure class="logo-sidebar m-1">
           <img src="./logo-colegio.png" alt="Logo Colegio">
         </figure>
-
-        <app-menu [dataSlidebar]="sidebarItems" [indicador]="1"></app-menu>
+        <!-- <tui-scrollbar class="box"> -->
+          <app-menu [dataSlidebar]="sidebarItems" [indicador]="1"></app-menu>
+        <!-- </tui-scrollbar> -->
       </aside>
+      <!-- =============================================== Sidebar (desktop) =============================================== -->
+     
 
       <!-- Main contenido del dashboard -->
       <main class="col-12 col-lg-10">
@@ -77,9 +81,9 @@
         </div>
 
         <!-- Contenido dinámico (rutas) -->
-        <section class="rounded content-area p-2">
+        <section class="rounded content-area p-4">
           
-          <!-- <router-outlet></router-outlet> -->
+          <router-outlet></router-outlet>
           
         </section>
       </main>

@@ -57,7 +57,7 @@ export class LadingPageComponent implements OnInit {
   totalPages: number = 1;
 
   constructor(private serviceEntity: PersonService, private router: Router) {
-    this.cargarProducto();
+    this.cargarData();
   }
 
   ngOnInit(): void {}
@@ -68,12 +68,16 @@ export class LadingPageComponent implements OnInit {
   }
 
   // cargar personas desde el servicio
-  cargarProducto() {
-    this.serviceEntity.obtenerTodos().subscribe((data) => {
+  cargarData() {
+    this.serviceEntity.obtenerTodos(1).subscribe((data) => {
       this.persons = data;
       this.applyFilters();
     });
   }
+
+
+
+
 
   // búsqueda
   onSearch(term: string) {
@@ -122,7 +126,7 @@ export class LadingPageComponent implements OnInit {
 
     this.serviceEntity.eliminarLogico(id, dataSend).subscribe({
       next: () => {
-        this.cargarProducto();
+        this.cargarData();
         this.showNotification('Se ha cambiado el estado');
       },
     });
@@ -132,7 +136,8 @@ export class LadingPageComponent implements OnInit {
   deleteRegister(id: number) {
     this.serviceEntity.eliminar(id).subscribe(() => {
       Swal.fire('Exitoso', 'El registro ha sido eliminado correctamente', 'success');
-      this.cargarProducto();
+      this.cargarData();
     });
   }
+  
 }

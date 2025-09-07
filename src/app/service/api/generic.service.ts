@@ -12,8 +12,8 @@ export class GenericService<T, TCreate, TDeleteLogic = any> {
     this.urlBase = `${environment.apiUrl}/${endpoint}`;
   }
 
-  public obtenerTodos(): Observable<T[]> {
-    return this.http.get<T[]>(this.urlBase);
+  public obtenerTodos(status: number = 1): Observable<T[]> {
+    return this.http.get<T[]>(`${this.urlBase}`);
   }
 
   public obtenerPorId(id: number): Observable<T> {

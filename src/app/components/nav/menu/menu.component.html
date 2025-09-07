@@ -12,7 +12,7 @@
         @if (!(item.formularios?.length)) {
 
           <!-- Item sin hijos -->
-          <a class="accordion-button no-bg leaf-button" [routerLink]="item.path ?? '/'">
+          <a class="accordion-button no-bg leaf-button" [routerLink]="item.path">
             <mat-icon class="me-2">{{ item.icon }}</mat-icon>
             {{ item.name }}
           </a>
