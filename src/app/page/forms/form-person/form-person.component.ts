@@ -6,9 +6,12 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { CreateModelPerson, Person } from '../../../models/person.model';
 import { RouterLink } from '@angular/router';
+import {MatSelectModule} from '@angular/material/select';
+
+
 import { TuiHeader} from '@taiga-ui/layout';
 import { TuiTitle } from '@taiga-ui/core';
-import {MatSelectModule} from '@angular/material/select';
+import {TuiInputModule} from '@taiga-ui/legacy';
 
 // import { MatOption } from '@angular/material/select';
 import { DocumentTypeService } from '../../../service/parameters/documentType.service';
@@ -20,7 +23,10 @@ import { MatOption } from "../../../../../node_modules/@angular/material/option.
   imports: [FormsModule, MatFormFieldModule,
     MatInputModule, ReactiveFormsModule,
     MatButtonModule, MatSlideToggleModule,
-    RouterLink, TuiTitle, TuiHeader,MatSelectModule],
+    RouterLink, TuiTitle, TuiHeader,MatSelectModule,
+    TuiInputModule
+  
+  ],
   templateUrl: './form-person.component.html',
   styleUrl: './form-person.component.css'
 })

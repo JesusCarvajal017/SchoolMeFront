@@ -54,13 +54,12 @@
 }
 
 .content-area { 
-    min-height: calc(100vh - 5.5rem); 
+    height: 87vh ; 
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 5px 5px #0000002d;
-
-
-
+    overflow-y: auto;
+    overflow-x: auto;
 }
 
 

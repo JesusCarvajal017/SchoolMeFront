@@ -11,8 +11,9 @@ import { MatButtonModule } from '@angular/material/button';
 
 // taiga-ui
 import { TuiHeader } from '@taiga-ui/layout';
-import { TuiButtonGroup } from '@taiga-ui/kit';
-import { TuiTitle, TuiAppearance, TuiAlertService } from '@taiga-ui/core';
+import { TuiButtonGroup  } from '@taiga-ui/kit';
+import { TuiTitle, TuiAppearance, TuiAlertService, TuiButton, TuiDialog, TuiHint } from '@taiga-ui/core';
+import {TuiInputModule} from '@taiga-ui/legacy';
 
 // terceros
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
@@ -21,6 +22,8 @@ import Swal from 'sweetalert2';
 // servicios y modelos
 import { PersonService } from '../../../service/person.service';
 import { Person } from '../../../models/person.model';
+import { FormControl, FormGroup } from '@angular/forms';
+import { FormPersonComponent } from "../../forms/form-person/form-person.component";
 
 @Component({
   standalone: true,
@@ -37,23 +40,47 @@ import { Person } from '../../../models/person.model';
     MatSlideToggleModule,
     MatButtonModule,
     RouterLink,
-    SweetAlert2Module
-  ],
+    SweetAlert2Module,
+    // TuiAutoFocus,
+    TuiButton,
+    TuiDialog,
+    TuiHint,
+    TuiInputModule,
+    FormPersonComponent
+],
   templateUrl: './lading-page.component.html',
   styleUrl: './lading-page.component.css',
 })
 export class LadingPageComponent implements OnInit {
-  private readonly alerts = inject(TuiAlertService);
 
+  // Atributos importantes de modulo
   persons: Person[] = [];
   filteredPersons: Person[] = [];
+  idicadorActive : number = 1;
+
+  // titulo de los modales, segun la acción a relizar del crud
+  titleForm!: string;
+
+  
+  //  ======================= funcionalidad del modal del taiga =======================
+  protected open = false;
+
+  protected modalCommand(title: string): void {
+      this.titleForm = title;
+      this.open = true;
+  }
+  //  ======================= end =======================
+
+
+  // servicio de alerta de taiga
+  private readonly alerts = inject(TuiAlertService);
 
   // búsqueda
   searchTerm: string = '';
 
   // paginación
   currentPage: number = 1;
-  pageSize: number = 10; // 10 por página
+  pageSize: number = 6; // 10 por página
   totalPages: number = 1;
 
   constructor(private serviceEntity: PersonService, private router: Router) {
@@ -67,15 +94,18 @@ export class LadingPageComponent implements OnInit {
     this.alerts.open(message, { label: 'Se a cambiado el estado!' }).subscribe();
   }
 
+  cambiarStatus(status : number){
+    this.idicadorActive = status;
+    this.cargarData(this.idicadorActive);
+  }
+
   // cargar personas desde el servicio
-  cargarData() {
-    this.serviceEntity.obtenerTodos(1).subscribe((data) => {
+  cargarData(status : number = 1) {
+    this.serviceEntity.obtenerTodos(status).subscribe((data) => {
       this.persons = data;
       this.applyFilters();
     });
   }
-
-
 
 
 
@@ -139,5 +169,5 @@ export class LadingPageComponent implements OnInit {
       this.cargarData();
     });
   }
-  
+
 }

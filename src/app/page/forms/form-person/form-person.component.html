@@ -6,6 +6,15 @@
 <form (submit)="emitirValoresForm()" [formGroup]="form" class="form-page">
     <div class="col-md-6">
         <div class="row">
+            <tui-input
+                formControlName="exampleControl"
+                tuiAutoFocus
+                    >
+                    Some value
+            </tui-input>
+
+
+            
             <div class="col-6 p-2">
                 <mat-form-field appearance="outline">
                     <mat-label>Primer nombreeeeee</mat-label>

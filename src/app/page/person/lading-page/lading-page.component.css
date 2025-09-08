@@ -4,10 +4,15 @@ header h1 {
   font-weight: 600;
 }
 header .count {
+  text-align: center;
+  width: 8%;
+  border: 1.5px solid #000;
+  border-radius: 10px;
   font-size: 14px;
   color: #666;
   margin-left: 8px;
-  font-weight: normal;
+  font-weight: bold;
+  /* display: inline-block; */
 }
 
 .btn-add {
@@ -88,9 +93,11 @@ header .count {
 /* Tabla */
 .custom-table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 8px;
+  /* height: 10px; */
+  /* border-spacing: 0 8px; */
+  /* overflow-y: ; */
 }
+
 .custom-table thead {
   background: #f9f9f9;
 }
@@ -100,16 +107,20 @@ header .count {
   font-size: 14px;
   font-weight: 600;
   color: #555;
+  /* height: 20px !important; */
 }
 .custom-table td {
   padding: 12px;
   font-size: 14px;
   background: white;
   border-bottom: 1px solid #eee;
+  /* height: 20px !important; */
 }
 .custom-table tr:hover td {
   background: #f7f7f7;
 }
+
+
 .actions-col {
   display: flex;
   gap: 8px;
