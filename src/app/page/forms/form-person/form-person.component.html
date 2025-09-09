@@ -1,21 +1,116 @@
 <header tuiHeader>
-    <h1 tuiTitle>
+    <h1 tuiTitle class="ms-4">
         {{title}}
     </h1>
 </header>
 <form (submit)="emitirValoresForm()" [formGroup]="form" class="form-page">
-    <div class="col-md-6">
-        <div class="row">
-            <tui-input
-                formControlName="exampleControl"
-                tuiAutoFocus
-                    >
-                    Some value
-            </tui-input>
+    <div class="col-12 row">
+        <div class="col-md-8">
+            <div class="row m-3">
+                <div class="col-md-4 p-1">
+                    <tui-input tuiAutoFocus>
+                            Primer nombre
+                    </tui-input>
+                </div>
+                <div class="col-md-4 p-1">
+                    <tui-input tuiAutoFocus>
+                        Segundo nombre
+                    </tui-input>
+                </div>
+                <div class="col-md-4 p-1">
+                    <tui-input tuiAutoFocus >
+                        Primer apellido
+                    </tui-input>
+                </div>
+                <div class="col-md-4 p-1">
+                    <tui-input tuiAutoFocus>
+                        Segundo apellido
+                    </tui-input>
+                </div>
+                <div class="col-md-4 p-1">
+                    <tui-select tuiTextfieldSize="l" >
+                        Tipo identificación 
+                        <input placeholder="Choose your hero" tuiTextfieldLegacy />
+                        <tui-data-list-wrapper *tuiDataList [items]="items"/>
+                    </tui-select>
+                </div>
+                <div class="col-md-4 p-1">
+                       <tui-input-number >
+                        N° identificación
+                    </tui-input-number>
+                </div>
+                <div class="col-md-4 p-1">
+                       <tui-input-number>
+                        Telefono
+                    </tui-input-number>
+                </div>
+    
+                <div class="col-md-4 p-1">
+                    <tui-select tuiTextfieldSize="l" [formControl]="form.controls.gender">
+                        Genero 
+                        <input placeholder="Seleccione el genero" tuiTextfieldLegacy />
+                        <tui-data-list-wrapper *tuiDataList [items]="generos"/>
+                    </tui-select>
+                </div>
+            </div>
+            <div class="col-md-12 m-3">
+                <label>
+                    <input tuiCheckbox  type="checkbox" [formControl]="form.controls.activeUser"  size="s" (change)="createUser()"  />
+                    <span class="fs-6 ms-1">Activar usuario</span>
+                </label>
+            </div>
+        </div>
+
+        
+            <div class="col-md-4 lat-user-active">
+                
+                @if(activeUser){
+                <div class="col-12 p-0">
+                    <div class="col-12 d-flex justify-content-center m-2" >
+                        <input type="file" hidden #inputPhoto> 
+                        
+                        <div class="avatar-user">
+                            <figure>
+                                <img src="./icons/default.png" alt="">
+                            </figure>
+                            <div class="edit-photo">
+                                <mat-icon class="icon-photo">flip_camera_ios</mat-icon>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-12 p-2">
+                        <tui-input tuiAutoFocus type="email">
+                            Correo electronico
+                        </tui-input>
+                    </div>
+                    <div class="col-12 p-2">
+                        <tui-textfield>
+                            <label tuiLabel>Contraseña</label>
+                            <input
+                                placeholder="Minimo 8 carecteres"
+                                tuiTextfield
+                                type="password"
+                                [(ngModel)]="value"
+                            />
+                            <tui-icon tuiPassword />
+                        </tui-textfield>
+                    </div>
+                </div>
+                }@else {
+                    <span>No hay usuario al cual configurar</span>
+                }
+            </div>
+    </div>
+
+    <div>
+        <button type="submit" class="p-1" mat-flat-button [disabled]="form.invalid">{{actionDescriptio}}</button>
+        <a class="p-1" mat-stroked-button routerLink="/dashboard/todos">cancelar</a>
+    </div>
+</form>
 
 
-            
-            <div class="col-6 p-2">
+ <!-- <div class="col-6 p-2">
                 <mat-form-field appearance="outline">
                     <mat-label>Primer nombreeeeee</mat-label>
                     <input type="text" matInput [formControl]="form.controls.fisrtName"/>
@@ -56,7 +151,7 @@
             <div class="col-6 p-2">
                 <mat-form-field appearance="outline">
                     <mat-label>Tipo de documento</mat-label>
-                    <!-- [(value)]="personId" -->
+
                     <mat-select appearance="outline" [formControl]="form.controls.documentTypeId">
                         @for (item of documentTypeList; track $index) {
                             <mat-option [value]="item.id" >{{item.name}}</mat-option>
@@ -68,7 +163,6 @@
             <div class="col-6 p-2">
                 <mat-form-field appearance="outline">
                     <mat-label>Genero</mat-label>
-                    <!-- [(value)]="personId" -->
                     <mat-select appearance="outline" [formControl]="form.controls.gender">
                         @for (item of genero; track $index) {
                             <mat-option [value]="item.id" >{{item.name}}</mat-option>
@@ -76,23 +170,8 @@
                     </mat-select>
                 </mat-form-field>
             </div>
-            <!-- <div class="col-6 p-2">
-
-                <mat-form-field appearance="outline">
-                    <mat-label>Edad</mat-label>
-                    <input type="number" matInput [formControl]="form.controls.age"/>
-                </mat-form-field>
-            </div> -->
             <div class="col-6">
                 <label for="" class="form-label">Status</label>
                 <br>
                 <mat-slide-toggle [formControl]="form.controls.status" ></mat-slide-toggle>
-            </div>
-        </div>
-    </div>
-
-    <div>
-        <button type="submit" class="m-1" mat-flat-button [disabled]="form.invalid">{{actionDescriptio}}</button>
-        <a class="m-1" mat-stroked-button routerLink="/dashboard/person">cancelar</a>
-    </div>
-</form>
+            </div> -->

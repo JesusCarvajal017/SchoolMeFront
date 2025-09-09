@@ -10,27 +10,42 @@ import {MatSelectModule} from '@angular/material/select';
 
 
 import { TuiHeader} from '@taiga-ui/layout';
-import { TuiTitle } from '@taiga-ui/core';
-import {TuiInputModule} from '@taiga-ui/legacy';
+import { TuiDataList, TuiHint, TuiIcon, TuiTextfield, TuiTitle } from '@taiga-ui/core';
+import {TuiInputModule, TuiInputNumberModule, TuiSelectModule, TuiTextfieldControllerModule} from '@taiga-ui/legacy';
 
 // import { MatOption } from '@angular/material/select';
 import { DocumentTypeService } from '../../../service/parameters/documentType.service';
-import { MatOption } from "../../../../../node_modules/@angular/material/option.d-ef4idHSb";
-;
+import { TuiCheckbox, TuiDataListWrapper, TuiPassword } from '@taiga-ui/kit';
+import { Gender, GenderType } from '../../../global/model/enumGenero';
+
+import { MatIconModule } from "@angular/material/icon";
 
 @Component({
   selector: 'app-form-person',
   imports: [FormsModule, MatFormFieldModule,
     MatInputModule, ReactiveFormsModule,
     MatButtonModule, MatSlideToggleModule,
-    RouterLink, TuiTitle, TuiHeader,MatSelectModule,
-    TuiInputModule
+    RouterLink, TuiTitle, TuiHeader, MatSelectModule,
+    TuiInputModule,
+    TuiSelectModule,
+    TuiTextfieldControllerModule,
+    TuiDataListWrapper,
+    TuiDataList,
+    TuiHint,
+    TuiInputNumberModule,
+    TuiCheckbox, MatIconModule,
+    TuiIcon,
+    TuiPassword, 
+    TuiTextfield
   
   ],
   templateUrl: './form-person.component.html',
   styleUrl: './form-person.component.css'
 })
 export class FormPersonComponent implements OnInit,OnChanges { 
+
+  protected value = '';
+  
   @Input({required: true})
   title: string = '';
 
@@ -47,19 +62,18 @@ export class FormPersonComponent implements OnInit,OnChanges {
 
   servicesDocmentType = inject(DocumentTypeService);
 
+  // objeto de tipo documento
   documentTypeList : any[] = []; 
 
-  genero = [
-    {id: 1,value: 'M', name: 'Masculino'},
-    {id: 2,value: 'F', name: 'Femenino'},
-    {id: 3,value: 'O', name: 'Otro'},
-  ];
+  // enum de genero
+  generos = GenderType.map(g => g.name);
 
+  //idicador de activacion usuario
+  activeUser !: boolean | null;
 
   ngOnInit(): void {
     this.servicesDocmentType.obtenerTodos().subscribe(data =>{
       this.documentTypeList = data;
-      
     });
   }
 
@@ -78,18 +92,18 @@ export class FormPersonComponent implements OnInit,OnChanges {
     lastName: ['', {validators: [Validators.required]}],
    
     documentTypeId: new FormControl<number | null>(null, { validators: [Validators.required] }),
-gender: new FormControl<number | null>(null, { validators: [Validators.required] }),
+    gender: new FormControl<number | null>(null, { validators: [Validators.required] }),
     // age: [0, {validators: [Validators.required]}],
+    activeUser : new FormControl<boolean>(false),
     status: [true],
   });
+
+  
 
   ngOnChanges(): void {
     if(this.model){
 
-      // let dataValue = 
-
       let values = {
-        // ...this.model,
         fisrtName: this.model.fisrtName,
         secondName: this.model.secondName,
         lastName: this.model.lastName,
@@ -98,13 +112,21 @@ gender: new FormControl<number | null>(null, { validators: [Validators.required]
         phone: this.model.phone,
         documentTypeId: this.model.documentTypeId,
         gender: this.model.gender,
-        // gender: this.,
       
         status: this.model.status == 1 ? true : false, // convertir el valor numerico a un valor booleano
       }
       this.form.patchValue(values); // cargar los datos en el formulario
     }
   }
+
+  // utilidades del formulario
+  createUser(){
+    this.activeUser = this.form.value.activeUser ?? null;
+  }
+
+  
+
+  // funciones principales
 
   emitirValoresForm(){
     let capture = this.form.getRawValue() ; // caputar los datos del formulario, con los tipo estrictamente definididos
@@ -120,4 +142,16 @@ gender: new FormControl<number | null>(null, { validators: [Validators.required]
   guardarCambios(){
 
   }
+
+
+  protected items = [
+    'Luke Skywalker',
+    'Leia Organa Solo',
+    'Darth Vader',
+    'Han Solo',
+    'Obi-Wan Kenobi',
+    'Yoda',
+  ];
+ 
+    // protected testValue = new FormControl<string | null>(null);
 }

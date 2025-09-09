@@ -1,0 +1,35 @@
+.avatar-user{
+    width: 150px;
+    height: 150px;
+    background-color: rgb(221, 221, 221);
+    border-radius: 50%;
+    border: 2px solid var(--primary);
+    position: relative ;
+}
+
+.avatar-user img{
+    width: 100%;
+}
+
+.edit-photo{
+    position: absolute !important;
+    bottom: 5px;  /* 👈 distancia desde abajo */
+    right: 5px;   
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 27px;
+    height: 27px;
+    border-radius: 5px;
+    background-color: rgb(12, 77, 255);
+}
+.icon-photo{
+    color: #2b2b2b;
+}
+
+
+.lat-user-active{
+    background-color: rgb(237, 247, 255);
+    border-radius: 20px;
+}
