@@ -1,0 +1,139 @@
+import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+
+// angular material
+import { MatCardModule } from '@angular/material/card';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatButtonModule } from '@angular/material/button';
+
+// taiga-ui
+import { TuiHeader } from '@taiga-ui/layout';
+import { TuiButtonGroup } from '@taiga-ui/kit';
+import { TuiTitle, TuiAppearance, TuiAlertService } from '@taiga-ui/core';
+
+// terceros
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import Swal from 'sweetalert2';
+
+// servicios y modelos
+import { RolService } from '../../../service/rol.service';
+import { Rol } from '../../../models/rol.model';
+
+@Component({
+  standalone: true,
+  selector: 'app-landing-rol',
+  imports: [
+    CommonModule,
+    TuiTitle,
+    MatSidenavModule,
+    MatCardModule,
+    TuiHeader,
+    TuiButtonGroup,
+    TuiAppearance,
+    MatIconModule,
+    MatSlideToggleModule,
+    MatButtonModule,
+    RouterLink,
+    SweetAlert2Module
+  ],
+  templateUrl: './landing-rol.component.html',
+  styleUrl: './landing-rol.component.css',
+})
+export class LandingRolComponent implements OnInit {
+  private readonly alerts = inject(TuiAlertService);
+
+  rol: Rol[] = [];
+  filteredUsers: Rol[] = [];
+
+  // búsqueda
+  searchTerm: string = '';
+
+  // paginación
+  currentPage: number = 1;
+  pageSize: number = 5; // 5 por página
+  totalPages: number = 1;
+
+  constructor(private serviceRol: RolService, private router: Router) {
+    this.cargarData();
+  }
+
+  ngOnInit(): void {}
+
+  // notificación de estado
+  protected showNotification(message: string): void {
+    this.alerts.open(message, { label: 'Se a cambiado el estado!' }).subscribe();
+  }
+
+  // cargar usuarios desde el servicio
+  cargarData() {
+    this.serviceRol.obtenerTodos().subscribe((data) => {
+      this.rol = data;
+      this.applyFilters();
+    });
+  }
+
+  // búsqueda
+  onSearch(term: string) {
+    this.searchTerm = term.toLowerCase();
+    this.applyFilters();
+  }
+
+  // aplicar búsqueda + paginación
+  applyFilters() {
+    let filtered = this.rol;
+
+    if (this.searchTerm.trim() !== '') {
+      filtered = this.rol.filter((u) =>
+        `${u.name} 
+         ${u.description}`
+          .toLowerCase()
+          .includes(this.searchTerm)
+      );
+    }
+
+    this.filteredUsers = filtered;
+    this.totalPages = Math.ceil(this.filteredUsers.length / this.pageSize);
+
+    // corregir página actual si es mayor al total
+    if (this.currentPage > this.totalPages) {
+      this.currentPage = this.totalPages || 1;
+    }
+  }
+
+  // obtener usuarios de la página actual
+  get paginatedUsers() {
+    const start = (this.currentPage - 1) * this.pageSize;
+    return this.filteredUsers.slice(start, start + this.pageSize);
+  }
+
+  // cambiar de página
+  changePage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
+
+  // activar/desactivar usuario
+  logical(event: any, id: number) {
+    let value: number = event.checked ? 1 : 0;
+    let dataSend = { status: value };
+
+    this.serviceRol.eliminarLogico(id, dataSend).subscribe({
+      next: () => {
+        this.cargarData();
+        this.showNotification('Se ha cambiado el estado');
+      },
+    });
+  }
+
+  // eliminar usuario
+  deleteRegister(id: number) {
+    this.serviceRol.eliminar(id).subscribe(() => {
+      Swal.fire('Exitoso', 'El registro ha sido eliminado correctamente', 'success');
+      this.cargarData();
+    });
+  }
+}
