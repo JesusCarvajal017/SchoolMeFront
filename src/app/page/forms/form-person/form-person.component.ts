@@ -7,18 +7,22 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { CreateModelPerson, Person } from '../../../models/person.model';
 import { RouterLink } from '@angular/router';
 import {MatSelectModule} from '@angular/material/select';
-
+import {MatTabsModule} from '@angular/material/tabs';
 
 import { TuiHeader} from '@taiga-ui/layout';
-import { TuiDataList, TuiHint, TuiIcon, TuiTextfield, TuiTitle } from '@taiga-ui/core';
-import {TuiInputModule, TuiInputNumberModule, TuiSelectModule, TuiTextfieldControllerModule} from '@taiga-ui/legacy';
+import { TuiButton, TuiDataList, TuiHint, TuiIcon, TuiTextfield, TuiTitle } from '@taiga-ui/core';
+import {TuiInputDateModule, TuiInputModule, TuiInputNumberModule, TuiSelectModule, TuiTextfieldControllerModule} from '@taiga-ui/legacy';
+
+
 
 // import { MatOption } from '@angular/material/select';
 import { DocumentTypeService } from '../../../service/parameters/documentType.service';
-import { TuiCheckbox, TuiDataListWrapper, TuiPassword } from '@taiga-ui/kit';
-import { Gender, GenderType } from '../../../global/model/enumGenero';
+import { TuiDataListWrapper, TuiPassword, TuiTooltip } from '@taiga-ui/kit';
+import { GenderType } from '../../../global/model/enumGenero';
 
 import { MatIconModule } from "@angular/material/icon";
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { LoaderComponent } from "../../../components/loader/loader.component";
 
 @Component({
   selector: 'app-form-person',
@@ -33,12 +37,16 @@ import { MatIconModule } from "@angular/material/icon";
     TuiDataList,
     TuiHint,
     TuiInputNumberModule,
-    TuiCheckbox, MatIconModule,
+    MatIconModule,
     TuiIcon,
-    TuiPassword, 
-    TuiTextfield
-  
-  ],
+    TuiPassword,
+    TuiTextfield,
+    TuiTooltip,
+    TuiHint,
+    TuiInputDateModule,
+    TuiButton,
+    MatTabsModule,
+    MatCheckboxModule, LoaderComponent],
   templateUrl: './form-person.component.html',
   styleUrl: './form-person.component.css'
 })
@@ -80,22 +88,23 @@ export class FormPersonComponent implements OnInit,OnChanges {
   private readonly formBuilder = inject(FormBuilder);
 
   form = this.formBuilder.nonNullable.group({
+    status: [true],
+    documentTypeId: new FormControl<number | null>(null, { validators: [Validators.required] }),
     fisrtName: ['', {validators: [Validators.required]}],
     secondName: ['', {validators: [Validators.required]}],
+    lastName: ['', {validators: [Validators.required]}],
     secondLastName: ['', {validators: [Validators.required]}],
+    
     // documentTypeId: [Number , { validators: [Validators.required] }],
 
 
     // nation: ['', {validators: [Validators.required]}],
     identification: ['', {validators: [Validators.required]}],
     phone: ['', {validators: [Validators.required]}],
-    lastName: ['', {validators: [Validators.required]}],
    
-    documentTypeId: new FormControl<number | null>(null, { validators: [Validators.required] }),
     gender: new FormControl<number | null>(null, { validators: [Validators.required] }),
     // age: [0, {validators: [Validators.required]}],
     activeUser : new FormControl<boolean>(false),
-    status: [true],
   });
 
   

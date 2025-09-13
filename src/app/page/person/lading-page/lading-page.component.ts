@@ -42,11 +42,9 @@ import { FormPersonComponent } from "../../forms/form-person/form-person.compone
     RouterLink,
     SweetAlert2Module,
     // TuiAutoFocus,
-    TuiButton,
     TuiDialog,
     TuiHint,
-    TuiInputModule,
-    FormPersonComponent
+    TuiInputModule
 ],
   templateUrl: './lading-page.component.html',
   styleUrl: './lading-page.component.css',
@@ -107,8 +105,6 @@ export class LadingPageComponent implements OnInit {
     });
   }
 
-
-
   // búsqueda
   onSearch(term: string) {
     this.searchTerm = term.toLowerCase();
@@ -154,12 +150,12 @@ export class LadingPageComponent implements OnInit {
     let value: number = event.checked ? 1 : 0;
     let dataSend = { status: value };
 
-    this.serviceEntity.eliminarLogico(id, dataSend).subscribe({
-      next: () => {
-        this.cargarData();
-        this.showNotification('Se ha cambiado el estado');
-      },
-    });
+    // this.serviceEntity.eliminarLogico(id, dataSend).subscribe({
+    //   next: () => {
+    //     this.cargarData();
+    //     this.showNotification('Se ha cambiado el estado');
+    //   },
+    // });
   }
 
   // eliminar persona
