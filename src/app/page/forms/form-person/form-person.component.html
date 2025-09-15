@@ -7,53 +7,97 @@
 <form (submit)="emitirValoresForm()" [formGroup]="form" class="form-page">
     <div class="col-12 row">
         <div class="col-md-8">
+
+
+
+
+
             <mat-tab-group>
+                <!--  ======================== registro de persona ======================== -->
                 <mat-tab label="Registro"> 
+
                     <!--  ======================== data de persona ======================== -->
                     <div class="row m-3">
                         <div class="col-md-4 p-1">
-                            <tui-input tuiAutoFocus>
+                            <tui-input tuiAutoFocus [formControl]="form.controls.fisrtName">
                                     Primer nombre *
                             </tui-input>
                         </div>
                         <div class="col-md-4 p-1">
-                            <tui-input tuiAutoFocus>
+                            <tui-input tuiAutoFocus [formControl]="form.controls.secondName">
                                 Segundo nombre
                             </tui-input>
                         </div>
                         <div class="col-md-4 p-1">
-                            <tui-input tuiAutoFocus >
+                            <tui-input tuiAutoFocus [formControl]="form.controls.lastName">
                                 Primer apellido *
                             </tui-input>
                         </div>
                         <div class="col-md-4 p-1">
-                            <tui-input tuiAutoFocus>
+                            <tui-input tuiAutoFocus [formControl]="form.controls.secondLastName">
                                 Segundo apellido
                             </tui-input>
                         </div>
                         <div class="col-md-4 p-1">
-                            <tui-select tuiTextfieldSize="l" >
-                                Tipo identificación 
-                                <input placeholder="Choose your hero" tuiTextfieldLegacy />
-                                <tui-data-list-wrapper *tuiDataList [items]="items"/>
+                            <tui-select
+                                #select
+                                [formControl]="form.controls.documentTypeId"
+                                [stringify]="idToName"
+                                [tuiTextfieldLabelOutside]="true"
+                            >
+                                Tipo documento
+                                <tui-data-list *tuiDataList>
+                                    <tui-opt-group>
+                                        @for (item of documentTypeList; track $index) {
+                                            <button
+                                                tuiOption
+                                                type="button"
+                                                [value]="item.id"
+                                            >
+                                                {{ item.name }}
+                                            </button>
+                                        }
+                                    </tui-opt-group>
+                                </tui-data-list>
                             </tui-select>
                         </div>
-                        <div class="col-md-4 p-1">
+                        <div class="col-md-4 p-1" [formControl]="form.controls.identification">
                             <tui-input-number >
                                 N° identificación
                             </tui-input-number>
                         </div>
-                        <div class="col-md-4 p-1">
+                        <div class="col-md-4 p-1" [formControl]="form.controls.phone">
                             <tui-input-number>
                                 Telefono *
                             </tui-input-number>
                         </div>
             
                         <div class="col-md-4 p-1">
-                            <tui-select tuiTextfieldSize="l" [formControl]="form.controls.gender">
+                            <!-- <tui-select tuiTextfieldSize="l" [formControl]="form.controls.gender">
                                 Genero 
                                 <input placeholder="Seleccione el genero" tuiTextfieldLegacy />
                                 <tui-data-list-wrapper *tuiDataList [items]="generos"/>
+                            </tui-select> -->
+                            <tui-select
+                                #select
+                                [formControl]="form.controls.gender"
+                                [stringify]="idToNameGender"
+                                [tuiTextfieldLabelOutside]="true"
+                            >
+                                Genero
+                                <tui-data-list *tuiDataList>
+                                    <tui-opt-group>
+                                        @for (item of generos; track $index) {
+                                            <button
+                                                tuiOption
+                                                type="button"
+                                                [value]="item.id"
+                                            >
+                                                {{ item.name }}
+                                            </button>
+                                        }
+                                    </tui-opt-group>
+                                </tui-data-list>
                             </tui-select>
                         </div>
                         
@@ -88,11 +132,7 @@
                         </div>
 
                         <div class="col-md-4 p-1">
-                            <tui-input-date
-                            formControlName="testValue"
-                            tuiUnfinishedValidator="Finish filling the field"
-                        
-                            >
+                            <tui-input-date formControlName="testValue" tuiUnfinishedValidator="Finish filling the field">
                                 Fecha de naciemiento
                             </tui-input-date>
                         </div>
@@ -115,8 +155,6 @@
                         <div class="col-md-4 p-1">
                             <mat-checkbox class="example-margin">Tiene sisben</mat-checkbox>
                         </div>
-
-
                     </div>  
                 </mat-tab>
             </mat-tab-group>
@@ -185,7 +223,8 @@
     </div>
 
     <div>
-        <button class="m-1" size="l" tuiButton type="button" type="submit" [disabled]="form.invalid">{{actionDescriptio}}</button>
+        <!-- type="submit" -->
+        <button class="m-1" size="l" tuiButton type="button" (click)="verData()" [disabled]="form.invalid">{{actionDescriptio}}</button>
         <button class="m-1" size="l" tuiButton type="button" appearance="accent" routerLink="/dashboard/todos">Cancerlar</button>
 
     
