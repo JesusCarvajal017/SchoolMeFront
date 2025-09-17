@@ -12,7 +12,7 @@ import {TuiInputModule, TuiTextfieldControllerModule} from '@taiga-ui/legacy';
 
 import { TuiCheckbox } from '@taiga-ui/kit';
 import { MatIconModule } from "@angular/material/icon";
-import { CreateModelDocumentType, DocumentType } from '../../../models/DocumentType.model';
+import { CreateModelDocumentType, DocumentsType } from '../../../models/DocumentType.model';
 
 @Component({
   selector: 'app-form-document-type',
@@ -41,7 +41,7 @@ export class FormDocumentTypeComponent implements OnInit, OnChanges {
   actionDescriptio !: string;
 
   @Input()
-  model?: DocumentType;
+  model?: DocumentsType;
 
   @Output()
   posteoForm = new EventEmitter<CreateModelDocumentType>();

@@ -5,9 +5,10 @@ export interface Municipality {
   name: string;
 }
 
-
 export interface CreateMunicipality {
+  id: number,
   status: number;
+  
   departamentId: number;
   name: string;
 }

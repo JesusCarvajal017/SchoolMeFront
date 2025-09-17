@@ -5,6 +5,7 @@ import { inject, Injectable } from '@angular/core';
 import { CreateModelDocumentType, DocumentsType } from '../../models/DocumentType.model';
 import { GenericService } from '../api/generic.service';
 import { ModelLogicalDelete } from '../../global/model/logicalDelete.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class DocumentTypeService extends GenericService<DocumentsType, CreateMod
     super('DocumentType')
   }
 
-       override obtenerTodos(status: number = 1): Observable<DocumentType[]> {
-        return this.http.get<DocumentType[]>(`${this.urlBase}?status=${status}`);
+  override obtenerTodos(status: number = 1): Observable<DocumentsType[]> {
+    return this.http.get<DocumentsType[]>(`${this.urlBase}?status=${status}`);
   }
 }

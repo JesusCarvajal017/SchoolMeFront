@@ -29,9 +29,9 @@ import { DocumentsType } from '../../../models/DocumentType.model';
 import { DataBasic } from '../../../models/business/dataBasic.mode';
 import { Rh } from '../../../models/parameters/Rh.model';
 import { Departament } from '../../../models/parameters/Departament.model';
-import { Municipality } from '../../../models/parameters/Municipality.model copy';
 import {DepartamentServices } from '../../../service/parameters/Departament.service';
 import { MunicipalityService } from '../../../service/parameters/Municipality.service';
+import { Municipality } from '../../../models/parameters/Municipality.model';
 // import { createIdToNameStringify } from '../../../utilities/selectId';
 
 

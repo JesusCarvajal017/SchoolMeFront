@@ -20,11 +20,10 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import Swal from 'sweetalert2';
 
 // servicios y modelos
-import { MunicipalityService } from '../../../service/parameters/municipality.service';
-import { Municipality, CreateModelMunicipality } from '../../../models/municipality.model'; // Agregar CreateModelRol
-import { FormControl, FormGroup } from '@angular/forms';
-import { FormGradeComponent } from '../../forms/form-grade/form-grade.component';
+// import { MunicipalityService } from '../../../service/parameters/municipality.service'; // Agregar CreateModelRol
 import { FormMunicipalityComponent } from "../../forms/form-municipality/form-municipality.component";
+import { MunicipalityService } from '../../../service/parameters/Municipality.service';
+import { CreateMunicipality, Municipality } from '../../../models/parameters/Municipality.model';
 
 @Component({
   standalone: true,
@@ -77,10 +76,11 @@ export class LandingMunicipalityComponent implements OnInit {
   }
 
   // NUEVO MÉTODO para manejar el submit del formulario
-  handleMunicipalitySubmit(data: CreateModelMunicipality): void {
+  handleMunicipalitySubmit(data: CreateMunicipality): void {
+    
     if (this.isEditMode && this.modelMunicipality) {
       // Actualizar rol existente
-      const updateData: CreateModelMunicipality = {
+      const updateData: CreateMunicipality = {
         ...data,
         id: this.modelMunicipality.id
       };

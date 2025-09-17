@@ -21,7 +21,7 @@ import Swal from 'sweetalert2';
 
 // servicios y modelos
 import { DocumentTypeService } from '../../../service/parameters/documentType.service';
-import { DocumentType, CreateModelDocumentType } from '../../../models/DocumentType.model'; // Agregar CreateModelRol
+import {CreateModelDocumentType, DocumentsType } from '../../../models/DocumentType.model'; // Agregar CreateModelRol
 import { FormControl, FormGroup } from '@angular/forms';
 import { FormGradeComponent } from '../../forms/form-grade/form-grade.component';
 import { FormDocumentTypeComponent } from "../../forms/form-document-type/form-document-type.component";
@@ -54,22 +54,22 @@ import { FormDocumentTypeComponent } from "../../forms/form-document-type/form-d
 export class LandingDocumentTypeComponent implements OnInit {
 
   // Atributos importantes de modulo
-  documentType: DocumentType[] = [];
-  filteredUsers: DocumentType[] = [];
+  documentType: DocumentsType[] = [];
+  filteredUsers: DocumentsType[] = [];
   idicadorActive : number = 1;
 
   // titulo de los modales, segun la acción a relizar del crud
   titleForm!: string;
 
   // NUEVAS PROPIEDADES PARA EL MODAL
-  modelDocument?: DocumentType; // Para editar un rol existente
+  modelDocument?: DocumentsType; // Para editar un rol existente
   isEditMode: boolean = false; // Indica si estamos editando o creando
   
   //  ======================= funcionalidad del modal del taiga =======================
   protected open = false;
 
   // MÉTODO ACTUALIZADO para manejar creación y edición
-  protected modalCommand(title: string, document?: DocumentType): void { 
+  protected modalCommand(title: string, document?: DocumentsType): void { 
       this.titleForm = title;
       this.isEditMode = !!document; // true si rol existe, false si es undefined
       this.modelDocument = document; // undefined para crear, objeto Rol para editar

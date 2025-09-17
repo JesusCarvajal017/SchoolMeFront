@@ -12,7 +12,8 @@ import {TuiInputModule, TuiTextfieldControllerModule} from '@taiga-ui/legacy';
 
 import { TuiCheckbox } from '@taiga-ui/kit';
 import { MatIconModule } from "@angular/material/icon";
-import { CreateModelMunicipality, Municipality } from '../../../models/municipality.model';
+import { CreateMunicipality, Municipality } from '../../../models/parameters/Municipality.model';
+
 
 @Component({
   selector: 'app-form-municipality',
@@ -44,7 +45,7 @@ export class FormMunicipalityComponent implements OnInit, OnChanges {
   model?: Municipality;
 
   @Output()
-  posteoForm = new EventEmitter<CreateModelMunicipality>();
+  posteoForm = new EventEmitter<CreateMunicipality>();
 
   ngOnInit(): void {
     // Inicialización si es necesaria
@@ -71,11 +72,11 @@ export class FormMunicipalityComponent implements OnInit, OnChanges {
   emitirValoresForm(){
     let capture = this.form.getRawValue(); // capturar los datos del formulario
 
-    const dataMunicipality : CreateModelMunicipality = {
+    const dataMunicipality : CreateMunicipality = {
       ...capture,
       status: capture.status ? 1 : 0,
       id: 0,
-      departmentId: 0
+      departamentId: 0
     }
     
     this.posteoForm.emit(dataMunicipality);
