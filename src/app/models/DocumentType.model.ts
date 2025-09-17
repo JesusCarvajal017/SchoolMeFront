@@ -1,4 +1,4 @@
-export interface DocumentType {
+export interface DocumentsType {
     id: number;
     name: string;
     acronym: string;

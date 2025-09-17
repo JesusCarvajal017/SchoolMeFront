@@ -3,7 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 
-export class GenericService<T, TCreate, TDeleteLogic = any> {
+// TCreate === obejto de comandos
+// T model de enpoint
+export class GenericService<T, TCreate, Delte> {
 
   protected http = inject(HttpClient);
   protected urlBase:string;

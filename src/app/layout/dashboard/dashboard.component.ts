@@ -12,7 +12,7 @@ import { RouterModule } from "@angular/router";
 
 @Component({
   selector: 'app-dashboard',
-  imports: [MatSidenavModule, MatCardModule, TuiRoot, MatIconModule, MenuComponent, TuiAvatar, TuiDataListComponent, TuiDropdown, MatIcon, RouterModule, TuiScrollbar],
+  imports: [MatSidenavModule, MatCardModule, TuiRoot, MatIconModule, MenuComponent, TuiAvatar, TuiDataListComponent, TuiDropdown, MatIcon, RouterModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
