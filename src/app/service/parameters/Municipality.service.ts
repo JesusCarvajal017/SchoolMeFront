@@ -2,8 +2,9 @@ import { inject, Injectable } from '@angular/core';
 
 import { GenericService } from '../api/generic.service';
 import { ModelLogicalDelete } from '../../global/model/logicalDelete.model';
-import { CreateMunicipality, Municipality } from '../../models/parameters/Municipality.model copy';
 import { Observable } from 'rxjs';
+import { CreateMunicipality, Municipality } from '../../models/parameters/Municipality.model';
+
 
 @Injectable({
   providedIn: 'root'
