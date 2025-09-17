@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+
 
 import { CreateModelDocumentType, DocumentsType } from '../../models/DocumentType.model';
 import { GenericService } from '../api/generic.service';

@@ -23,7 +23,15 @@ import { Gender, GenderType } from '../../../global/model/enumGenero';
 
 import { MatIconModule } from "@angular/material/icon";
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatStepperModule} from '@angular/material/stepper';
+
 import { DocumentsType } from '../../../models/DocumentType.model';
+import { DataBasic } from '../../../models/business/dataBasic.mode';
+import { Rh } from '../../../models/parameters/Rh.model';
+import { Departament } from '../../../models/parameters/Departament.model';
+import { Municipality } from '../../../models/parameters/Municipality.model copy';
+import {DepartamentServices } from '../../../service/parameters/Departament.service';
+import { MunicipalityService } from '../../../service/parameters/Municipality.service';
 // import { createIdToNameStringify } from '../../../utilities/selectId';
 
 
@@ -49,7 +57,8 @@ import { DocumentsType } from '../../../models/DocumentType.model';
     TuiInputDateModule,
     TuiButton,
     MatTabsModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatStepperModule
   ],
   templateUrl: './form-person.component.html',
   styleUrl: './form-person.component.css'
@@ -69,14 +78,24 @@ export class FormPersonComponent implements OnInit,OnChanges {
   @Output()
   posteoForm = new EventEmitter<CreateModelPerson>();
 
+
+  // propiedades de configuracion vista
   isChecked = true;
+
+  // configuraciones de stepe
+  isLinear = false;
+  isEditable = false;
 
   // =========================== servicios ========================================
   servicesDocmentType = inject(DocumentTypeService);
+  servicesDepartament = inject(DepartamentServices);
+  servicesMuncipality = inject(MunicipalityService);
   
 
   // objeto de tipo documento == models
   documentTypeList : DocumentsType[] = [];
+  rhList : Rh[] = [];
+  dataBasic : DataBasic[] = [];
   
 
   // funciona el select con esto
@@ -93,22 +112,22 @@ export class FormPersonComponent implements OnInit,OnChanges {
     return this.docNameById.get(id) ?? '';
   };
 
-  // idToName = idTo('', this.docNameById);
-
-    
-  // enum de genero
-
-  // documents = this.documentTypeList.map(x => { });
-
   //idicador de activacion usuario
   activeUser !: boolean | null;
 
   ngOnInit(): void {
     this.cargarDocumentos();
+    this.cargarDepartamento();
+    this.cargarMunicipio();
+
+
+
+    // this.cargarMunicipio();
     // console.log(this.documentTypeList);
   }
 
   private readonly formBuilder = inject(FormBuilder);
+  private readonly dataBasicForm = inject(FormBuilder);
 
   form = this.formBuilder.nonNullable.group({
     status: [true],
@@ -123,6 +142,20 @@ export class FormPersonComponent implements OnInit,OnChanges {
    
     gender: new FormControl<number | null>(null, { validators: [Validators.required] }),
     activeUser : new FormControl<boolean>(false),
+  });
+
+
+  formDataBasic = this.dataBasicForm.nonNullable.group({
+    status:  new FormControl<number | null>(null, { validators: [Validators.required] }),
+    personId:  new FormControl<number | null>(null, { validators: [Validators.required] }),
+    rhId:  new FormControl<number | null>(null, { validators: [Validators.required] }),
+    adress: ['', Validators.required],
+    brithDate: ['', Validators.required],   // se puede cambiar a Date si quieres manejar fechas
+    stratumStatus:  new FormControl<number | null>(null, { validators: [Validators.required] }),
+    materialStatusId:  new FormControl<number | null>(null, { validators: [Validators.required] }),
+    epsId:  new FormControl<number | null>(null, { validators: [Validators.required] }),
+    munisipalityId:  new FormControl<number | null>(null, { validators: [Validators.required] }),
+    departamentId:  new FormControl<number | null>(null),
   });
 
   ngOnChanges(): void {
@@ -172,12 +205,7 @@ export class FormPersonComponent implements OnInit,OnChanges {
   cargarDocumentos() : void{
     this.servicesDocmentType.obtenerTodos().subscribe(data =>{
       this.documentTypeList = data;
-    
-  
-        // map de nombres
         this.docNameById = new Map(this.documentTypeList.map(d => [d.id, d.name]));
-        
-        
     });
   }
 
@@ -186,6 +214,7 @@ export class FormPersonComponent implements OnInit,OnChanges {
     console.log(capture)
   }
 
+  // la pero chambonada de la historia de la programacion :(, no puedo mejorar esto a menos que se actualize taiga en el proyecto
 
   // helpers de select 
   generos : Gender[] = GenderType;
@@ -197,7 +226,43 @@ export class FormPersonComponent implements OnInit,OnChanges {
     return this.genderNameById.get(id) ?? '';
   };
 
-  
+  // departament
+  departaments : Departament[] = [];
+  DepartamentNameById = new Map(this.departaments.map(d => [d.id, d.name]));
+
+  idToNameDepartament = (v: number | string | null | undefined): string => {
+    if (v == null) return '';
+    const id = typeof v === 'string' ? Number(v) : v;
+    return this.DepartamentNameById.get(id) ?? '';
+  };
+
+
+  cargarDepartamento() : void {
+    this.servicesDepartament.obtenerTodos().subscribe(data =>{
+      this.departaments = data;
+        this.DepartamentNameById = new Map(this.departaments.map(d => [d.id, d.name]));
+    });
+  }
+
+  // municipality
+  municipality : Municipality[] = [];
+  municipalityNameById = new Map(this.municipality.map(d => [d.id, d.name]));
+
+  idToNameMunicipality = (v: number | string | null | undefined): string => {
+    if (v == null) return '';
+    const id = typeof v === 'string' ? Number(v) : v;
+    return this.municipalityNameById.get(id) ?? '';
+  };
+
+  cargarMunicipio() : void {
+    this.formDataBasic.controls.departamentId.valueChanges.subscribe(val => {
+      this.servicesMuncipality.MunicipiosDepart(val).subscribe(data =>{
+        this.municipality = data;
+        console.log(this.municipality)
+          this.municipalityNameById = new Map(this.municipality.map(d => [d.id, d.name]));
+      });
+    });    
+  }
 
 }
 
