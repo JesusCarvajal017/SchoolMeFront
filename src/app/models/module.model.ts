@@ -9,7 +9,8 @@ export interface Module {
 
 }
 export interface CreateModelModule{
+    id? : number;
     name: string;
     description: string;
-    icon: string;
+    status: number;
 }

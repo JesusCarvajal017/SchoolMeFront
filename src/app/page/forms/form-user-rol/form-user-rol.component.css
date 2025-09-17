@@ -1,0 +1,133 @@
+.form-page-modal {
+    padding: 0;
+}
+
+/* Estilos para el panel lateral */
+.lat-user-rol-info {
+    background-color: rgb(237, 247, 255);
+    border-radius: 20px;
+}
+
+.user-rol-icon-small {
+    width: 100px;
+    height: 100px;
+    background-color: rgb(221, 221, 221);
+    border-radius: 50%;
+    border: 2px solid var(--primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon-user-rol-small {
+    font-size: 50px !important;
+    width: 50px !important;
+    height: 50px !important;
+    color: var(--primary);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Estilos para las opciones de los dropdowns */
+.user-option, .rol-option {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.user-name, .rol-name {
+    font-weight: 500;
+    color: #333;
+}
+
+.user-email, .rol-description {
+    color: #666;
+    font-size: 0.875rem;
+    margin-top: 2px;
+}
+
+/* Estilos para la información seleccionada */
+.selected-info {
+    width: 100%;
+}
+
+.info-card {
+    background: white;
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-left: 4px solid var(--primary);
+}
+
+.info-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.info-icon {
+    font-size: 18px !important;
+    width: 18px !important;
+    height: 18px !important;
+    color: var(--primary);
+    margin-right: 8px;
+}
+
+.info-title {
+    font-weight: 600;
+    color: var(--primary);
+    font-size: 0.875rem;
+}
+
+.info-content {
+    margin-left: 26px;
+}
+
+.info-name {
+    margin: 0;
+    font-weight: 500;
+    color: #333;
+    font-size: 0.9rem;
+}
+
+.info-detail {
+    color: #666;
+    font-size: 0.8rem;
+}
+
+/* Estilos para mensajes de error */
+.error-message {
+    margin-top: 4px;
+}
+
+.text-danger {
+    color: #dc3545;
+}
+
+/* Estilos específicos para TuiSelect */
+tui-select {
+    width: 100%;
+}
+
+/* Hover effects para las opciones */
+button[tuiOption]:hover .user-option,
+button[tuiOption]:hover .rol-option {
+    background-color: rgba(0, 123, 255, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .lat-user-rol-info {
+        margin-top: 20px;
+    }
+    
+    .selected-info {
+        margin-top: 15px;
+    }
+}

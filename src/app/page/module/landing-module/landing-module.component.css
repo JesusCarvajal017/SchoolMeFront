@@ -139,3 +139,47 @@ header .count {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+/* Agregar estos estilos a tu landing-module.component.css existente */
+
+/* Estilos para el modal */
+.modal-content {
+  padding: 0;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 15px 20px;
+  border-top: 1px solid #e0e0e0;
+  background-color: #f8f9fa;
+}
+
+/* Ajustar el formulario para el modal */
+::ng-deep .modal-content .form-page {
+  margin: 0;
+  padding: 20px;
+}
+
+/* Ocultar el botón cancelar del formulario cuando está en modal */
+::ng-deep .modal-content .form-page > div:last-child a {
+  display: none;
+}
+
+/* Mejorar la apariencia del botón crear */
+.btn-add {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-add:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}

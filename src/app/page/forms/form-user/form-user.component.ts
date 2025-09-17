@@ -51,7 +51,7 @@ export class FormUserComponent implements OnInit, OnChanges {
   private readonly formBuilder = inject(FormBuilder);
 
   form = this.formBuilder.nonNullable.group({
-    userName: ['', {validators: [Validators.required]}],
+    email: ['', {validators: [Validators.required]}],
     personId: ['', {validators: [Validators.required]}],
     password: ['', {validators: [Validators.required]}],
     status: [true],
@@ -85,7 +85,7 @@ export class FormUserComponent implements OnInit, OnChanges {
     let capture = this.form.getRawValue() ; // caputar los datos del formulario, con los tipo estrictamente definididos
 
     let parseo: CreateModelUser = {
-      email: capture.userName,
+      email: capture.email,
       password: capture.password,
       status: capture.status ? 1 : 0,
       // personId: parseInt(capture.personId),

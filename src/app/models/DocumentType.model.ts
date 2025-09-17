@@ -2,11 +2,12 @@ export interface DocumentType {
     id: number;
     name: string;
     acronym: string;
-    statuds: number;
+    status: number;
 }
 
 export interface CreateModelDocumentType{
+    id: number;
     name: string;
     acronym: string;
-    statuds: number;
+    status: number;
 }

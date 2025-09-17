@@ -13,4 +13,8 @@ export class FormService extends GenericService<Form, CreateModelForm, ModelLogi
   constructor() { 
     super('Form')
   }
+
+     override obtenerTodos(status: number = 1): Observable<Form[]> {
+      return this.http.get<Form[]>(`${this.urlBase}?status=${status}`);
+}
 }

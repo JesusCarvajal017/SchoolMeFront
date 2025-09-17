@@ -11,8 +11,9 @@ import { MatButtonModule } from '@angular/material/button';
 
 // taiga-ui
 import { TuiHeader } from '@taiga-ui/layout';
-import { TuiButtonGroup } from '@taiga-ui/kit';
-import { TuiTitle, TuiAppearance, TuiAlertService } from '@taiga-ui/core';
+import { TuiButtonGroup  } from '@taiga-ui/kit';
+import { TuiTitle, TuiAppearance, TuiAlertService, TuiButton, TuiDialog, TuiHint } from '@taiga-ui/core';
+import {TuiInputModule} from '@taiga-ui/legacy';
 
 // terceros
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
@@ -21,6 +22,7 @@ import Swal from 'sweetalert2';
 // servicios y modelos
 import { FormService } from '../../../service/form.service';
 import { Form } from '../../../models/form.model';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   standalone: true,
@@ -37,23 +39,45 @@ import { Form } from '../../../models/form.model';
     MatSlideToggleModule,
     MatButtonModule,
     RouterLink,
-    SweetAlert2Module
+    SweetAlert2Module,
+    // TuiButton,
+    TuiDialog,
+    TuiHint,
+    TuiInputModule
   ],
   templateUrl: './landing-form.component.html',
   styleUrl: './landing-form.component.css',
 })
 export class LandingFormComponent implements OnInit {
-  private readonly alerts = inject(TuiAlertService);
 
+  // Atributos importantes de modulo
   form: Form[] = [];
   filteredUsers: Form[] = [];
+  idicadorActive : number = 1;
+
+  // titulo de los modales, segun la acción a relizar del crud
+  titleForm!: string;
+
+  
+  //  ======================= funcionalidad del modal del taiga =======================
+  protected open = false;
+
+  protected modalCommand(title: string): void { 
+      this.titleForm = title;
+      this.open = true;
+  }
+  //  ======================= end =======================
+
+
+  // servicio de alerta de taiga
+  private readonly alerts = inject(TuiAlertService);
 
   // búsqueda
   searchTerm: string = '';
 
   // paginación
   currentPage: number = 1;
-  pageSize: number = 10; // 5 por página
+  pageSize: number = 6; // 10 por página
   totalPages: number = 1;
 
   constructor(private serviceForm: FormService, private router: Router) {
@@ -67,9 +91,14 @@ export class LandingFormComponent implements OnInit {
     this.alerts.open(message, { label: 'Se a cambiado el estado!' }).subscribe();
   }
 
-  // cargar usuarios desde el servicio
-  cargarData() {
-    this.serviceForm.obtenerTodos().subscribe((data) => {
+  cambiarStatus(status : number){
+    this.idicadorActive = status;
+    this.cargarData(this.idicadorActive);
+  }
+
+  // cargar forms desde el servicio
+  cargarData(status : number = 1) {
+    this.serviceForm.obtenerTodos(status).subscribe((data) => {
       this.form = data;
       this.applyFilters();
     });
@@ -86,9 +115,8 @@ export class LandingFormComponent implements OnInit {
     let filtered = this.form;
 
     if (this.searchTerm.trim() !== '') {
-      filtered = this.form.filter((u) =>
-        `${u.name} 
-         ${u.description}`
+      filtered = this.form.filter((f) =>
+        `${f.name} ${f.description}`
           .toLowerCase()
           .includes(this.searchTerm)
       );
@@ -103,7 +131,7 @@ export class LandingFormComponent implements OnInit {
     }
   }
 
-  // obtener usuarios de la página actual
+  // obtener forms de la página actual
   get paginatedUsers() {
     const start = (this.currentPage - 1) * this.pageSize;
     return this.filteredUsers.slice(start, start + this.pageSize);
@@ -116,24 +144,25 @@ export class LandingFormComponent implements OnInit {
     }
   }
 
-  // activar/desactivar usuario
+  // activar/desactivar form
   logical(event: any, id: number) {
     let value: number = event.checked ? 1 : 0;
     let dataSend = { status: value };
 
     this.serviceForm.eliminarLogico(id, dataSend).subscribe({
       next: () => {
-        this.cargarData();
+        this.cargarData(this.idicadorActive);
         this.showNotification('Se ha cambiado el estado');
       },
     });
   }
 
-  // eliminar usuario
+  // eliminar form
   deleteRegister(id: number) {
     this.serviceForm.eliminar(id).subscribe(() => {
       Swal.fire('Exitoso', 'El registro ha sido eliminado correctamente', 'success');
-      this.cargarData();
+      this.cargarData(this.idicadorActive);
     });
   }
+
 }

@@ -13,4 +13,8 @@ export class ModuleService extends GenericService<Module, CreateModelModule, Mod
   constructor() { 
     super('Module')
   }
+
+     override obtenerTodos(status: number = 1): Observable<Module[]> {
+      return this.http.get<Module[]>(`${this.urlBase}?status=${status}`);
+}
 }

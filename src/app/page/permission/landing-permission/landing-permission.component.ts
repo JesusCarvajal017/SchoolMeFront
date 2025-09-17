@@ -11,8 +11,9 @@ import { MatButtonModule } from '@angular/material/button';
 
 // taiga-ui
 import { TuiHeader } from '@taiga-ui/layout';
-import { TuiButtonGroup } from '@taiga-ui/kit';
-import { TuiTitle, TuiAppearance, TuiAlertService } from '@taiga-ui/core';
+import { TuiButtonGroup  } from '@taiga-ui/kit';
+import { TuiTitle, TuiAppearance, TuiAlertService, TuiButton, TuiDialog, TuiHint } from '@taiga-ui/core';
+import {TuiInputModule} from '@taiga-ui/legacy';
 
 // terceros
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
@@ -20,7 +21,9 @@ import Swal from 'sweetalert2';
 
 // servicios y modelos
 import { PermissionService } from '../../../service/permission.service';
-import { Permission } from '../../../models/permission.model';
+import { Permission, CreateModelPermission } from '../../../models/permission.model'; // Agregar CreateModelPermission
+import { FormControl, FormGroup } from '@angular/forms';
+import { FormPermissionComponent } from "../../forms/form-permission/form-permission.component"; // Agregar import
 
 @Component({
   standalone: true,
@@ -36,17 +39,89 @@ import { Permission } from '../../../models/permission.model';
     MatIconModule,
     MatSlideToggleModule,
     MatButtonModule,
-    RouterLink,
-    SweetAlert2Module
+    // RouterLink,
+    SweetAlert2Module,
+    // TuiButton,
+    TuiDialog,
+    TuiHint,
+    TuiInputModule,
+    FormPermissionComponent // Agregar a imports
   ],
   templateUrl: './landing-permission.component.html',
   styleUrl: './landing-permission.component.css',
 })
 export class LandingPermissionComponent implements OnInit {
-  private readonly alerts = inject(TuiAlertService);
 
+  // Atributos importantes de modulo
   permission: Permission[] = [];
   filteredUsers: Permission[] = [];
+  idicadorActive : number = 1;
+
+  // titulo de los modales, segun la acción a relizar del crud
+  titleForm!: string;
+
+  // NUEVAS PROPIEDADES PARA EL MODAL
+  modelPermission?: Permission; // Para editar un permission existente
+  isEditMode: boolean = false; // Indica si estamos editando o creando
+
+  
+  //  ======================= funcionalidad del modal del taiga =======================
+  protected open = false;
+
+  // MÉTODO ACTUALIZADO para manejar creación y edición
+  protected modalCommand(title: string, permission?: Permission): void { 
+      this.titleForm = title;
+      this.isEditMode = !!permission; // true si permission existe, false si es undefined
+      this.modelPermission = permission; // undefined para crear, objeto Permission para editar
+      this.open = true;
+  }
+
+  // NUEVO MÉTODO para manejar el submit del formulario
+  handlePermissionSubmit(data: CreateModelPermission): void {
+    if (this.isEditMode && this.modelPermission) {
+      // Actualizar permission existente
+      const updateData: CreateModelPermission = {
+        ...data,
+        id: this.modelPermission.id
+      };
+      
+      this.servicePermission.actualizar(updateData).subscribe({
+        next: () => {
+          Swal.fire("Exitoso", "Permiso actualizado correctamente", "success");
+          this.closeModal();
+          this.cargarData(this.idicadorActive); // Recargar la lista
+        },
+        error: (err) => {
+          Swal.fire("Error", "No se pudo actualizar el permiso", "error");
+          console.error(err);
+        }
+      });
+    } else {
+      // Crear nuevo permission
+      this.servicePermission.crear(data).subscribe({
+        next: () => {
+          Swal.fire("Exitoso", "Permiso creado correctamente", "success");
+          this.closeModal();
+          this.cargarData(this.idicadorActive); // Recargar la lista
+        },
+        error: (err) => {
+          Swal.fire("Error", "No se pudo crear el permiso", "error");
+          console.error(err);
+        }
+      });
+    }
+  }
+
+  // NUEVO MÉTODO para cerrar modal y limpiar datos
+  closeModal(): void {
+    this.open = false;
+    this.modelPermission = undefined;
+    this.isEditMode = false;
+  }
+  //  ======================= end =======================
+
+  // servicio de alerta de taiga
+  private readonly alerts = inject(TuiAlertService);
 
   // búsqueda
   searchTerm: string = '';
@@ -67,9 +142,14 @@ export class LandingPermissionComponent implements OnInit {
     this.alerts.open(message, { label: 'Se a cambiado el estado!' }).subscribe();
   }
 
-  // cargar usuarios desde el servicio
-  cargarData() {
-    this.servicePermission.obtenerTodos().subscribe((data) => {
+  cambiarStatus(status : number){
+    this.idicadorActive = status;
+    this.cargarData(this.idicadorActive);
+  }
+
+  // cargar permissions desde el servicio
+  cargarData(status : number = 1) {
+    this.servicePermission.obtenerTodos(status).subscribe((data) => {
       this.permission = data;
       this.applyFilters();
     });
@@ -86,9 +166,8 @@ export class LandingPermissionComponent implements OnInit {
     let filtered = this.permission;
 
     if (this.searchTerm.trim() !== '') {
-      filtered = this.permission.filter((u) =>
-        `${u.name} 
-         ${u.description}`
+      filtered = this.permission.filter((p) =>
+        `${p.name} ${p.description}`
           .toLowerCase()
           .includes(this.searchTerm)
       );
@@ -103,7 +182,7 @@ export class LandingPermissionComponent implements OnInit {
     }
   }
 
-  // obtener usuarios de la página actual
+  // obtener permissions de la página actual
   get paginatedUsers() {
     const start = (this.currentPage - 1) * this.pageSize;
     return this.filteredUsers.slice(start, start + this.pageSize);
@@ -116,24 +195,24 @@ export class LandingPermissionComponent implements OnInit {
     }
   }
 
-  // activar/desactivar usuario
+  // activar/desactivar permission
   logical(event: any, id: number) {
     let value: number = event.checked ? 1 : 0;
     let dataSend = { status: value };
 
     this.servicePermission.eliminarLogico(id, dataSend).subscribe({
       next: () => {
-        this.cargarData();
+        this.cargarData(this.idicadorActive);
         this.showNotification('Se ha cambiado el estado');
       },
     });
   }
 
-  // eliminar usuario
+  // eliminar permission
   deleteRegister(id: number) {
     this.servicePermission.eliminar(id).subscribe(() => {
       Swal.fire('Exitoso', 'El registro ha sido eliminado correctamente', 'success');
-      this.cargarData();
+      this.cargarData(this.idicadorActive);
     });
   }
 }

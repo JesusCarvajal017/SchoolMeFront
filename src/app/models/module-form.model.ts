@@ -1,5 +1,5 @@
 export interface ModuleForm {
-    id?: number;
+    id: number;
     moduleId: number;
     formId: number;
     moduleName?: string;

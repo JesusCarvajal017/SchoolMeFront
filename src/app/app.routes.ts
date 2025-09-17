@@ -14,6 +14,15 @@ import { LandingRolComponent } from './page/rol/landing-rol/landing-rol.componen
 import { LandingPermissionComponent } from './page/permission/landing-permission/landing-permission.component';
 import { LandingModuleComponent } from './page/module/landing-module/landing-module.component';
 import { LandingFormComponent } from './page/form/landing-form/landing-form.component';
+import { LandingModuleFormComponent } from './page/module-form/landing-module-form/landing-module-form.component';
+import { LandingUserRolComponent } from './page/user-rol/landing-user-rol/landing-user-rol.component';
+import { LandingRolFormPermissionComponent } from './page/rol-form-permission/landing-rol-form-permission/landing-rol-form-permission.component';
+import { LandingGradeComponent } from './page/grade/landing-grade/landing-grade.component';
+import { LandingDocumentTypeComponent } from './page/document-type/landing-document-type/landing-document-type.component';
+import { LandingEpsComponent } from './page/eps/landing-eps/landing-eps.component';
+import { LandingMunicipalityComponent } from './page/municipality/landing-municipality/landing-municipality.component';
+import { LandingRhComponent } from './page/rh/landing-rh/landing-rh.component';
+import { LandingGroupsComponent } from './page/groups/landing-groups/landing-groups.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -37,8 +46,18 @@ export const routes: Routes = [
             { path: 'permisos', component: LandingPermissionComponent, canActivate: [esAdminGuard]},
             { path: 'modulos', component: LandingModuleComponent, canActivate: [esAdminGuard]},
             { path: 'formularios', component: LandingFormComponent, canActivate: [esAdminGuard]},
+            { path: 'asiganacionModulos', component: LandingModuleFormComponent, canActivate: [esAdminGuard]},
+            { path: 'asignacionRoles', component: LandingUserRolComponent, canActivate: [esAdminGuard]},
+            { path: 'asignacionPermisos', component: LandingRolFormPermissionComponent, canActivate: [esAdminGuard]},
+            { path: 'grados', component: LandingGradeComponent, canActivate: [esAdminGuard]},
+            { path: 'tipoIdentificacion', component: LandingDocumentTypeComponent, canActivate: [esAdminGuard]},
+            { path: 'eps', component: LandingEpsComponent, canActivate: [esAdminGuard]},
+            { path: 'municipio', component: LandingMunicipalityComponent, canActivate: [esAdminGuard]},
+            { path: 'rh',  component: LandingRhComponent, canActivate: [esAdminGuard]},
+            { path: 'grupos', component: LandingGroupsComponent, canActivate: [esAdminGuard]},
+
         ]
     },
-    {path: '**', component: NotFoundComponent} 
+    {path: '**', component: NotFoundComponent}      
     
 ];

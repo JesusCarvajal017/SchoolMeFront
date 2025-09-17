@@ -13,4 +13,8 @@ export class PermissionService extends GenericService<Permission, CreateModelPer
   constructor() { 
     super('Permission')
   }
+     override obtenerTodos(status: number = 1): Observable<Permission[]> {
+      return this.http.get<Permission[]>(`${this.urlBase}?status=${status}`);
 }
+}
+

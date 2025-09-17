@@ -65,7 +65,7 @@ export class LadingPageComponent implements OnInit {
   //  ======================= funcionalidad del modal del taiga =======================
   protected open = false;
 
-  protected modalCommand(title: string): void {
+  protected modalCommand(title: string): void { 
       this.titleForm = title;
       this.open = true;
   }

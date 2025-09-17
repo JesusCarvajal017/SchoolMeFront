@@ -1,13 +1,15 @@
 export interface UserRol{
     id: number;
     userId: number;
-    userName: string;
+    nameUser: string;
     rolId: number;
-    RolName: string;
+    rolName: string;
     status: number;
 }
 export interface CreateModelUserRol{
-    userName: string;
+    userId: number;
+    rolId: number;
+    nameUser: string;
     rolName: string;
     status: number;
 }

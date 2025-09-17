@@ -6,6 +6,7 @@ export interface Permission {
 }
 
 export interface CreateModelPermission{
+    id: number;
     name: string;
     description: string;
     status: number;

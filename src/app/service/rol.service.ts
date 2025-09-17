@@ -13,4 +13,8 @@ export class RolService extends GenericService<Rol, CreateModelRol, ModelLogical
   constructor() { 
     super('Rol')
   }
+
+   override obtenerTodos(status: number = 1): Observable<Rol[]> {
+      return this.http.get<Rol[]>(`${this.urlBase}?status=${status}`);
+}
 }

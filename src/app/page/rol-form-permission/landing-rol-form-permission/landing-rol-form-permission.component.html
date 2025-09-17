@@ -1,0 +1,109 @@
+<header tuiHeader>
+  <h1 tuiTitle>
+     <div class="col-12 d-flex">
+      <span>Aisgnación de permisos</span>
+      <p class="count">{{ permisos.length }} Permisos</p>
+    </div>
+    <!-- ModuleForm <span class="count">{{ moduleform?.length }} ModuleForm</span> -->
+  </h1>
+  <aside tuiAccessories>
+    <div tuiAppearance="secondary" tuiButtonGroup>
+      <a class="btn-add" routerLink="/dashboard/rol-form-permission/crear">
+        <mat-icon>add_circle</mat-icon>
+        Crear form
+      </a>
+    </div>
+  </aside>
+</header>
+
+<section class="table-container">
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="active">Activos</button>
+    <button>Inactivos</button>
+  </div>
+
+  <!-- Buscador y filtro -->
+  <div class="actions">
+    <div class="search-box">
+      <mat-icon>search</mat-icon>
+      <input
+        #searchInput
+        type="text"
+        placeholder="Buscar..."
+        (input)="onSearch(searchInput.value)"
+      />
+    </div>
+    <button class="filter-btn">
+      <mat-icon>filter_list</mat-icon> Filter
+    </button>
+  </div>
+
+  <!-- Tabla -->
+  <table class="custom-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Roles</th>
+        <th>Formularios</th>
+        <th>Permisos</th>
+        <th>Status</th>
+        <th>Acción</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of paginatedUsers; track $index) {
+      <tr>
+        <td>{{ ($index + 1) + (currentPage - 1) * pageSize }}</td>
+        <td>{{ item.rolName }}</td>
+        <td>{{ item.formName }}</td>
+        <td>{{ item.permissionName}}</td>
+        <td>
+          <mat-slide-toggle
+            [checked]="item.status === 1"
+            (change)="logical($event, item.id)"
+          ></mat-slide-toggle>
+        </td>
+        <td class="actions-col">
+          <a mat-icon-button routerLink="/dashboard/form/editar/{{ item.id }}">
+            <mat-icon>edit</mat-icon>
+          </a>
+          <button
+            mat-icon-button
+            [swal]="{
+              title: 'Confirmacion',
+              text: '¿Deseas borrar este registro?',
+              showCancelButton: true
+            }"
+            (confirm)="deleteRegister(item.id)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+
+  <!-- Paginación -->
+  <div class="pagination" *ngIf="totalPages > 1">
+    <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">
+      &lt;
+    </button>
+
+    <button
+      *ngFor="let page of [].constructor(totalPages); let i = index"
+      (click)="changePage(i + 1)"
+      [class.active]="currentPage === i + 1"
+    >
+      {{ i + 1 }}
+    </button>
+
+    <button
+      (click)="changePage(currentPage + 1)"
+      [disabled]="currentPage === totalPages"
+    >
+      &gt;
+    </button>
+  </div>
+</section>

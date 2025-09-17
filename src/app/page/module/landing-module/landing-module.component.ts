@@ -11,8 +11,9 @@ import { MatButtonModule } from '@angular/material/button';
 
 // taiga-ui
 import { TuiHeader } from '@taiga-ui/layout';
-import { TuiButtonGroup } from '@taiga-ui/kit';
-import { TuiTitle, TuiAppearance, TuiAlertService } from '@taiga-ui/core';
+import { TuiButtonGroup  } from '@taiga-ui/kit';
+import { TuiTitle, TuiAppearance, TuiAlertService, TuiButton, TuiDialog, TuiHint } from '@taiga-ui/core';
+import {TuiInputModule} from '@taiga-ui/legacy';
 
 // terceros
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
@@ -20,7 +21,8 @@ import Swal from 'sweetalert2';
 
 // servicios y modelos
 import { ModuleService } from '../../../service/module.service';
-import { Module } from '../../../models/module.model';
+import { Module, CreateModelModule } from '../../../models/module.model'; // Agregar CreateModelModule
+import { FormModuleComponent } from "../../forms/form-module/form-module.component"; // Agregar import
 
 @Component({
   standalone: true,
@@ -36,17 +38,89 @@ import { Module } from '../../../models/module.model';
     MatIconModule,
     MatSlideToggleModule,
     MatButtonModule,
-    RouterLink,
-    SweetAlert2Module
+    // RouterLink,
+    SweetAlert2Module,
+    // TuiButton, // Agregar TuiButton de nuevo
+    TuiDialog,
+    TuiHint,
+    TuiInputModule,
+    FormModuleComponent // Agregar a imports
   ],
   templateUrl: './landing-module.component.html',
   styleUrl: './landing-module.component.css',
 })
 export class LandingModuleComponent implements OnInit {
-  private readonly alerts = inject(TuiAlertService);
 
+  // Atributos importantes de modulo
   module: Module[] = [];
   filteredUsers: Module[] = [];
+  idicadorActive : number = 1;
+
+  // titulo de los modales, segun la acción a relizar del crud
+  titleForm!: string;
+
+  // NUEVAS PROPIEDADES PARA EL MODAL
+  modelModule?: Module; // Para editar un module existente
+  isEditMode: boolean = false; // Indica si estamos editando o creando
+
+  
+  //  ======================= funcionalidad del modal del taiga =======================
+  protected open = false;
+
+  // MÉTODO ACTUALIZADO para manejar creación y edición
+  protected modalCommand(title: string, module?: Module): void { 
+      this.titleForm = title;
+      this.isEditMode = !!module; // true si module existe, false si es undefined
+      this.modelModule = module; // undefined para crear, objeto Module para editar
+      this.open = true;
+  }
+
+  // NUEVO MÉTODO para manejar el submit del formulario
+  handleModuleSubmit(data: CreateModelModule): void {
+    if (this.isEditMode && this.modelModule) {
+      // Actualizar module existente
+      const updateData: CreateModelModule = {
+        ...data,
+        id: this.modelModule.id
+      };
+      
+      this.serviceModule.actualizar(updateData).subscribe({
+        next: () => {
+          Swal.fire("Exitoso", "Módulo actualizado correctamente", "success");
+          this.closeModal();
+          this.cargarData(this.idicadorActive); // Recargar la lista
+        },
+        error: (err) => {
+          Swal.fire("Error", "No se pudo actualizar el módulo", "error");
+          console.error(err);
+        }
+      });
+    } else {
+      // Crear nuevo module
+      this.serviceModule.crear(data).subscribe({
+        next: () => {
+          Swal.fire("Exitoso", "Módulo creado correctamente", "success");
+          this.closeModal();
+          this.cargarData(this.idicadorActive); // Recargar la lista
+        },
+        error: (err) => {
+          Swal.fire("Error", "No se pudo crear el módulo", "error");
+          console.error(err);
+        }
+      });
+    }
+  }
+
+  // NUEVO MÉTODO para cerrar modal y limpiar datos
+  closeModal(): void {
+    this.open = false;
+    this.modelModule = undefined;
+    this.isEditMode = false;
+  }
+  //  ======================= end =======================
+
+  // servicio de alerta de taiga
+  private readonly alerts = inject(TuiAlertService);
 
   // búsqueda
   searchTerm: string = '';
@@ -67,9 +141,14 @@ export class LandingModuleComponent implements OnInit {
     this.alerts.open(message, { label: 'Se a cambiado el estado!' }).subscribe();
   }
 
-  // cargar usuarios desde el servicio
-  cargarData() {
-    this.serviceModule.obtenerTodos().subscribe((data) => {
+  cambiarStatus(status : number){
+    this.idicadorActive = status;
+    this.cargarData(this.idicadorActive);
+  }
+
+  // cargar modules desde el servicio
+  cargarData(status : number = 1) {
+    this.serviceModule.obtenerTodos(status).subscribe((data) => {
       this.module = data;
       this.applyFilters();
     });
@@ -86,9 +165,8 @@ export class LandingModuleComponent implements OnInit {
     let filtered = this.module;
 
     if (this.searchTerm.trim() !== '') {
-      filtered = this.module.filter((u) =>
-        `${u.name} 
-         ${u.description}`
+      filtered = this.module.filter((m) =>
+        `${m.name} ${m.description}`
           .toLowerCase()
           .includes(this.searchTerm)
       );
@@ -103,7 +181,7 @@ export class LandingModuleComponent implements OnInit {
     }
   }
 
-  // obtener usuarios de la página actual
+  // obtener modules de la página actual
   get paginatedUsers() {
     const start = (this.currentPage - 1) * this.pageSize;
     return this.filteredUsers.slice(start, start + this.pageSize);
@@ -116,24 +194,24 @@ export class LandingModuleComponent implements OnInit {
     }
   }
 
-  // activar/desactivar usuario
+  // activar/desactivar module
   logical(event: any, id: number) {
     let value: number = event.checked ? 1 : 0;
     let dataSend = { status: value };
 
     this.serviceModule.eliminarLogico(id, dataSend).subscribe({
       next: () => {
-        this.cargarData();
+        this.cargarData(this.idicadorActive);
         this.showNotification('Se ha cambiado el estado');
       },
     });
   }
 
-  // eliminar usuario
+  // eliminar module
   deleteRegister(id: number) {
     this.serviceModule.eliminar(id).subscribe(() => {
       Swal.fire('Exitoso', 'El registro ha sido eliminado correctamente', 'success');
-      this.cargarData();
+      this.cargarData(this.idicadorActive);
     });
   }
 }

@@ -1,0 +1,119 @@
+<form (submit)="emitirValoresForm()" [formGroup]="form" class="form-page-modal">
+    <div class="col-12 row">
+        <div class="col-md-8">
+            <div class="row">
+                <!-- Selector de Usuario -->
+                <div class="col-md-12 p-2">
+                    <tui-select 
+                        tuiAutoFocus 
+                        [formControl]="form.controls.userId"
+                        [tuiTextfieldCleaner]="true">
+                        Seleccionar Usuario
+                        <tui-data-list>
+                            @for (user of usuarios; track user.id) {
+                                <button tuiOption [value]="user.id">
+                                    <div class="user-option">
+                                        <span class="user-name">{{ user.email }}</span>
+                                        <small class="user-email">ID: {{ user.id }}</small>
+                                    </div>
+                                </button>
+                            }
+                        </tui-data-list>
+                    </tui-select>
+                    
+                    @if (form.controls.userId.invalid && form.controls.userId.touched) {
+                        <div class="error-message">
+                            <small class="text-danger">Debe seleccionar un usuario</small>
+                        </div>
+                    }
+                </div>
+
+                <!-- Selector de Rol -->
+                <div class="col-md-12 p-2">
+                    <tui-select 
+                        [formControl]="form.controls.rolId"
+                        [tuiTextfieldCleaner]="true">
+                        Seleccionar Rol
+                        <tui-data-list>
+                            @for (rol of roles; track rol.id) {
+                                <button tuiOption [value]="rol.id">
+                                    <div class="rol-option">
+                                        <span class="rol-name">{{ rol.name }}</span>
+                                        <small class="rol-description">{{ rol.description }}</small>
+                                    </div>
+                                </button>
+                            }
+                        </tui-data-list>
+                    </tui-select>
+                    
+                    @if (form.controls.rolId.invalid && form.controls.rolId.touched) {
+                        <div class="error-message">
+                            <small class="text-danger">Debe seleccionar un rol</small>
+                        </div>
+                    }
+                </div>
+
+                <!-- Estado -->
+                <div class="col-md-12 p-2">
+                    <label>
+                        <input tuiCheckbox type="checkbox" [formControl]="form.controls.status" size="s" />
+                        <span class="fs-6 ms-1">Estado activo</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel lateral con información -->
+        <div class="col-md-4 lat-user-rol-info">
+            <div class="col-12 p-3">
+                <div class="col-12 d-flex justify-content-center m-2">
+                    <div class="user-rol-icon-small">
+                        <mat-icon class="icon-user-rol-small">person_add</mat-icon>
+                    </div>
+                </div>
+                <div class="col-12 text-center">
+                    <h6>Asignación Usuario-Rol</h6>
+                    <p class="text-muted small">Asigne roles a usuarios</p>
+                </div>
+
+                <!-- Información del usuario seleccionado -->
+                @if (usuarioSeleccionado) {
+                    <div class="selected-info mt-3">
+                        <div class="info-card user-info">
+                            <div class="info-header">
+                                <mat-icon class="info-icon">person</mat-icon>
+                                <span class="info-title">Usuario</span>
+                            </div>
+                            <div class="info-content">
+                                <p class="info-name">{{ usuarioSeleccionado.email }}</p>
+                                <small class="info-detail">ID: {{ usuarioSeleccionado.id }}</small>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- Información del rol seleccionado -->
+                @if (rolSeleccionado) {
+                    <div class="selected-info mt-2">
+                        <div class="info-card rol-info">
+                            <div class="info-header">
+                                <mat-icon class="info-icon">admin_panel_settings</mat-icon>
+                                <span class="info-title">Rol</span>
+                            </div>
+                            <div class="info-content">
+                                <p class="info-name">{{ rolSeleccionado.name }}</p>
+                                <small class="info-detail">{{ rolSeleccionado.description }}</small>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" mat-flat-button [disabled]="form.invalid">
+            {{actionDescriptio}}
+        </button>
+    </div>
+</form>

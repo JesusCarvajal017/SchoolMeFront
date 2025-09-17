@@ -27,17 +27,10 @@ export class EditarPersonComponent implements OnInit {
   ngOnInit(): void {
     this.queryEntity(this.id);
     
-    // if(this.model){
-    //   this.form
-    // }
-
 
     this.title = `editar persona`;
   }
 
-  // constructor() { 
-    
-  // }
 
   queryEntity(id: number){
     this.servviceEntity.obtenerPorId(id).subscribe(data =>{
@@ -63,19 +56,7 @@ export class EditarPersonComponent implements OnInit {
       status: status ? 1 : 0, // convertir el valor booleano a un valor numerico
     }
 
-  //   {
-  //     "lastName": "Guerrerooooo",
-  //     "identification": 1077224695,
-  //     "fisrtName": "Juan",
-  //     "secondName": "Felipe",
-  //     "secondLastName": "Fandiñooooooooooooooo",
-  //     "documentTypeId": 1,
-  //     "nation": "string",
-  //     "phone": 3153686037,
-  //     "gender": 20,
-  //     "id": 6,
-  //     "status": 1
-  // }
+
     console.log(this.model);
     console.log(pre_data); 
 

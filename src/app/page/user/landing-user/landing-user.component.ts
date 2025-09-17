@@ -11,8 +11,9 @@ import { MatButtonModule } from '@angular/material/button';
 
 // taiga-ui
 import { TuiHeader } from '@taiga-ui/layout';
-import { TuiButtonGroup } from '@taiga-ui/kit';
-import { TuiTitle, TuiAppearance, TuiAlertService } from '@taiga-ui/core';
+import { TuiButtonGroup  } from '@taiga-ui/kit';
+import { TuiTitle, TuiAppearance, TuiAlertService, TuiButton, TuiDialog, TuiHint } from '@taiga-ui/core';
+import {TuiInputModule} from '@taiga-ui/legacy';
 
 // terceros
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
@@ -21,6 +22,7 @@ import Swal from 'sweetalert2';
 // servicios y modelos
 import { UserService } from '../../../service/user.service';
 import { User } from '../../../models/user.model';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   standalone: true,
@@ -37,16 +39,38 @@ import { User } from '../../../models/user.model';
     MatSlideToggleModule,
     MatButtonModule,
     RouterLink,
-    SweetAlert2Module
+    SweetAlert2Module,
+    // TuiButton,
+    TuiDialog,
+    TuiHint,
+    TuiInputModule
   ],
   templateUrl: './landing-user.component.html',
   styleUrl: './landing-user.component.css',
 })
 export class LandingUserComponent implements OnInit {
-  private readonly alerts = inject(TuiAlertService);
 
+  // Atributos importantes de modulo
   user: User[] = [];
   filteredUsers: User[] = [];
+  idicadorActive : number = 1;
+
+  // titulo de los modales, segun la acción a relizar del crud
+  titleForm!: string;
+
+  
+  //  ======================= funcionalidad del modal del taiga =======================
+  protected open = false;
+
+  protected modalCommand(title: string): void { 
+      this.titleForm = title;
+      this.open = true;
+  }
+  //  ======================= end =======================
+
+
+  // servicio de alerta de taiga
+  private readonly alerts = inject(TuiAlertService);
 
   // búsqueda
   searchTerm: string = '';
@@ -67,9 +91,14 @@ export class LandingUserComponent implements OnInit {
     this.alerts.open(message, { label: 'Se a cambiado el estado!' }).subscribe();
   }
 
+  cambiarStatus(status : number){
+    this.idicadorActive = status;
+    this.cargarData(this.idicadorActive);
+  }
+
   // cargar usuarios desde el servicio
-  cargarData() {
-    this.serviceUser.obtenerTodos().subscribe((data) => {
+  cargarData(status : number = 1) {
+    this.serviceUser.obtenerTodos(status).subscribe((data) => {
       this.user = data;
       this.applyFilters();
     });
@@ -122,7 +151,7 @@ export class LandingUserComponent implements OnInit {
 
     this.serviceUser.eliminarLogico(id, dataSend).subscribe({
       next: () => {
-        this.cargarData();
+        this.cargarData(this.idicadorActive);
         this.showNotification('Se ha cambiado el estado');
       },
     });
@@ -132,7 +161,8 @@ export class LandingUserComponent implements OnInit {
   deleteRegister(id: number) {
     this.serviceUser.eliminar(id).subscribe(() => {
       Swal.fire('Exitoso', 'El registro ha sido eliminado correctamente', 'success');
-      this.cargarData();
+      this.cargarData(this.idicadorActive);
     });
   }
+
 }
