@@ -27,11 +27,15 @@ import {MatStepperModule} from '@angular/material/stepper';
 
 import { DocumentsType } from '../../../models/parameters/DocumentType.model';
 import { DataBasic } from '../../../models/business/dataBasic.mode';
-import { Rh } from '../../../models/parameters/rh.model';
 import { Departament } from '../../../models/parameters/Departament.model';
 import {DepartamentServices } from '../../../service/parameters/Departament.service';
 import { MunicipalityService } from '../../../service/parameters/municipality.service';
 import { Municipality } from '../../../models/parameters/Municipality.model';
+import { Rh } from '../../../models/parameters/Rh';
+import { RhService } from '../../../service/parameters/rh.service';
+import { StatusCivil } from '../../../models/parameters/StatusCivil';
+import { StatusCivilServices } from '../../../service/parameters/statusCivil.service';
+
 // import { createIdToNameStringify } from '../../../utilities/selectId';
 
 
@@ -64,8 +68,10 @@ import { Municipality } from '../../../models/parameters/Municipality.model';
   styleUrl: './form-person.component.css'
 })
 export class FormPersonComponent implements OnInit,OnChanges { 
-  protected value = '';
+
   
+  // ======================= start entradas de componente =======================
+
   @Input({required: true})
   title: string = '';
 
@@ -75,35 +81,50 @@ export class FormPersonComponent implements OnInit,OnChanges {
   @Input()
   model?: Person;
 
-  @Output()
-  posteoForm = new EventEmitter<CreateModelPerson>();
+  // ======================= end entradas de componente =======================
 
+
+
+  // ======================= start salidas de componente =======================
+
+  // emision de data en caso de ser un componente reutilizable
+  // @Output()
+  // posteoForm = new EventEmitter<CreateModelPerson>();
+
+  // ======================= end salidas de componente =======================
+
+
+
+
+  // ======================== start propiedades de configuración ========================
+
+  protected value = '';
 
   // propiedades de configuracion vista
   isChecked = true;
 
   // configuraciones de stepe
-  isLinear = false;
+  isLinear = true;
   isEditable = false;
+  // ======================== end propiedades de configuración ========================
 
-  // =========================== servicios ========================================
+  // =========================== start servicios ========================================
   servicesDocmentType = inject(DocumentTypeService);
   servicesDepartament = inject(DepartamentServices);
   servicesMuncipality = inject(MunicipalityService);
-  
+  servicesRh = inject(RhService);
+  servicesStatus = inject(StatusCivilServices);
 
+  // =========================== end services ========================================
+  
   // objeto de tipo documento == models
   documentTypeList : DocumentsType[] = [];
-  rhList : Rh[] = [];
-  dataBasic : DataBasic[] = [];
   
+  dataBasic : DataBasic[] = [];
 
   // funciona el select con esto
   docNameById = new Map<number, string>();
   
-
-  // idToName = (v: unknown) => createIdToNameStringify(v, this.docNameById);
-
   // Helper importante
   // solucion rara de select para que en vista se vea, puede tener mejora, si
   idToName = (v: number | string | null | undefined): string => {
@@ -116,18 +137,26 @@ export class FormPersonComponent implements OnInit,OnChanges {
   activeUser !: boolean | null;
 
   ngOnInit(): void {
+
+    // carga de informacion primaria, necesaria para selects
     this.cargarDocumentos();
     this.cargarDepartamento();
     this.cargarMunicipio();
+    this.cargarRh();
+    this.cargarStatus();
 
-
-
-    // this.cargarMunicipio();
-    // console.log(this.documentTypeList);
   }
+
+  // ================================ start formularios reactivos ================================
 
   private readonly formBuilder = inject(FormBuilder);
   private readonly dataBasicForm = inject(FormBuilder);
+
+  // ================================ end formularios reactivos ================================
+
+
+
+  // ================================== start configuraciones de los formularios reactivos ==================================
 
   form = this.formBuilder.nonNullable.group({
     status: [true],
@@ -140,10 +169,8 @@ export class FormPersonComponent implements OnInit,OnChanges {
     identification: new FormControl<number | null>(null, { validators: [Validators.required] }),
     phone: new FormControl<number | null>(null, { validators: [Validators.required] }),
    
-    gender: new FormControl<number | null>(null, { validators: [Validators.required] }),
-    activeUser : new FormControl<boolean>(false),
+    gender: new FormControl<number | null>(null, { validators: [Validators.required] })
   });
-
 
   formDataBasic = this.dataBasicForm.nonNullable.group({
     status:  new FormControl<number | null>(null, { validators: [Validators.required] }),
@@ -157,6 +184,10 @@ export class FormPersonComponent implements OnInit,OnChanges {
     munisipalityId:  new FormControl<number | null>(null, { validators: [Validators.required] }),
     departamentId:  new FormControl<number | null>(null),
   });
+
+  // ================================== end configuraciones de los formularios reactivos ==================================
+
+
 
   ngOnChanges(): void {
     if(this.model){
@@ -178,9 +209,26 @@ export class FormPersonComponent implements OnInit,OnChanges {
     }
   }
 
-  // utilidades del formulario
+
+
+  // =================================== start metodos del componente ===================================
+
+  
   createUser(){
-    this.activeUser = this.form.value.activeUser ?? null;
+
+    // extraccion data del fomulario
+    let dataForm = this.form.getRawValue();
+
+    // let preparacionData : 
+
+
+
+
+    console.log(dataForm);
+
+
+
+
   }
 
   // funciones principales
@@ -195,7 +243,7 @@ export class FormPersonComponent implements OnInit,OnChanges {
       status: capture.status ? 1 : 0, // convertir el valor booleano a un valor numerico como lo establece en la db
     }
 
-    this.posteoForm.emit(dataPerson);
+    // this.posteoForm.emit(dataPerson);
   }
 
   guardarCambios(){
@@ -214,7 +262,15 @@ export class FormPersonComponent implements OnInit,OnChanges {
     console.log(capture)
   }
 
-  // la pero chambonada de la historia de la programacion :(, no puedo mejorar esto a menos que se actualize taiga en el proyecto
+  // =================================== end metodos del componente ===================================
+  
+
+
+
+
+
+
+  // ==================================================== parche  de selects =================================================
 
   // helpers de select 
   generos : Gender[] = GenderType;
@@ -262,6 +318,38 @@ export class FormPersonComponent implements OnInit,OnChanges {
           this.municipalityNameById = new Map(this.municipality.map(d => [d.id, d.name]));
       });
     });    
+  }
+
+  rhList : Rh[] = [];
+  rhNameById = new Map(this.rhList.map(d => [d.id, d.name]));
+
+  idToNameRh = (v: number | string | null | undefined): string => {
+    if (v == null) return '';
+    const id = typeof v === 'string' ? Number(v) : v;
+    return this.rhNameById.get(id) ?? '';
+  };
+
+  cargarRh() : void {
+    this.servicesRh.obtenerTodos().subscribe(data =>{
+      this.rhList = data;
+        this.rhNameById = new Map(this.rhList.map(d => [d.id, d.name]));
+    });  
+  }
+
+  statusCivil : StatusCivil[] = [];
+  statusCivilNameById = new Map(this.statusCivil.map(d => [d.id, d.name]));
+
+  idToNameStatus = (v: number | string | null | undefined): string => {
+    if (v == null) return '';
+    const id = typeof v === 'string' ? Number(v) : v;
+    return this.statusCivilNameById.get(id) ?? '';
+  };
+
+  cargarStatus() : void {
+    this.servicesStatus.obtenerTodos().subscribe(data =>{
+      this.statusCivil = data;
+        this.statusCivilNameById = new Map(this.statusCivil.map(d => [d.id, d.name]));
+    });  
   }
 
 }

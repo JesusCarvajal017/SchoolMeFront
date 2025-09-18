@@ -4,7 +4,7 @@ export interface Rh {
     status: number;
 }
 export interface CreateModelRh{
-    id: number;
+    id?: number;
     name: string;
     status: number;
 }
