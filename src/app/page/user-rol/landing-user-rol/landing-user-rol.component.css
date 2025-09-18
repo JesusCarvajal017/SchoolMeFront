@@ -3,7 +3,6 @@ header h1 {
   font-size: 20px;
   font-weight: 600;
 }
-
 header .count {
   font-size: 14px;
   color: #666;
@@ -12,21 +11,16 @@ header .count {
 }
 
 .btn-add {
-  background: none;
-  border: none;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.2s;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: #f5f5f5;
+  font-weight: 500;
+  color: #333;
+  text-decoration: none;
 }
-
-.btn-add:hover {
-  background-color: rgba(0, 0, 0, 0.05);
-}
-
 .btn-add mat-icon {
   font-size: 20px;
 }
@@ -37,7 +31,6 @@ header .count {
   gap: 10px;
   margin-bottom: 15px;
 }
-
 .tabs button {
   padding: 6px 14px;
   border-radius: 20px;
@@ -46,7 +39,6 @@ header .count {
   cursor: pointer;
   font-size: 14px;
 }
-
 .tabs button.active {
   background: #000;
   color: white;
@@ -60,7 +52,6 @@ header .count {
   align-items: center;
   margin-bottom: 15px;
 }
-
 .search-box {
   display: flex;
   align-items: center;
@@ -68,20 +59,17 @@ header .count {
   border-radius: 8px;
   padding: 6px 10px;
 }
-
 .search-box mat-icon {
   font-size: 20px;
   margin-right: 5px;
   color: #666;
 }
-
 .search-box input {
   border: none;
   outline: none;
   background: transparent;
   font-size: 14px;
 }
-
 .filter-btn {
   display: flex;
   align-items: center;
@@ -93,7 +81,6 @@ header .count {
   cursor: pointer;
   font-size: 14px;
 }
-
 .filter-btn mat-icon {
   font-size: 18px;
 }
@@ -104,11 +91,9 @@ header .count {
   border-collapse: separate;
   border-spacing: 0 8px;
 }
-
 .custom-table thead {
   background: #f9f9f9;
 }
-
 .custom-table th {
   text-align: left;
   padding: 12px;
@@ -116,18 +101,15 @@ header .count {
   font-weight: 600;
   color: #555;
 }
-
 .custom-table td {
   padding: 12px;
   font-size: 14px;
   background: white;
   border-bottom: 1px solid #eee;
 }
-
 .custom-table tr:hover td {
   background: #f7f7f7;
 }
-
 .actions-col {
   display: flex;
   gap: 8px;
@@ -141,7 +123,6 @@ header .count {
   gap: 6px;
   margin-top: 15px;
 }
-
 .pagination button {
   border: 1px solid #ddd;
   background: white;
@@ -149,17 +130,16 @@ header .count {
   border-radius: 6px;
   cursor: pointer;
 }
-
 .pagination button.active {
   background: #3f51b5;
   color: white;
   border: none;
 }
-
 .pagination button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
+/* Agregar estos estilos a tu landing-rol.component.css existente */
 
 /* Estilos para el modal */
 .modal-content {
@@ -184,4 +164,27 @@ header .count {
 /* Ocultar el botón cancelar del formulario cuando está en modal */
 ::ng-deep .modal-content .form-page > div:last-child a {
   display: none;
+}
+
+/* Mejorar la apariencia del botón crear */
+.btn-add {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-add:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.actions-col {
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }

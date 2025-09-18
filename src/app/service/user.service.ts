@@ -15,3 +15,5 @@ export class UserService extends GenericService<User, CreateModelUser, ModelLogi
         return this.http.get<User[]>(`${this.urlBase}?status=${status}`);
   }
 }
+
+export type { User };

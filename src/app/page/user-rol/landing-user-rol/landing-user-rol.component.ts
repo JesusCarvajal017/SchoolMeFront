@@ -22,6 +22,7 @@ import Swal from 'sweetalert2';
 // servicios y modelos
 import { UserRolService } from '../../../service/user-rol.service';
 import { UserRol, CreateModelUserRol } from '../../../models/security/user-rol.model';
+import { FormControl, FormGroup } from '@angular/forms';
 import { FormUserRolComponent } from "../../forms/form-user-rol/form-user-rol.component";
 
 @Component({
@@ -52,69 +53,116 @@ export class LandingUserRolComponent implements OnInit {
   // Atributos importantes del módulo
   userRol: UserRol[] = [];
   filteredUsers: UserRol[] = [];
-  indicadorActive: number = 1;
+  idicadorActive: number = 1;
 
-  // titulo de los modales, según la acción a realizar del crud
+  // título de los modales, según la acción a realizar del crud
   titleForm!: string;
 
-  // NUEVAS PROPIEDADES PARA EL MODAL
-  modelUserRol?: UserRol; // Para editar un user-rol existente
+  // PROPIEDADES PARA EL MODAL
+  modelUserRol?: UserRol; // Para editar un rol existente
   isEditMode: boolean = false; // Indica si estamos editando o creando
-
-  //  ======================= funcionalidad del modal del taiga =======================
+  
+  // ======================= funcionalidad del modal del taiga =======================
   protected open = false;
 
-  // MÉTODO ACTUALIZADO para manejar creación y edición
+  // MÉTODO para manejar creación y edición
   protected modalCommand(title: string, userRol?: UserRol): void { 
-      this.titleForm = title;
-      this.isEditMode = !!userRol; // true si userRol existe, false si es undefined
-      this.modelUserRol = userRol; // undefined para crear, objeto UserRol para editar
-      this.open = true;
+    this.titleForm = title;
+    this.isEditMode = !!userRol; // true si userRol existe, false si es undefined
+    this.modelUserRol = userRol ? { ...userRol } : undefined; // clonar objeto para evitar mutaciones
+    this.open = true;
   }
 
-  // NUEVO MÉTODO para manejar el submit del formulario
-  handleUserRolSubmit(data: CreateModelUserRol): void {
+  // MÉTODO para manejar el submit del formulario
+  handleRolSubmit(data: CreateModelUserRol): void {
     if (this.isEditMode && this.modelUserRol) {
-      // Actualizar user-rol existente
+      // Actualizar asignación existente
       const updateData: CreateModelUserRol = {
         ...data,
-        // id: this.modelUserRol.id  // Si tu CreateModelUserRol necesita ID para actualizar
+        id: this.modelUserRol.id
       };
       
       this.serviceUserRol.actualizar(updateData).subscribe({
-        next: () => {
-          Swal.fire("Exitoso", "Asignación actualizada correctamente", "success");
+        next: (response) => {
+          Swal.fire({
+            title: "¡Exitoso!",
+            text: "Asignación de rol actualizada correctamente",
+            icon: "success",
+            timer: 2000,
+            showConfirmButton: false
+          });
           this.closeModal();
-          this.cargarData(this.indicadorActive); // Recargar la lista
+          this.cargarData(this.idicadorActive); // Recargar la lista
         },
         error: (err) => {
-          Swal.fire("Error", "No se pudo actualizar la asignación", "error");
-          console.error(err);
+          console.error('Error actualizando asignación:', err);
+          Swal.fire({
+            title: "Error",
+            text: "No se pudo actualizar la asignación de rol",
+            icon: "error",
+            confirmButtonText: "Entendido"
+          });
         }
       });
     } else {
-      // Crear nueva asignación user-rol
+      // Crear nueva asignación
+      // Verificar que no exista ya esta combinación usuario-rol
+      const existeAsignacion = this.userRol.some(ur => 
+        ur.userId === data.userId && ur.rolId === data.rolId && ur.status === 1
+      );
+
+      if (existeAsignacion) {
+        Swal.fire({
+          title: "Asignación duplicada",
+          text: "Este usuario ya tiene asignado este rol",
+          icon: "warning",
+          confirmButtonText: "Entendido"
+        });
+        return;
+      }
+
       this.serviceUserRol.crear(data).subscribe({
-        next: () => {
-          Swal.fire("Exitoso", "Asignación creada correctamente", "success");
+        next: (response) => {
+          Swal.fire({
+            title: "¡Exitoso!",
+            text: "Asignación de rol creada correctamente",
+            icon: "success",
+            timer: 2000,
+            showConfirmButton: false
+          });
           this.closeModal();
-          this.cargarData(this.indicadorActive); // Recargar la lista
+          this.cargarData(this.idicadorActive); // Recargar la lista
         },
         error: (err) => {
-          Swal.fire("Error", "No se pudo crear la asignación", "error");
-          console.error(err);
+          console.error('Error creando asignación:', err);
+          
+          // Manejar errores específicos
+          let errorMessage = "No se pudo crear la asignación de rol";
+          if (err.error?.message) {
+            errorMessage = err.error.message;
+          } else if (err.status === 409) {
+            errorMessage = "Esta asignación ya existe";
+          }
+          
+          Swal.fire({
+            title: "Error",
+            text: errorMessage,
+            icon: "error",
+            confirmButtonText: "Entendido"
+          });
         }
       });
     }
   }
 
-  // NUEVO MÉTODO para cerrar modal y limpiar datos
+  // MÉTODO para cerrar modal y limpiar datos
   closeModal(): void {
     this.open = false;
     this.modelUserRol = undefined;
     this.isEditMode = false;
+    this.titleForm = '';
   }
-  //  ======================= end =======================
+  // ======================= end =======================
 
   // servicio de alerta de taiga
   private readonly alerts = inject(TuiAlertService);
@@ -131,39 +179,52 @@ export class LandingUserRolComponent implements OnInit {
     this.cargarData();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // Inicialización adicional si es necesaria
+  }
 
   // notificación de estado
   protected showNotification(message: string): void {
-    this.alerts.open(message, { label: 'Se ha cambiado el estado!' }).subscribe();
+    this.alerts.open(message, { label: 'Estado cambiado!' }).subscribe();
   }
 
-  cambiarStatus(status: number){
-    this.indicadorActive = status;
-    this.cargarData(this.indicadorActive);
+  // cambiar filtro de estado (activos/inactivos)
+  cambiarStatus(status: number): void {
+    this.idicadorActive = status;
+    this.currentPage = 1; // resetear paginación
+    this.cargarData(this.idicadorActive);
   }
 
-  // cargar user-roles desde el servicio
-  cargarData(status: number = 1) {
-    this.serviceUserRol.obtenerTodos(status).subscribe((data) => {
-      this.userRol = data;
-      this.applyFilters();
+  // cargar asignaciones desde el servicio
+  cargarData(status: number = 1): void {
+    this.serviceUserRol.obtenerTodos(status).subscribe({
+      next: (data) => {
+        this.userRol = data;
+        this.applyFilters();
+      },
+      error: (err) => {
+        console.error('Error cargando datos:', err);
+        this.alerts.open('Error cargando las asignaciones', { 
+          label: 'Error!' 
+        }).subscribe();
+      }
     });
   }
 
   // búsqueda
-  onSearch(term: string) {
-    this.searchTerm = term.toLowerCase();
+  onSearch(term: string): void {
+    this.searchTerm = term.toLowerCase().trim();
+    this.currentPage = 1; // resetear paginación al buscar
     this.applyFilters();
   }
 
   // aplicar búsqueda + paginación
-  applyFilters() {
+  applyFilters(): void {
     let filtered = this.userRol;
 
-    if (this.searchTerm.trim() !== '') {
-      filtered = this.userRol.filter((ur) =>
-        `${ur.nameUser} ${ur.rolName}`
+    if (this.searchTerm !== '') {
+      filtered = this.userRol.filter((r) =>
+        `${r.nameUser} ${r.rolName}`
           .toLowerCase()
           .includes(this.searchTerm)
       );
@@ -173,42 +234,104 @@ export class LandingUserRolComponent implements OnInit {
     this.totalPages = Math.ceil(this.filteredUsers.length / this.pageSize);
 
     // corregir página actual si es mayor al total
-    if (this.currentPage > this.totalPages) {
-      this.currentPage = this.totalPages || 1;
+    if (this.currentPage > this.totalPages && this.totalPages > 0) {
+      this.currentPage = this.totalPages;
+    } else if (this.totalPages === 0) {
+      this.currentPage = 1;
     }
   }
 
-  // obtener user-roles de la página actual
-  get paginatedUsers() {
+  // obtener asignaciones de la página actual
+  get paginatedUsers(): UserRol[] {
+    if (this.filteredUsers.length === 0) {
+      return [];
+    }
     const start = (this.currentPage - 1) * this.pageSize;
     return this.filteredUsers.slice(start, start + this.pageSize);
   }
 
   // cambiar de página
-  changePage(page: number) {
+  changePage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
     }
   }
 
-  // activar/desactivar user-rol
-  logical(event: any, id: number) {
+  // activar/desactivar asignación
+  logical(event: any, id: number): void {
     let value: number = event.checked ? 1 : 0;
     let dataSend = { status: value };
 
     this.serviceUserRol.eliminarLogico(id, dataSend).subscribe({
       next: () => {
-        this.cargarData(this.indicadorActive);
-        this.showNotification('Se ha cambiado el estado');
+        this.cargarData(this.idicadorActive);
+        this.showNotification(`Asignación ${value === 1 ? 'activada' : 'desactivada'} correctamente`);
       },
+      error: (err) => {
+        console.error('Error cambiando estado:', err);
+        // Revertir el toggle si hay error
+        event.source.checked = !event.checked;
+        this.alerts.open('Error al cambiar el estado', { 
+          label: 'Error!' 
+        }).subscribe();
+      }
     });
   }
 
-  // eliminar user-rol
-  deleteRegister(id: number) {
-    this.serviceUserRol.eliminar(id).subscribe(() => {
-      Swal.fire('Exitoso', 'El registro ha sido eliminado correctamente', 'success');
-      this.cargarData(this.indicadorActive);
+  // eliminar asignación
+  deleteRegister(id: number): void {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: "Esta acción no se puede deshacer",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.serviceUserRol.eliminar(id).subscribe({
+          next: () => {
+            Swal.fire({
+              title: '¡Eliminado!',
+              text: 'La asignación ha sido eliminada correctamente',
+              icon: 'success',
+              timer: 2000,
+              showConfirmButton: false
+            });
+            this.cargarData(this.idicadorActive);
+          },
+          error: (err) => {
+            console.error('Error eliminando registro:', err);
+            Swal.fire({
+              title: 'Error',
+              text: 'No se pudo eliminar la asignación',
+              icon: 'error',
+              confirmButtonText: 'Entendido'
+            });
+          }
+        });
+      }
     });
+  }
+
+  // Método auxiliar para obtener el array de páginas para la paginación
+  get pagesArray(): number[] {
+    return Array(this.totalPages).fill(0).map((_, i) => i + 1);
+  }
+
+  // Método auxiliar para Math.min en el template
+  mathMin(a: number, b: number): number {
+    return Math.min(a, b);
+  }
+
+  // Métodos para obtener conteos de estados
+  get activosCount(): number {
+    return this.userRol.filter(u => u.status === 1).length;
+  }
+
+  get inactivosCount(): number {
+    return this.userRol.filter(u => u.status === 0).length;
   }
 }

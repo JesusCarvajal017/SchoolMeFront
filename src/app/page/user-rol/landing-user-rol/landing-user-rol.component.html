@@ -1,16 +1,15 @@
 <header tuiHeader class="m-1">
   <h1 tuiTitle>
     <div class="col-12 d-flex">
-      <span>Usuario - Rol</span>
-      <p class="count">{{ userRol.length }} asignaciones </p>
+      <span>Roles</span>
+      <p class="count">{{ filteredUsers.length }} roles </p>
     </div>
   </h1>
   <aside tuiAccessories>
     <div tuiAppearance="secondary" tuiButtonGroup>
-      <!-- CAMBIO: Usar modalCommand en lugar de routerLink -->
-      <button class="btn-add" (click)="modalCommand('Crear nueva asignación')">
-        <mat-icon>assignment_ind</mat-icon>
-        Asignar Rol
+      <button class="btn-add" (click)="modalCommand('Crear asignación de roles')">
+        <mat-icon>add_circle</mat-icon>
+        Crear asignación de roles
       </button>
     </div>
   </aside>
@@ -21,8 +20,8 @@
   <div class="col-12 row ">
     <div class="col-6">
       <div class="tabs">
-        <button [ngClass]="{'active' : indicadorActive}" (click)="cambiarStatus(1)" >Activos</button>
-        <button [ngClass]="{'active' : indicadorActive == 0}" (click)="cambiarStatus(0)">Inactivos</button>
+        <button [ngClass]="{'active' : idicadorActive}" (click)="cambiarStatus(1)" >Activos ({{ activosCount }})</button>
+        <button [ngClass]="{'active' : idicadorActive == 0}" (click)="cambiarStatus(0)">Inactivos ({{ inactivosCount }})</button>
       </div>
     </div>
     <div class="col-6 d-flex justify-content-end">
@@ -66,8 +65,7 @@
           </td>
           <td class="actions-col">
             <a mat-icon-button>
-              <!-- CAMBIO: Pasar el item al modal para edición -->
-              <mat-icon (click)="modalCommand('Editar asignación', item)">edit</mat-icon>
+              <mat-icon (click)="modalCommand('Editar asignación de roles', item)">edit</mat-icon>
             </a>
             <button
               mat-icon-button
@@ -120,7 +118,7 @@
             [title]="titleForm" 
             [actionDescriptio]="isEditMode ? 'Actualizar' : 'Crear'"
             [model]="modelUserRol"
-            (posteoForm)="handleUserRolSubmit($event)">
+            (posteoForm)="handleRolSubmit($event)">
         </app-form-user-rol>
         
         <!-- Botón para cerrar modal -->

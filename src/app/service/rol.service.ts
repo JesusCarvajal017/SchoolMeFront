@@ -18,3 +18,5 @@ export class RolService extends GenericService<Rol, CreateModelRol, ModelLogical
       return this.http.get<Rol[]>(`${this.urlBase}?status=${status}`);
 }
 }
+
+export type { Rol };
