@@ -112,7 +112,7 @@
 
 <ng-template
     let-observer
-    [tuiDialogOptions]="{label: titleForm, size: 'l'}"
+    [tuiDialogOptions]="{label: titleForm, size: 'm'}"
     [(tuiDialog)]="open"
 >
     <div class="modal-content">
@@ -124,10 +124,10 @@
         </app-form-rol>
         
         <!-- Botón para cerrar modal -->
-        <div class="modal-actions mt-3">
+        <!-- <div class="modal-actions mt-3">
             <button type="button" mat-stroked-button (click)="closeModal()">
                 Cancelar
             </button>
-        </div>
+        </div> -->
     </div>
 </ng-template>

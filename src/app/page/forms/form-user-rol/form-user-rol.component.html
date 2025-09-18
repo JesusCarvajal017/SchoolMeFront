@@ -5,8 +5,32 @@
             <div class="row">
                 <!-- Selector de Usuario -->
                 <div class="col-md-12 p-2">
-                    <mat-form-field appearance="outline" class="w-100">
+                    <tui-select
+                        #select
+                        [formControl]="form.controls.userId"
+                        [stringify]="idToNameUser"
+                        
+                    >
+                        Usuario
+                        <tui-data-list *tuiDataList>
+                            <tui-opt-group>
+                                @for (item of userList; track $index) {
+                                    <button
+                                        tuiOption
+                                        type="button"
+                                        [value]="item.id"
+                                    >
+                                        {{ item.email }}
+                                    </button>
+                                }
+                            </tui-opt-group>
+                        </tui-data-list>
+                    </tui-select>
+
+
+                    <!-- <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Seleccionar usuario</mat-label>
+                        
                         <mat-select [formControl]="form.controls.userId" [disabled]="loadingUsers">
                             <mat-option value="" disabled>
                                 {{ loadingUsers ? 'Cargando usuarios...' : 'Seleccione un usuario' }}
@@ -21,7 +45,7 @@
                         <mat-error *ngIf="form.controls.userId.hasError('min')">
                             Debe seleccionar un usuario válido
                         </mat-error>
-                    </mat-form-field>
+                    </mat-form-field> -->
                 </div>
 
                 <!-- Selector de Rol -->

@@ -12,7 +12,7 @@ import { TuiHeader } from '@taiga-ui/layout';
 import { TuiDataList, TuiHint, TuiIcon, TuiTextfield, TuiTitle } from '@taiga-ui/core';
 import { TuiInputModule, TuiTextfieldControllerModule, TuiSelectModule } from '@taiga-ui/legacy';
 
-import { TuiCheckbox } from '@taiga-ui/kit';
+import { TuiCheckbox, TuiDataListWrapper, TuiTooltip } from '@taiga-ui/kit';
 import { MatIconModule } from "@angular/material/icon";
 import { CommonModule } from '@angular/common';
 
@@ -31,14 +31,23 @@ import { RolService, Rol } from '../../../service/rol.service';
     MatButtonModule, 
     MatSlideToggleModule,
     MatSelectModule,
-    TuiInputModule,
+
     TuiTextfieldControllerModule,
+    TuiInputModule,
     TuiSelectModule,
+    TuiTextfield, 
     TuiDataList,
     TuiHint,
     // TuiCheckbox, 
     MatIconModule,
-    TuiTextfield
+
+    TuiDataListWrapper,
+    TuiTooltip
+    
+    
+  
+
+
   ],
   templateUrl: './form-user-rol.component.html',
   styleUrl: './form-user-rol.component.css'
@@ -78,6 +87,8 @@ export class FormUserRolComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.loadUsers();
     this.loadRoles();
+    this.cargarUser();
+
   }
 
   ngOnChanges(): void {
@@ -156,4 +167,24 @@ export class FormUserRolComponent implements OnInit, OnChanges {
   guardarCambios(): void {
     this.emitirValoresForm();
   }
+
+  // solucion de los select taiga
+
+    // lista de la data a traer del la db
+    userList : User[] = [];
+    userListById = new Map(this.userList.map(d => [d.id, d.email]));
+  
+    idToNameUser = (v: number | string | null | undefined): string => {
+      if (v == null) return '';
+      const id = typeof v === 'string' ? Number(v) : v;
+      return this.userListById.get(id) ?? '';
+    };
+  
+  
+    cargarUser() : void {
+      this.userService.obtenerTodos().subscribe(data =>{
+        this.userList = data;
+        this.userListById = new Map(this.userList.map(d => [d.id, d.email]));
+      });
+    }
 }

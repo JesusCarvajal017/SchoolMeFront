@@ -1,7 +1,7 @@
 <!-- Opcional: Versión del formulario optimizada para modal -->
 <form (submit)="emitirValoresForm()" [formGroup]="form" class="form-page-modal">
-    <div class="col-12 row">
-        <div class="col-md-8">
+    <div class="col-12 lat-rol-info">
+        <!-- <div class="col-md-8">
             <div class="row">
                 <div class="col-md-12 p-2">
                     <tui-input tuiAutoFocus [formControl]="form.controls.name">
@@ -20,10 +20,10 @@
                     </label>
                 </div>
             </div>
-        </div>
+        </div> -->
 
-        <div class="col-md-4 lat-rol-info">
-            <div class="col-12 p-3">
+        <!-- <div class="col-md-12 lat-rol-info"> -->
+            
                 <div class="col-12 d-flex justify-content-center m-2">
                     <div class="rol-icon-small">
                         <mat-icon class="icon-rol-small">admin_panel_settings</mat-icon>
@@ -33,8 +33,29 @@
                     <h6>Información del Rol</h6>
                     <p class="text-muted small">Configure los datos básicos</p>
                 </div>
-            </div>
-        </div>
+                <div class="col-12">
+
+                    <div class="row p-3">
+                        <div class="col-md-12 p-2">
+                            <tui-input tuiAutoFocus [formControl]="form.controls.name">
+                                Nombre del rol
+                            </tui-input>
+                        </div>
+                            <div class="col-md-12 p-2">
+                            <tui-input tuiAutoFocus [formControl]="form.controls.description">
+                                Descripción del rol
+                            </tui-input>
+                        </div>
+                        <div class="col-md-12 p-2">
+                            <label>
+                                <input tuiCheckbox type="checkbox" [formControl]="form.controls.status" size="s" />
+                                <span class="fs-6 ms-1">Estado activo</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            
+        <!-- </div> -->
     </div>
 
     <div class="form-actions">
