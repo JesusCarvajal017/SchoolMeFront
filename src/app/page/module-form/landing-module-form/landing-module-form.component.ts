@@ -20,7 +20,7 @@ import Swal from 'sweetalert2';
 
 // servicios y modelos
 import { ModuleFormService } from '../../../service/module-form.service';
-import { ModuleForm } from '../../../models/module-form.model';
+import { ModuleForm } from '../../../models/security/module-form.model';
 
 @Component({
   standalone: true,

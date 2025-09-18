@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators 
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-import { CreateModelRol, Rol } from '../../../models/rol.model';
+import { CreateModelRol, Rol } from '../../../models/security/rol.model';
 import { RouterLink } from '@angular/router';
 
 import { TuiHeader} from '@taiga-ui/layout';

@@ -3,7 +3,7 @@ export interface Groups{
     name: string;
     gradeId: number;
     gradeName: string;
-    amountStudents: number;
+    amountStudents: string;
     agendaId: number;
     status: number;
 }
@@ -12,7 +12,7 @@ export interface CreateModelGroups{
     name: string;
     gradeId: number;
     gradeName: string;
-    amountStudents: number;
+    amountStudents: string;
     agendaId: number;
     status: number;
 }

@@ -21,7 +21,7 @@ import Swal from 'sweetalert2';
 
 // servicios y modelos
 import { UserService } from '../../../service/user.service';
-import { User } from '../../../models/user.model';
+import { User } from '../../../models/security/user.model';
 import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({

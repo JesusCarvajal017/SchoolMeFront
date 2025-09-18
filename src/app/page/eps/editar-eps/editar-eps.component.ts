@@ -1,9 +1,9 @@
 import { Component, inject, Input, numberAttribute, OnInit } from '@angular/core';
-import { CreateModelRol, Rol } from '../../../models/rol.model';
+import { CreateModelRol, Rol } from '../../../models/security/rol.model';
 import { Router, RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
 import { FormEpsComponent } from '../../forms/form-eps/form-eps.component';
-import { CreateModelEps, Eps } from '../../../models/eps.model';
+import { CreateModelEps, Eps } from '../../../models/parameters/eps.model';
 import { EpsService } from '../../../service/parameters/eps.service';
 
 @Component({

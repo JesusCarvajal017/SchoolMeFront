@@ -21,7 +21,7 @@ import Swal from 'sweetalert2';
 
 // servicios y modelos
 import { ModuleService } from '../../../service/module.service';
-import { Module, CreateModelModule } from '../../../models/module.model'; // Agregar CreateModelModule
+import { Module, CreateModelModule } from '../../../models/security/module.model'; // Agregar CreateModelModule
 import { FormModuleComponent } from "../../forms/form-module/form-module.component"; // Agregar import
 
 @Component({

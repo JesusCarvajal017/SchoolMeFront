@@ -20,7 +20,7 @@ import Swal from 'sweetalert2';
 
 // servicios y modelos
 import { RolFormPermissionService } from '../../../service/rol-form-permission.service';
-import { RolFormPermission } from '../../../models/rol-form-permission.model';
+import { RolFormPermission } from '../../../models/security/rol-form-permission.model';
 
 @Component({
   standalone: true,

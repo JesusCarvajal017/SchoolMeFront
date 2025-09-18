@@ -12,7 +12,7 @@ import {TuiInputModule, TuiTextfieldControllerModule} from '@taiga-ui/legacy';
 
 import { TuiCheckbox } from '@taiga-ui/kit';
 import { MatIconModule } from "@angular/material/icon";
-import { CreateModelRh, Rh } from '../../../models/rh.model';
+import { CreateModelRh, Rh } from '../../../models/parameters/rh.model';
 
 @Component({
   selector: 'app-form-rh',

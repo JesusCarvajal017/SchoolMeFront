@@ -21,8 +21,9 @@ import Swal from 'sweetalert2';
 
 // servicios y modelos
 import { GroupsService } from '../../../service/parameters/groups.service';
-import { Groups, CreateModelGroups } from '../../../models/groups.model'; // Agregar CreateModelRol
+import { Groups, CreateModelGroups } from '../../../models/parameters/groups.model'; // Agregar CreateModelRol
 import { FormControl, FormGroup } from '@angular/forms';
+import { FormGroupsComponent } from "../../forms/form-groups/form-groups.component";
 // import { FormGroupsComponent } from '../../forms/form-groups/form-groups.component';
 
 @Component({
@@ -45,7 +46,7 @@ import { FormControl, FormGroup } from '@angular/forms';
     TuiDialog,
     TuiHint,
     TuiInputModule,
-    // FormGroupsComponent
+    FormGroupsComponent
 ],
   templateUrl: './landing-groups.component.html',
   styleUrl: './landing-groups.component.css',

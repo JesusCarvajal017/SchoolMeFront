@@ -14,9 +14,9 @@ import { TuiCheckbox } from '@taiga-ui/kit';
 import { MatIconModule } from "@angular/material/icon";
 
 // Modelos y servicios
-import { CreateModelUserRol, UserRol } from '../../../models/user-rol.model';
-import { User } from '../../../models/user.model';
-import { Rol } from '../../../models/rol.model';
+import { CreateModelUserRol, UserRol } from '../../../models/security/user-rol.model';
+import { User } from '../../../models/security/user.model';
+import { Rol } from '../../../models/security/rol.model';
 import { UserService } from '../../../service/user.service';
 import { RolService } from '../../../service/rol.service';
 

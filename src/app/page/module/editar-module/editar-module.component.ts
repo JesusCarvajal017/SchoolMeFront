@@ -1,9 +1,9 @@
 import { Component, inject, Input, numberAttribute, OnInit } from '@angular/core';
-import { CreateModelRol, Rol } from '../../../models/rol.model';
+import { CreateModelRol, Rol } from '../../../models/security/rol.model';
 import { Router, RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
 import { FormModuleComponent } from '../../forms/form-module/form-module.component';
-import { CreateModelModule, Module } from '../../../models/module.model';
+import { CreateModelModule, Module } from '../../../models/security/module.model';
 import { ModuleService } from '../../../service/module.service';
 
 @Component({

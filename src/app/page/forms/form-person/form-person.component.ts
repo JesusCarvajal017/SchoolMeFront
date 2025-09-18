@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators 
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-import { CreateModelPerson, Person } from '../../../models/person.model';
+import { CreateModelPerson, Person } from '../../../models/security/person.model';
 import { RouterLink } from '@angular/router';
 import {MatSelectModule} from '@angular/material/select';
 import {MatTabsModule} from '@angular/material/tabs';
@@ -25,12 +25,12 @@ import { MatIconModule } from "@angular/material/icon";
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatStepperModule} from '@angular/material/stepper';
 
-import { DocumentsType } from '../../../models/DocumentType.model';
+import { DocumentsType } from '../../../models/parameters/DocumentType.model';
 import { DataBasic } from '../../../models/business/dataBasic.mode';
-import { Rh } from '../../../models/parameters/Rh.model';
+import { Rh } from '../../../models/parameters/rh.model';
 import { Departament } from '../../../models/parameters/Departament.model';
 import {DepartamentServices } from '../../../service/parameters/Departament.service';
-import { MunicipalityService } from '../../../service/parameters/Municipality.service';
+import { MunicipalityService } from '../../../service/parameters/municipality.service';
 import { Municipality } from '../../../models/parameters/Municipality.model';
 // import { createIdToNameStringify } from '../../../utilities/selectId';
 

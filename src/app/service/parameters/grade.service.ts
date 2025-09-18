@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CreateModelGrade, Grade } from '../../models/grade.model';
+import { CreateModelGrade, Grade } from '../../models/parameters/grade.model';
 import { ModelLogicalDelete } from '../../global/model/logicalDelete.model';
 import { GenericService } from '../api/generic.service';
 

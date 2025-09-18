@@ -21,7 +21,7 @@ import Swal from 'sweetalert2';
 
 // servicios y modelos
 import { FormService } from '../../../service/form.service';
-import { Form } from '../../../models/form.model';
+import { Form } from '../../../models/security/form.model';
 import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({

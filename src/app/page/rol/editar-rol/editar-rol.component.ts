@@ -1,6 +1,6 @@
 import { Component, inject, Input, numberAttribute, OnInit } from '@angular/core';
 import { FormRolComponent } from '../../forms/form-rol/form-rol.component';
-import { CreateModelRol, Rol } from '../../../models/rol.model';
+import { CreateModelRol, Rol } from '../../../models/security/rol.model';
 import { RolService } from '../../../service/rol.service';
 import { Router, RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';

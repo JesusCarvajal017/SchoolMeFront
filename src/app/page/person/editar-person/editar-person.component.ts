@@ -1,6 +1,6 @@
 import { Component, inject, Input, numberAttribute, OnInit } from '@angular/core';
 import { FormPersonComponent } from '../../forms/form-person/form-person.component';
-import { CreateModelPerson, Person } from '../../../models/person.model';
+import { CreateModelPerson, Person } from '../../../models/security/person.model';
 import { PersonService } from '../../../service/person.service';
 import { Router, RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';

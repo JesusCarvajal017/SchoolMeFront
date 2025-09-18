@@ -21,7 +21,7 @@ import Swal from 'sweetalert2';
 
 // servicios y modelos
 import { GradeService } from '../../../service/parameters/grade.service';
-import { Grade, CreateModelGrade } from '../../../models/grade.model'; // Agregar CreateModelRol
+import { Grade, CreateModelGrade } from '../../../models/parameters/grade.model'; // Agregar CreateModelRol
 import { FormControl, FormGroup } from '@angular/forms';
 import { FormGradeComponent } from '../../forms/form-grade/form-grade.component';
 

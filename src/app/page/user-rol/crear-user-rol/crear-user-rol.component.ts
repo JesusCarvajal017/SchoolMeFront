@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 
 import { FormUserComponent } from '../../forms/form-user/form-user.component';
 import { UserService } from '../../../service/user.service';
-import { CreateModelUser } from '../../../models/user.model';
+import { CreateModelUser } from '../../../models/security/user.model';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 

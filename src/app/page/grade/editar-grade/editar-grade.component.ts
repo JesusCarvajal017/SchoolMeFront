@@ -1,9 +1,9 @@
 import { Component, inject, Input, numberAttribute, OnInit } from '@angular/core';
-import { CreateModelRol, Rol } from '../../../models/rol.model';
+import { CreateModelRol, Rol } from '../../../models/security/rol.model';
 import { Router, RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
 import { FormGradeComponent } from '../../forms/form-grade/form-grade.component';
-import { CreateModelGrade, Grade } from '../../../models/grade.model';
+import { CreateModelGrade, Grade } from '../../../models/parameters/grade.model';
 import { GradeService } from '../../../service/parameters/grade.service';
 
 @Component({

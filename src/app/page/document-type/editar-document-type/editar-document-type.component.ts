@@ -1,8 +1,8 @@
 import { Component, inject, Input, numberAttribute, OnInit } from '@angular/core';
-import { CreateModelRol, Rol } from '../../../models/rol.model';
+import { CreateModelRol, Rol } from '../../../models/security/rol.model';
 import { Router, RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
-import { CreateModelDocumentType, DocumentType } from '../../../models/DocumentType.model';
+import { CreateModelDocumentType, DocumentType } from '../../../models/parameters/DocumentType.model';
 import { DocumentTypeService } from '../../../service/parameters/documentType.service';
 import { FormDocumentTypeComponent } from '../../forms/form-document-type/form-document-type.component';
 

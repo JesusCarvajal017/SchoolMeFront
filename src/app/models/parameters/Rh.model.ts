@@ -1,11 +1,10 @@
 export interface Rh {
-  id: number;
-  status: number;
-  name: string;
+    id: number;
+    name: string;
+    status: number;
 }
-
-
-export interface CreateRh {
-  status: number;
-  name: string;
+export interface CreateModelRh{
+    id: number;
+    name: string;
+    status: number;
 }

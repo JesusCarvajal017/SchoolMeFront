@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CreateModelEps, Eps } from '../../models/eps.model';
+import { CreateModelEps, Eps } from '../../models/parameters/eps.model';
 import { ModelLogicalDelete } from '../../global/model/logicalDelete.model';
 import { GenericService } from '../api/generic.service';
 

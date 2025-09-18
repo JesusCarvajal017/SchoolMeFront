@@ -21,7 +21,7 @@ import Swal from 'sweetalert2';
 
 // servicios y modelos
 import { DocumentTypeService } from '../../../service/parameters/documentType.service';
-import {CreateModelDocumentType, DocumentsType } from '../../../models/DocumentType.model'; // Agregar CreateModelRol
+import {CreateModelDocumentType, DocumentsType } from '../../../models/parameters/DocumentType.model'; // Agregar CreateModelRol
 import { FormControl, FormGroup } from '@angular/forms';
 import { FormGradeComponent } from '../../forms/form-grade/form-grade.component';
 import { FormDocumentTypeComponent } from "../../forms/form-document-type/form-document-type.component";

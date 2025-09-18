@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CreateModelRolFormPermission, RolFormPermission } from '../models/rol-form-permission.model';
+import { CreateModelRolFormPermission, RolFormPermission } from '../models/security/rol-form-permission.model';
 import { ModelLogicalDelete } from '../global/model/logicalDelete.model';
 import { GenericService } from './api/generic.service';
 

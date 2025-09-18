@@ -21,7 +21,7 @@ import Swal from 'sweetalert2';
 
 // servicios y modelos
 import { PersonService } from '../../../service/person.service';
-import { Person } from '../../../models/person.model';
+import { Person } from '../../../models/security/person.model';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FormPersonComponent } from "../../forms/form-person/form-person.component";
 

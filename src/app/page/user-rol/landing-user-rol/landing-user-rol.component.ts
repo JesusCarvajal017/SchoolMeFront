@@ -21,7 +21,7 @@ import Swal from 'sweetalert2';
 
 // servicios y modelos
 import { UserRolService } from '../../../service/user-rol.service';
-import { UserRol, CreateModelUserRol } from '../../../models/user-rol.model';
+import { UserRol, CreateModelUserRol } from '../../../models/security/user-rol.model';
 import { FormUserRolComponent } from "../../forms/form-user-rol/form-user-rol.component";
 
 @Component({

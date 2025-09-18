@@ -21,7 +21,7 @@ import Swal from 'sweetalert2';
 
 // servicios y modelos
 import { EpsService } from '../../../service/parameters/eps.service';
-import { Eps, CreateModelEps } from '../../../models/eps.model'; // Agregar CreateModelRol
+import { Eps, CreateModelEps } from '../../../models/parameters/eps.model'; // Agregar CreateModelRol
 import { FormControl, FormGroup } from '@angular/forms';
 import { FormGradeComponent } from '../../forms/form-grade/form-grade.component';
 import { FormEpsComponent } from "../../forms/form-eps/form-eps.component";

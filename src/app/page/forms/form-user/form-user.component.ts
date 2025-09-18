@@ -7,7 +7,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
-import {Person } from '../../../models/person.model';
+import {Person } from '../../../models/security/person.model';
 import { RouterLink } from '@angular/router';
 
 import { TuiHeader} from '@taiga-ui/layout';
@@ -16,7 +16,7 @@ import { TuiTitle } from '@taiga-ui/core';
 import {MatSelectModule} from '@angular/material/select';
 import {MatIconModule} from '@angular/material/icon';
 import { PersonService } from '../../../service/person.service';
-import { CreateModelUser, User } from '../../../models/user.model';
+import { CreateModelUser, User } from '../../../models/security/user.model';
 
 @Component({
   selector: 'app-form-user',

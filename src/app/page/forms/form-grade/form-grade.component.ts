@@ -12,7 +12,7 @@ import {TuiInputModule, TuiTextfieldControllerModule} from '@taiga-ui/legacy';
 
 import { TuiCheckbox } from '@taiga-ui/kit';
 import { MatIconModule } from "@angular/material/icon";
-import { CreateModelGrade, Grade } from '../../../models/grade.model';
+import { CreateModelGrade, Grade } from '../../../models/parameters/grade.model';
 
 @Component({
   selector: 'app-form-grade',

@@ -118,19 +118,19 @@
     [tuiDialogOptions]="{label: titleGroups, size: 'l'}"
     [(tuiDialog)]="open"
 >
-    <!-- <div class="modal-content">
-        <app-form-grade 
-            [title]="titleGrade" 
+    <div class="modal-content">
+        <app-form-groups 
+            [title]="titleGroups" 
             [actionDescriptio]="isEditMode ? 'Actualizar' : 'Crear'"
-            [model]="modelGrade"
+            [model]="modelGroups"
             (posteoForm)="handleRolSubmit($event)">
-        </app-form-grade> -->
+        </app-form-groups> 
         
         <!-- Botón para cerrar modal -->
-        <!-- <div class="modal-actions mt-3">
+        <div class="modal-actions mt-3">
             <button type="button" mat-stroked-button (click)="closeModal()">
                 Cancelar
             </button>
         </div>
     </div>
-</ng-template> -->
+</ng-template> 

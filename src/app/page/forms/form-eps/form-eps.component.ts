@@ -12,7 +12,7 @@ import {TuiInputModule, TuiTextfieldControllerModule} from '@taiga-ui/legacy';
 
 import { TuiCheckbox } from '@taiga-ui/kit';
 import { MatIconModule } from "@angular/material/icon";
-import { CreateModelEps, Eps } from '../../../models/eps.model';
+import { CreateModelEps, Eps } from '../../../models/parameters/eps.model';
 
 @Component({
   selector: 'app-form-eps',

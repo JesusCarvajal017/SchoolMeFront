@@ -21,7 +21,7 @@ import Swal from 'sweetalert2';
 
 // servicios y modelos
 import { RhService } from '../../../service/parameters/rh.service';
-import { Rh, CreateModelRh } from '../../../models/rh.model'; // Agregar CreateModelRol
+import { Rh, CreateModelRh } from '../../../models/parameters/rh.model'; // Agregar CreateModelRol
 import { FormControl, FormGroup } from '@angular/forms';
 import { FormRhComponent } from "../../forms/form-rh/form-rh.component";
 

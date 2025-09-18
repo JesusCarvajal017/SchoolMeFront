@@ -21,7 +21,7 @@ import Swal from 'sweetalert2';
 
 // servicios y modelos
 import { PermissionService } from '../../../service/permission.service';
-import { Permission, CreateModelPermission } from '../../../models/permission.model'; // Agregar CreateModelPermission
+import { Permission, CreateModelPermission } from '../../../models/security/permission.model'; // Agregar CreateModelPermission
 import { FormControl, FormGroup } from '@angular/forms';
 import { FormPermissionComponent } from "../../forms/form-permission/form-permission.component"; // Agregar import
 
