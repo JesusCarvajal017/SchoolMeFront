@@ -6,6 +6,7 @@ export interface Departament {
 
 
 export interface CreateDepartament {
+  id: number,
   status: number;
   name: string;
 }

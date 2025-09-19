@@ -18,3 +18,5 @@ export class FormService extends GenericService<Form, CreateModelForm, ModelLogi
       return this.http.get<Form[]>(`${this.urlBase}?status=${status}`);
 }
 }
+
+export type { Form };

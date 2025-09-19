@@ -18,3 +18,5 @@ export class PermissionService extends GenericService<Permission, CreateModelPer
 }
 }
 
+
+export type { Permission };

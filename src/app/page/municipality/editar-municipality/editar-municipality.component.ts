@@ -2,7 +2,7 @@ import { Component, inject, Input, numberAttribute, OnInit } from '@angular/core
 import { Router, RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
 import { FormEpsComponent } from '../../forms/form-eps/form-eps.component';
-import { CreateModelMunicipality, Municipality } from '../../../models/municipality.model';
+import { CreateModelMunicipality, Municipality } from '../../../models/parameters/Municipality.model';
 import { MunicipalityService } from '../../../service/parameters/municipality.service';
 import { FormMunicipalityComponent } from '../../forms/form-municipality/form-municipality.component';
 
@@ -40,13 +40,14 @@ export class EditarMunicipalityComponent implements OnInit {
   }
 
   editEntity(data: CreateModelMunicipality){
-    let { name, status } = data;
+    let { name, departamentName, status } = data;
 
     let pre_data : CreateModelMunicipality = {
-      id: this.id,
       name,
-      departmentId: this.model ? this.model.departmentId : 0,
-      status: status ? 1 : 0, // convertir el valor booleano a un valor numerico
+      departamentName,
+      status: status ? 1 : 0,
+      departamentId: 0,
+      id: 0
     }
 
     console.log(this.model);

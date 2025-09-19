@@ -1,134 +1,49 @@
 <!-- form-user-rol.component.html -->
 <form (submit)="emitirValoresForm()" [formGroup]="form" class="form-page-modal">
-    <div class="col-12 row">
-        <div class="col-md-8">
-            <div class="row">
-                <!-- Selector de Usuario -->
+    <div class="col-12 lat-rol-info">
+
+        <div class="col-12 d-flex justify-content-center m-2">
+            <div class="rol-icon-small">
+                <mat-icon class="icon-rol-small">admin_panel_settings</mat-icon>
+            </div>
+        </div>
+        <div class="col-12 text-center">
+            <h6>Información del Rol</h6>
+            <p class="text-muted small">Configure los datos básicos</p>
+        </div>
+        <!-- Selector de Usuario -->
+        <div class="col-12">
+
+            <div class="row p-3">
                 <div class="col-md-12 p-2">
-                    <tui-select
-                        #select
-                        [formControl]="form.controls.userId"
-                        [stringify]="idToNameUser"
-                        
-                    >
+                    <tui-select #select [formControl]="form.controls.userId" [stringify]="idToNameUser">
                         Usuario
                         <tui-data-list *tuiDataList>
                             <tui-opt-group>
                                 @for (item of userList; track $index) {
-                                    <button
-                                        tuiOption
-                                        type="button"
-                                        [value]="item.id"
-                                    >
-                                        {{ item.email }}
-                                    </button>
+                                <button tuiOption type="button" [value]="item.id">
+                                    {{ item.email }}
+                                </button>
                                 }
                             </tui-opt-group>
                         </tui-data-list>
                     </tui-select>
-
-
-                    <!-- <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Seleccionar usuario</mat-label>
-                        
-                        <mat-select [formControl]="form.controls.userId" [disabled]="loadingUsers">
-                            <mat-option value="" disabled>
-                                {{ loadingUsers ? 'Cargando usuarios...' : 'Seleccione un usuario' }}
-                            </mat-option>
-                            <mat-option *ngFor="let user of users" [value]="user.id">
-                                {{ user.email }}
-                            </mat-option>
-                        </mat-select>
-                        <mat-error *ngIf="form.controls.userId.hasError('required')">
-                            Debe seleccionar un usuario
-                        </mat-error>
-                        <mat-error *ngIf="form.controls.userId.hasError('min')">
-                            Debe seleccionar un usuario válido
-                        </mat-error>
-                    </mat-form-field> -->
                 </div>
 
                 <!-- Selector de Rol -->
                 <div class="col-md-12 p-2">
-                    <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Seleccionar rol</mat-label>
-                        <mat-select [formControl]="form.controls.rolId" [disabled]="loadingRoles">
-                            <mat-option value="" disabled>
-                                {{ loadingRoles ? 'Cargando roles...' : 'Seleccione un rol' }}
-                            </mat-option>
-                            <mat-option *ngFor="let rol of roles" [value]="rol.id">
-                                {{ rol.name }}
-                            </mat-option>
-                        </mat-select>
-                        <mat-error *ngIf="form.controls.rolId.hasError('required')">
-                            Debe seleccionar un rol
-                        </mat-error>
-                        <mat-error *ngIf="form.controls.rolId.hasError('min')">
-                            Debe seleccionar un rol válido
-                        </mat-error>
-                    </mat-form-field>
-                </div>
-
-                <!-- Estado activo -->
-                <div class="col-md-12 p-2">
-                    <div class="status-container">
-                        <mat-slide-toggle [formControl]="form.controls.status" class="status-toggle">
-                            Estado activo
-                        </mat-slide-toggle>
-                        <span class="status-text">
-                            {{ form.controls.status.value ? 'Activo' : 'Inactivo' }}
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Panel lateral de información -->
-        <div class="col-md-4 lat-rol-info">
-            <div class="col-12 p-3">
-                <div class="col-12 d-flex justify-content-center m-2">
-                    <div class="rol-icon-small">
-                        <mat-icon class="icon-rol-small">admin_panel_settings</mat-icon>
-                    </div>
-                </div>
-                <div class="col-12 text-center">
-                    <h6>Asignación de Roles</h6>
-                    <p class="text-muted small">Configure la asignación entre usuarios y roles</p>
-                    
-                    <!-- Información del usuario seleccionado -->
-                    <div class="selected-info" *ngIf="form.controls.userId.value">
-                        <div class="info-item">
-                            <small class="text-muted">Usuario:</small>
-                            <div class="selected-value">{{ getSelectedUserName() }}</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Información del rol seleccionado -->
-                    <div class="selected-info" *ngIf="form.controls.rolId.value">
-                        <div class="info-item">
-                            <small class="text-muted">Rol:</small>
-                            <div class="selected-value">{{ getSelectedRolName() }}</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    <tui-select #select [formControl]="form.controls.rolId" [stringify]="idToNameRol">
+                        Rol
+                        <tui-data-list *tuiDataList>
+                            <tui-opt-group>
+                                @for (item of rolList; track $index) {
+                                <button tuiOption type="button" [value]="item.id">
+                                    {{ item.name }}
+                                </button>
+                                }
+                            </tui-opt-group>
+                        </tui-data-list>
+                    </tui-select>
+                     <div class="form-actions">
+        <button type="submit" mat-flat-button [disabled]="form.invalid">{{actionDescriptio}}</button>
     </div>
-
-    <div class="form-actions">
-        <button 
-            type="button" 
-            mat-stroked-button 
-            class="btn-secondary">
-            Cancelar
-        </button>
-        <button 
-            type="submit" 
-            mat-flat-button 
-            color="primary"
-            [disabled]="form.invalid || loadingUsers || loadingRoles">
-            <mat-icon *ngIf="loadingUsers || loadingRoles">refresh</mat-icon>
-            {{ actionDescriptio }}
-        </button>
-    </div>
-</form>

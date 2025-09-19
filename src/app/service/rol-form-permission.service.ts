@@ -13,4 +13,11 @@ export class RolFormPermissionService extends GenericService<RolFormPermission, 
   constructor() { 
     super('RolFormPermission')
   }
+
+    override obtenerTodos(status: number = 1): Observable<RolFormPermission[]> {
+        return this.http.get<RolFormPermission[]>(`${this.urlBase}?status=${status}`);
+  }
 }
+
+
+export type { RolFormPermission };

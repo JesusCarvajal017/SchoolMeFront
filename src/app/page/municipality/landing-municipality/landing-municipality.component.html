@@ -10,7 +10,7 @@
       <!-- CAMBIO: Usar modalCommand en lugar de routerLink -->
       <button class="btn-add" (click)="modalCommand('Crear nuevo grado')">
         <mat-icon>add_circle</mat-icon>
-        Crear rol
+        Crear municipio
       </button>
     </div>
   </aside>
@@ -21,7 +21,7 @@
   <div class="col-12 row ">
     <div class="col-6">
       <div class="tabs">
-        <button [ngClass]="{'active' : idicadorActive}" (click)="cambiarStatus(1)" >Activos</button>
+        <button [ngClass]="{'active' : idicadorActive}" (click)="cambiarStatus(1)">Activos</button>
         <button [ngClass]="{'active' : idicadorActive == 0}" (click)="cambiarStatus(0)">Inactivos</button>
       </div>
     </div>
@@ -30,12 +30,7 @@
       <div class="actions">
         <div class="search-box m-1">
           <mat-icon>search</mat-icon>
-          <input
-            #searchInput
-            type="text"
-            placeholder="Buscar..."
-            (input)="onSearch(searchInput.value)"
-          />
+          <input #searchInput type="text" placeholder="Buscar..." (input)="onSearch(searchInput.value)" />
         </div>
       </div>
     </div>
@@ -46,41 +41,38 @@
     <thead>
       <tr>
         <th>#</th>
-        <th>Name</th>
+        <th>Municipio</th>
+        <th>Departamento</th>
+
         <th>Status</th>
         <th class="text-center">Acción</th>
       </tr>
     </thead>
     <tbody>
       @for (item of paginatedUsers; track $index) {
-        <tr>
-          <td>{{ ($index + 1) + (currentPage - 1) * pageSize }}</td>
-          <td>{{ item.name }}</td>
-          <td>
-            <mat-slide-toggle
-              [checked]="item.status === 1"
-              (change)="logical($event, item.id)"
-            ></mat-slide-toggle>
-          </td>
-          <td class="actions-col">
-            <a mat-icon-button>
-              <!-- CAMBIO: Pasar el item al modal para edición -->
-              <mat-icon (click)="modalCommand('Editar rol', item)">edit</mat-icon>
-            </a>
-            <button
-              mat-icon-button
-              [swal]="{
+      <tr>
+        <td>{{ ($index + 1) + (currentPage - 1) * pageSize }}</td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.departamentName }}</td>
+
+        <td>
+          <mat-slide-toggle [checked]="item.status === 1" (change)="logical($event, item.id)"></mat-slide-toggle>
+        </td>
+        <td class="actions-col2">
+          <a mat-icon-button>
+            <!-- CAMBIO: Pasar el item al modal para edición -->
+            <mat-icon (click)="modalCommand('Editar municipio', item)">edit</mat-icon>
+          </a>
+          <button mat-icon-button [swal]="{
                 title: 'Confirmacion',
                 text: '¿Deseas borrar este registro?',
                 showCancelButton: true
-              }"
-              (confirm)="deleteRegister(item.id)"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
-            <mat-icon>more_vert</mat-icon>
-          </td>
-        </tr>
+              }" (confirm)="deleteRegister(item.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <mat-icon>more_vert</mat-icon>
+        </td>
+      </tr>
       }
     </tbody>
   </table>
@@ -91,41 +83,22 @@
       &lt;
     </button>
 
-    <button
-      *ngFor="let page of [].constructor(totalPages); let i = index"
-      (click)="changePage(i + 1)"
-      [class.active]="currentPage === i + 1"
-    >
-      {{ i + 1 }}
+    <button *ngFor="let page of paginationRange" [disabled]="page === '...'" (click)="onPageClick(page)"
+      [class.active]="currentPage === page">
+      {{ page }}
     </button>
 
-    <button
-      (click)="changePage(currentPage + 1)"
-      [disabled]="currentPage === totalPages"
-    >
+
+    <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">
       &gt;
     </button>
   </div>
 </section>
 
-<ng-template
-    let-observer
-    [tuiDialogOptions]="{label: titleForm, size: 'l'}"
-    [(tuiDialog)]="open"
->
-    <div class="modal-content">
-        <app-form-municipality 
-            [title]="titleForm" 
-            [actionDescriptio]="isEditMode ? 'Actualizar' : 'Crear'"
-            [model]="modelMunicipality"
-            (posteoForm)="handleMunicipalitySubmit($event)">
-        </app-form-municipality>
-        
-        <!-- Botón para cerrar modal -->
-        <div class="modal-actions mt-3">
-            <button type="button" mat-stroked-button (click)="closeModal()">
-                Cancelar
-            </button>
-        </div>
-    </div>
+<ng-template let-observer [tuiDialogOptions]="{label: titleForm, size: 'l'}" [(tuiDialog)]="open">
+  <div class="modal-content">
+    <app-form-municipality [title]="titleForm" [actionDescriptio]="isEditMode ? 'Actualizar' : 'Crear'"
+      [model]="modelMunicipality" (posteoForm)="handleMunicipalitySubmit($event)">
+    </app-form-municipality>
+  </div>
 </ng-template>

@@ -18,34 +18,36 @@ import { CommonModule } from '@angular/common';
 
 // Importar servicios para obtener usuarios y roles
 import { UserService, User } from '../../../service/user.service';
-import { RolService, Rol } from '../../../service/rol.service';
+import { RolService } from '../../../service/rol.service';
+import { Rol } from '../../../models/security/rol.model';
+
 
 @Component({
   selector: 'app-form-user-rol',
   imports: [
     CommonModule,
-    FormsModule, 
+    FormsModule,
     MatFormFieldModule,
-    MatInputModule, 
+    MatInputModule,
     ReactiveFormsModule,
-    MatButtonModule, 
+    MatButtonModule,
     MatSlideToggleModule,
     MatSelectModule,
 
     TuiTextfieldControllerModule,
     TuiInputModule,
     TuiSelectModule,
-    TuiTextfield, 
+    TuiTextfield,
     TuiDataList,
     TuiHint,
     // TuiCheckbox, 
     MatIconModule,
 
     TuiDataListWrapper,
-    TuiTooltip
-    
-    
-  
+    // TuiTooltip
+
+
+
 
 
   ],
@@ -54,10 +56,10 @@ import { RolService, Rol } from '../../../service/rol.service';
 })
 export class FormUserRolComponent implements OnInit, OnChanges {
 
-  @Input({required: true})
+  @Input({ required: true })
   title: string = '';
 
-  @Input({required: true})
+  @Input({ required: true })
   actionDescriptio !: string;
 
   @Input()
@@ -69,7 +71,7 @@ export class FormUserRolComponent implements OnInit, OnChanges {
   // Listas para los dropdowns
   users: User[] = [];
   roles: Rol[] = [];
-  
+
   // Loading states
   loadingUsers = false;
   loadingRoles = false;
@@ -79,8 +81,8 @@ export class FormUserRolComponent implements OnInit, OnChanges {
   private readonly rolService = inject(RolService);
 
   form = this.formBuilder.nonNullable.group({
-    userId: [0, {validators: [Validators.required, Validators.min(1)]}],
-    rolId: [0, {validators: [Validators.required, Validators.min(1)]}],
+    userId: [0, { validators: [Validators.required, Validators.min(1)] }],
+    rolId: [0, { validators: [Validators.required, Validators.min(1)] }],
     status: [true],
   });
 
@@ -88,6 +90,7 @@ export class FormUserRolComponent implements OnInit, OnChanges {
     this.loadUsers();
     this.loadRoles();
     this.cargarUser();
+    this.cargarRol();
 
   }
 
@@ -170,21 +173,42 @@ export class FormUserRolComponent implements OnInit, OnChanges {
 
   // solucion de los select taiga
 
-    // lista de la data a traer del la db
-    userList : User[] = [];
-    userListById = new Map(this.userList.map(d => [d.id, d.email]));
-  
-    idToNameUser = (v: number | string | null | undefined): string => {
-      if (v == null) return '';
-      const id = typeof v === 'string' ? Number(v) : v;
-      return this.userListById.get(id) ?? '';
-    };
-  
-  
-    cargarUser() : void {
-      this.userService.obtenerTodos().subscribe(data =>{
-        this.userList = data;
-        this.userListById = new Map(this.userList.map(d => [d.id, d.email]));
-      });
-    }
+  // lista de la data a traer del la db
+  userList: User[] = [];
+  userListById = new Map(this.userList.map(d => [d.id, d.email]));
+
+  idToNameUser = (v: number | string | null | undefined): string => {
+    if (v == null) return '';
+    const id = typeof v === 'string' ? Number(v) : v;
+    return this.userListById.get(id) ?? '';
+  };
+
+
+  cargarUser(): void {
+    this.userService.obtenerTodos().subscribe(data => {
+      this.userList = data;
+      this.userListById = new Map(this.userList.map(d => [d.id, d.email]));
+    });
+  }
+
+  // lista de la data a traer del la db
+  rolList: Rol[] = [];
+  rolListById = new Map(this.rolList.map(d => [d.id, d.name]));
+
+  idToNameRol = (v: number | string | null | undefined): string => {
+    if (v == null) return '';
+    const id = typeof v === 'string' ? Number(v) : v;
+    return this.rolListById.get(id) ?? '';
+  };
+
+
+  cargarRol(): void {
+    this.rolService.obtenerTodos().subscribe(data => {
+      this.rolList = data;
+      this.userListById = new Map(this.rolList.map(d => [d.id, d.name]));
+    });
+  }
 }
+
+
+

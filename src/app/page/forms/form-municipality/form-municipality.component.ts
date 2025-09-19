@@ -1,88 +1,132 @@
 import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import {MatInputModule} from '@angular/material/input';
-import {MatButtonModule} from '@angular/material/button';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { CreateModelMunicipality, Municipality } from '../../../models/parameters/Municipality.model';
 import { RouterLink } from '@angular/router';
 
-import { TuiHeader} from '@taiga-ui/layout';
+import { TuiHeader } from '@taiga-ui/layout';
 import { TuiDataList, TuiHint, TuiIcon, TuiTextfield, TuiTitle } from '@taiga-ui/core';
-import {TuiInputModule, TuiTextfieldControllerModule} from '@taiga-ui/legacy';
+import { TuiInputModule, TuiTextfieldControllerModule, TuiSelectModule } from '@taiga-ui/legacy';
 
-import { TuiCheckbox } from '@taiga-ui/kit';
+import { TuiDataListWrapper } from '@taiga-ui/kit';
 import { MatIconModule } from "@angular/material/icon";
-import { CreateMunicipality, Municipality } from '../../../models/parameters/Municipality.model';
+import { CommonModule } from '@angular/common';
 
+import { MunicipalityService } from '../../../service/parameters/municipality.service';
+import { DepartamentServices } from '../../../service/parameters/Departament.service';
+import { Departament } from '../../../models/parameters/Departament.model';
 
 @Component({
   selector: 'app-form-municipality',
-  imports: [FormsModule, MatFormFieldModule,
-    MatInputModule, ReactiveFormsModule,
-    MatButtonModule, MatSlideToggleModule,
-    // RouterLink, TuiTitle, TuiHeader,
-    TuiInputModule,
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatSlideToggleModule,
+
+    // Taiga
     TuiTextfieldControllerModule,
+    TuiInputModule,
+    TuiSelectModule,
+    TuiTextfield,
     TuiDataList,
     TuiHint,
-    // TuiCheckbox, 
     MatIconModule,
-    // TuiIcon,
-    TuiTextfield
+    TuiDataListWrapper,
   ],
   templateUrl: './form-municipality.component.html',
   styleUrl: './form-municipality.component.css'
 })
-export class FormMunicipalityComponent implements OnInit, OnChanges { 
+export class FormMunicipalityComponent implements OnInit, OnChanges {
 
-  @Input({required: true})
-  title: string = '';
+  @Input({ required: true }) title: string = '';
+  @Input({ required: true }) actionDescriptio!: string;
+  @Input() model?: Municipality;
 
-  @Input({required: true})
-  actionDescriptio !: string;
-
-  @Input()
-  model?: Municipality;
-
-  @Output()
-  posteoForm = new EventEmitter<CreateMunicipality>();
-
-  ngOnInit(): void {
-    // Inicialización si es necesaria
-  }
+  @Output() posteoForm = new EventEmitter<CreateModelMunicipality>();
 
   private readonly formBuilder = inject(FormBuilder);
+  private readonly municipalityService = inject(MunicipalityService);
+  private readonly departamentService = inject(DepartamentServices);
 
   form = this.formBuilder.nonNullable.group({
-    name: ['', {validators: [Validators.required, Validators.minLength(2)]}],
+    id: [0, { validators: [Validators.required, Validators.min(1)] }],
+    departamentId: [0, { validators: [Validators.required, Validators.min(1)] }],
     status: [true],
   });
 
+  ngOnInit(): void {
+    this.cargarMunicipality();
+    this.cargarDepartament();
+  }
+
   ngOnChanges(): void {
-    if(this.model){
-      let values = {
-        name: this.model.name,
-        status: this.model.status == 1 ? true : false, // convertir el valor numerico a un valor booleano
-      }
-      this.form.patchValue(values); // cargar los datos en el formulario
+    if (this.model) {
+      const values = {
+        id: this.model.id,
+        departamentId: this.model.departamentId,
+        status: this.model.status == 1 ? true : false,
+      };
+      this.form.patchValue(values);
     }
   }
 
-  // funciones principales
-  emitirValoresForm(){
-    let capture = this.form.getRawValue(); // capturar los datos del formulario
+  municipalityList: Municipality[] = [];
+  municipalityListById = new Map<number, string>();
 
-    const dataMunicipality : CreateMunicipality = {
-      ...capture,
-      status: capture.status ? 1 : 0,
-      id: 0,
-      departamentId: 0
-    }
-    
-    this.posteoForm.emit(dataMunicipality);
+  idToNameMunicipality = (v: number | string | null | undefined): string => {
+    if (v == null) return '';
+    const id = typeof v === 'string' ? Number(v) : v;
+    return this.municipalityListById.get(id) ?? '';
+  };
+
+  cargarMunicipality(): void {
+    this.municipalityService.obtenerTodos().subscribe(data => {
+      this.municipalityList = data;
+      this.municipalityListById = new Map(this.municipalityList.map(d => [d.id, d.name]));
+    });
   }
 
-  guardarCambios(){
-    // Método para futuras implementaciones
+  departamentList: Departament[] = [];
+  departamentListById = new Map<number, string>();
+
+  idToNameDepartament = (v: number | string | null | undefined): string => {
+    if (v == null) return '';
+    const id = typeof v === 'string' ? Number(v) : v;
+    return this.departamentListById.get(id) ?? '';
+  };
+
+  cargarDepartament(): void {
+    this.departamentService.obtenerTodos().subscribe(data => {
+      this.departamentList = data;
+      this.departamentListById = new Map(this.departamentList.map(d => [d.id, d.name]));
+    });
+  }
+
+  // Emitir formulario
+  emitirValoresForm(): void {
+    if (this.form.valid) {
+      const capture = this.form.getRawValue();
+
+      const dataDepartament: CreateModelMunicipality = {
+        id: capture.id,
+        departamentId: capture.departamentId,
+        name: this.idToNameMunicipality(capture.id),
+        departamentName: this.idToNameDepartament(capture.departamentId),
+        status: capture.status ? 1 : 0
+      };
+
+      this.posteoForm.emit(dataDepartament);
+    }
+  }
+
+  guardarCambios(): void {
+    this.emitirValoresForm();
   }
 }

@@ -23,7 +23,7 @@ import Swal from 'sweetalert2';
 // import { MunicipalityService } from '../../../service/parameters/municipality.service'; // Agregar CreateModelRol
 import { FormMunicipalityComponent } from "../../forms/form-municipality/form-municipality.component";
 import { MunicipalityService } from '../../../service/parameters/municipality.service';
-import { CreateMunicipality, Municipality } from '../../../models/parameters/Municipality.model';
+import { CreateModelMunicipality, Municipality } from '../../../models/parameters/Municipality.model';
 
 @Component({
   standalone: true,
@@ -68,31 +68,31 @@ export class LandingMunicipalityComponent implements OnInit {
   protected open = false;
 
   // MÉTODO ACTUALIZADO para manejar creación y edición
-  protected modalCommand(title: string, grade?: Municipality): void { 
+  protected modalCommand(title: string, municipality?: Municipality): void { 
       this.titleForm = title;
-      this.isEditMode = !!grade; // true si rol existe, false si es undefined
-      this.modelMunicipality = grade; // undefined para crear, objeto Rol para editar
+      this.isEditMode = !!municipality; // true si rol existe, false si es undefined
+      this.modelMunicipality = municipality; // undefined para crear, objeto Rol para editar
       this.open = true;
   }
 
   // NUEVO MÉTODO para manejar el submit del formulario
-  handleMunicipalitySubmit(data: CreateMunicipality): void {
+  handleMunicipalitySubmit(data: CreateModelMunicipality): void {
     
     if (this.isEditMode && this.modelMunicipality) {
       // Actualizar rol existente
-      const updateData: CreateMunicipality = {
+      const updateData: CreateModelMunicipality = {
         ...data,
         id: this.modelMunicipality.id
       };
       
       this.serviceMunicipality.actualizar(updateData).subscribe({
         next: () => {
-          Swal.fire("Exitoso", "Grade actualizado correctamente", "success");
+          Swal.fire("Exitoso", "Municipio actualizado correctamente", "success");
           this.closeModal();
           this.cargarData(this.idicadorActive); // Recargar la lista
         },
         error: (err) => {
-          Swal.fire("Error", "No se pudo actualizar el rol", "error");
+          Swal.fire("Error", "No se pudo actualizar el Municipio", "error");
           console.error(err);
         }
       });
@@ -100,12 +100,12 @@ export class LandingMunicipalityComponent implements OnInit {
       // Crear nuevo rol
       this.serviceMunicipality.crear(data).subscribe({
         next: () => {
-          Swal.fire("Exitoso", "Rol creado correctamente", "success");
+          Swal.fire("Exitoso", "Municipio creado correctamente", "success");
           this.closeModal();
           this.cargarData(this.idicadorActive); // Recargar la lista
         },
         error: (err) => {
-          Swal.fire("Error", "No se pudo crear el rol", "error");
+          Swal.fire("Error", "No se pudo crear el Municipio", "error");
           console.error(err);
         }
       });
@@ -137,6 +137,41 @@ export class LandingMunicipalityComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  get paginationRange(): (number | string)[] {
+  const total = this.totalPages;
+  const current = this.currentPage;
+  const delta = 2; // cantidad de páginas a mostrar alrededor de la actual
+  const range: (number | string)[] = [];
+
+  const left = Math.max(2, current - delta);
+  const right = Math.min(total - 1, current + delta);
+
+  range.push(1);
+  if (left > 2) {
+    range.push('...');
+  }
+
+  for (let i = left; i <= right; i++) {
+    range.push(i);
+  }
+
+  if (right < total - 1) {
+    range.push('...');
+  }
+  if (total > 1) {
+    range.push(total);
+  }
+
+  return range;
+}
+
+onPageClick(page: number | string): void {
+  if (typeof page === 'number') {
+    this.changePage(page);
+  }
+}
+
+
   // notificación de estado
   protected showNotification(message: string): void {
     this.alerts.open(message, { label: 'Se a cambiado el estado!' }).subscribe();
@@ -167,7 +202,7 @@ export class LandingMunicipalityComponent implements OnInit {
 
     if (this.searchTerm.trim() !== '') {
       filtered = this.municipality.filter((r) =>
-        `${r.name}`
+        `${r.name} ${r.departamentName}`
           .toLowerCase()
           .includes(this.searchTerm)
       );
@@ -215,4 +250,5 @@ export class LandingMunicipalityComponent implements OnInit {
       this.cargarData(this.idicadorActive);
     });
   }
+  
 }

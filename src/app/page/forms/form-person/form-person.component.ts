@@ -256,7 +256,7 @@ export class FormPersonComponent implements OnInit,OnChanges {
 
   cargarMunicipio() : void {
     this.formDataBasic.controls.departamentId.valueChanges.subscribe(val => {
-      this.servicesMuncipality.MunicipiosDepart(val).subscribe(data =>{
+      this.servicesMuncipality.obtenerTodos().subscribe(data =>{
         this.municipality = data;
         console.log(this.municipality)
           this.municipalityNameById = new Map(this.municipality.map(d => [d.id, d.name]));
