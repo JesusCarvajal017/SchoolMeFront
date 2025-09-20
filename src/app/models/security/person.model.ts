@@ -16,15 +16,14 @@ export interface Person{
 }
 
 export interface CreateModelPerson{
-    id? : number;
-    identification: string;
+    identification?: number;
     fisrtName: string;
     secondName: string;
     lastName: string;
     secondLastName: string;
     documentTypeId: number;
-    phone: string;
-    gender: string;
+    phone: number;
+    gender: number;
     // age: number;
     status: number;
 }

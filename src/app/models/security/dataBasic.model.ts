@@ -12,8 +12,7 @@ export interface DataBasic{
 
 }
 
-export interface DataBasicQuery{
-    id: number;
+export interface CreateDataBasic{
     status: number;
     personId: number;
     rhId: number;
