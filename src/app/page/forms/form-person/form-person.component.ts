@@ -26,7 +26,6 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatStepperModule} from '@angular/material/stepper';
 
 import { DocumentsType } from '../../../models/parameters/DocumentType.model';
-import { CreateDataBasic, DataBasic } from '../../../models/business/dataBasic.mode';
 import { Departament } from '../../../models/parameters/Departament.model';
 import {DepartamentServices } from '../../../service/parameters/Departament.service';
 import { MunicipalityService } from '../../../service/parameters/municipality.service';
@@ -45,6 +44,7 @@ import { CreateModolUser2 } from '../../../models/security/user.model';
 import { DataBasicService } from '../../../service/business/dataBasic.service';
 import { UserService } from '../../../service/user.service';
 import { AddressValid } from '../../../utilities/validations/validaciones';
+import { CreateDataBasic, DataBasic } from '../../../models/business/dataBasic.mode';
 
 // import { createIdToNameStringify } from '../../../utilities/selectId';
 
@@ -326,7 +326,7 @@ export class FormPersonComponent implements OnInit,OnChanges {
       adress: dataForm.adress
     };
 
-    console.log(preData);
+    // console.log(preData);
 
     // console.log(preData);
     this.servicesDataBasic.crear(preData).subscribe({

@@ -145,9 +145,11 @@ export class LandingUserRolComponent implements OnInit {
 
   // cargar user-roles desde el servicio
   cargarData(status: number = 1) {
-    this.serviceUserRol.obtenerTodos(status).subscribe((data) => {
-      this.userRol = data;
-      this.applyFilters();
+    this.serviceUserRol.obtenerTodos(status).subscribe({
+      next: (data)=>{
+        this.userRol = data;
+        this.applyFilters();
+      }
     });
   }
 
@@ -194,9 +196,8 @@ export class LandingUserRolComponent implements OnInit {
   // activar/desactivar user-rol
   logical(event: any, id: number) {
     let value: number = event.checked ? 1 : 0;
-    let dataSend = { status: value };
 
-    this.serviceUserRol.eliminarLogico(id, dataSend).subscribe({
+    this.serviceUserRol.eliminarLogico(id, value).subscribe({
       next: () => {
         this.cargarData(this.indicadorActive);
         this.showNotification('Se ha cambiado el estado');

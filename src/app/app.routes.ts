@@ -23,6 +23,7 @@ import { LandingEpsComponent } from './page/eps/landing-eps/landing-eps.componen
 import { LandingMunicipalityComponent } from './page/municipality/landing-municipality/landing-municipality.component';
 import { LandingRhComponent } from './page/rh/landing-rh/landing-rh.component';
 import { LandingGroupsComponent } from './page/groups/landing-groups/landing-groups.component';
+import { LandingHomeComponent } from './page/home/landing-home/landing-home.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -36,6 +37,7 @@ export const routes: Routes = [
         component: DashboardComponent,
         canActivate: [esAdminGuard],
         children: [
+            { path: '', component: LandingHomeComponent, canActivate: [esAdminGuard]  },
             { path: 'todos', component: LadingPageComponent, canActivate: [esAdminGuard]  },
             { path: 'todos/crear', component: CrearPersonComponent },
             { path: 'todos/editar/:id', component: EditarPersonComponent, canActivate: [esAdminGuard]},

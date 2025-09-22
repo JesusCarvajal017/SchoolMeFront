@@ -1,8 +1,8 @@
 
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CreateDataBasic, DataBasic } from '../../models/security/dataBasic.model';
 import { GenericService } from '../api/generic.service';
+import { CreateDataBasic, DataBasic } from '../../models/business/dataBasic.mode';
 
 @Injectable({
   providedIn: 'root'

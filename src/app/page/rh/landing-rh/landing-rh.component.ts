@@ -197,9 +197,8 @@ export class LandingRhComponent implements OnInit {
   // activar/desactivar rol
   logical(event: any, id: number) {
     let value: number = event.checked ? 1 : 0;
-    let dataSend = { status: value };
 
-    this.serviceRh.eliminarLogico(id, dataSend).subscribe({
+    this.serviceRh.eliminarLogico(id, value).subscribe({
       next: () => {
         this.cargarData(this.idicadorActive);
         this.showNotification('Se ha cambiado el estado');

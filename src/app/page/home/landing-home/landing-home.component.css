@@ -1,0 +1,62 @@
+.icon-colegio{
+    width:80px;
+    height: auto;
+    object-fit: cover;
+}
+
+.title-colegio{
+    font-family: "Times New Roman", Times, Georgia, serif;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+.head{
+    display: flex;
+    height: 100px;
+}
+
+.text-colegio{
+    padding: 10px;
+    font-size: 17px;
+    color: var(--primary);
+}
+
+.img-colegio{
+    width: 500px;
+}
+
+.target-information{
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+
+    display: grid;
+    justify-items: center;
+    grid-template-columns: 1fr;
+    background-color: var(--primary);
+    color: rgb(255, 255, 255);
+
+    box-shadow: 0px 2px 5px #000;
+    margin: 5px;
+}
+
+.target-information span{
+    font-size: 15px;
+    margin-top: -10px;
+}
+
+.target-information b{
+    font-size: 14px;
+}
+
+.icon-infor{
+    color: rgb(255, 255, 255);
+    padding: 5px;
+    width: auto;
+    height: auto;
+    /* height: 100px; */
+    font-size: 90px;
+
+}
