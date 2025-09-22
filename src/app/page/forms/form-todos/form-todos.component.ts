@@ -14,8 +14,6 @@ import { TuiButton, TuiDataList, TuiError, TuiHint, TuiIcon, TuiTextfield, TuiTi
 import {TuiInputDateModule, TuiInputModule, TuiInputNumberModule, TuiSelectModule, TuiTextfieldControllerModule } from '@taiga-ui/legacy';
 // import { TuiDataListModule } from '@taiga-ui/core';import { TuiDataList } from '@taiga-ui/core';
 
-
-
 // import { MatOption } from '@angular/material/select';
 import { DocumentTypeService } from '../../../service/parameters/documentType.service';
 import { TuiDataListWrapper, TuiPassword, TuiTooltip  } from '@taiga-ui/kit';
@@ -46,15 +44,13 @@ import { DataBasicService } from '../../../service/business/dataBasic.service';
 import { UserService } from '../../../service/user.service';
 import { AddressValid } from '../../../utilities/validations/validaciones';
 
-
-
 @Component({
   selector: 'app-form-todos',
   imports: [
     FormsModule, MatFormFieldModule,
     MatInputModule, ReactiveFormsModule,
     MatButtonModule, MatSlideToggleModule,
-    RouterLink, TuiTitle, TuiHeader, MatSelectModule,
+    TuiTitle, TuiHeader, MatSelectModule,
     TuiInputModule,
     TuiSelectModule,
     TuiTextfieldControllerModule,
@@ -63,13 +59,9 @@ import { AddressValid } from '../../../utilities/validations/validaciones';
     TuiHint,
     TuiInputNumberModule,
     MatIconModule,
-    TuiIcon,
-    TuiPassword,
     TuiTextfield,
-    TuiTooltip,
     TuiHint,
     TuiInputDateModule,
-    TuiButton,
     MatTabsModule,
     MatCheckboxModule,
     MatStepperModule, 
@@ -80,8 +72,11 @@ import { AddressValid } from '../../../utilities/validations/validaciones';
   styleUrl: './form-todos.component.css'
 })
 export class FormTodosComponent {
-  // ======================= start entradas de componente =======================
 
+
+
+  
+  // ======================= start entradas de componente =======================
   @Input({required: true})
   title: string = '';
 
@@ -89,7 +84,7 @@ export class FormTodosComponent {
   actionDescriptio !: string;
 
   @Input()
-  model?: PersonComplete;
+  model?: PersonComplete = undefined;
 
   // ======================= end entradas de componente =======================
 
@@ -300,7 +295,6 @@ export class FormTodosComponent {
         // const errores = 
         console.log('errores en la api')
       }
-
     });
   }
 
@@ -364,10 +358,6 @@ export class FormTodosComponent {
     this.userView = value ?? false;
     // console.log(capture)
   }
-
-
-
-
 
   // =================================== end metodos del componente ===================================
   

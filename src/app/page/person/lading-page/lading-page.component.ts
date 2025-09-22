@@ -21,7 +21,7 @@ import Swal from 'sweetalert2';
 
 // servicios y modelos
 import { PersonService } from '../../../service/person.service';
-import { FormPersonValue, Person } from '../../../models/security/person.model';
+import { FormPersonValue, Person, PersonComplete } from '../../../models/security/person.model';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FormPersonComponent } from "../../forms/form-person/form-person.component";
 import { FormTodosComponent } from "../../forms/form-todos/form-todos.component";
@@ -52,6 +52,9 @@ import { FormTodosComponent } from "../../forms/form-todos/form-todos.component"
   styleUrl: './lading-page.component.css',
 })
 export class LadingPageComponent implements OnInit {
+
+ model?: PersonComplete = undefined;
+
 
   // Atributos importantes de modulo
   persons: Person[] = [];
@@ -196,40 +199,41 @@ export class LadingPageComponent implements OnInit {
   // =================================================== Metodos de los modales ==================================================
 
   //NUEVO MÉTODO para manejar el submit del formulario
-  handleEpsSubmit(data: FormPersonValue): void {
-    if (this.isEditMode && this.modelEps) {
+  handleEpsSubmit(data: PersonComplete): void {
+    
+    // if (this.isEditMode && this.modelEps) {
 
-      // Actualizar rol existente
-      const updateData: CreateModelEps = {
-        ...data,
-        id: this.modelEps.id
-      };
+    //   // Actualizar rol existente
+    //   const updateData: CreateModelEps = {
+    //     ...data,
+    //     id: this.modelEps.id
+    //   };
       
-      this.serviceEps.actualizar(updateData).subscribe({
-        next: () => {
-          Swal.fire("Exitoso", "eps actualizado correctamente", "success");
-          this.closeModal();
-          this.cargarData(this.idicadorActive); // Recargar la lista
-        },
-        error: (err) => {
-          Swal.fire("Error", "No se pudo actualizar la eps", "error");
-          console.error(err);
-        }
-      });
-    } else {
-      // Crear nuevo rol
-      this.serviceEps.crear(data).subscribe({
-        next: () => {
-          Swal.fire("Exitoso", "Eps creado correctamente", "success");
-          this.closeModal();
-          this.cargarData(this.idicadorActive); // Recargar la lista
-        },
-        error: (err) => {
-          Swal.fire("Error", "No se pudo crear la eps", "error");
-          console.error(err);
-        }
-      });
-    }
+    //   this.serviceEps.actualizar(updateData).subscribe({
+    //     next: () => {
+    //       Swal.fire("Exitoso", "eps actualizado correctamente", "success");
+    //       this.closeModal();
+    //       this.cargarData(this.idicadorActive); // Recargar la lista
+    //     },
+    //     error: (err) => {
+    //       Swal.fire("Error", "No se pudo actualizar la eps", "error");
+    //       console.error(err);
+    //     }
+    //   });
+    // } else {
+    //   // Crear nuevo rol
+    //   this.serviceEps.crear(data).subscribe({
+    //     next: () => {
+    //       Swal.fire("Exitoso", "Eps creado correctamente", "success");
+    //       this.closeModal();
+    //       this.cargarData(this.idicadorActive); // Recargar la lista
+    //     },
+    //     error: (err) => {
+    //       Swal.fire("Error", "No se pudo crear la eps", "error");
+    //       console.error(err);
+    //     }
+    //   });
+    // }
   }
 
 }

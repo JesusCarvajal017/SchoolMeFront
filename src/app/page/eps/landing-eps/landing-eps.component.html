@@ -108,14 +108,10 @@
   </div>
 </section>
 
-<ng-template
-    let-observer
-    [tuiDialogOptions]="{label: titleEps, size: 'l'}"
-    [(tuiDialog)]="open"
->
+<ng-template let-observer [tuiDialogOptions]="{label: titleAction, size: 'l'}" [(tuiDialog)]="open">
     <div class="modal-content">
         <app-form-eps 
-            [title]="titleEps" 
+            [title]="titleAction" 
             [actionDescriptio]="isEditMode ? 'Actualizar' : 'Crear'"
             [model]="modelEps"
             (posteoForm)="handleEpsSubmit($event)">
