@@ -20,6 +20,11 @@ export class MunicipalityService extends GenericService<Municipality, CreateMode
        return this.http.get<Municipality[]>(`${this.urlBase}?status=${status}`);
   }
 
+  public MunicipiosDepart(id: any): Observable<Municipality[]> {
+      return this.http.get<Municipality[]>(`${this.urlBase}/list/${id}`);
+  }
+
+
 
 }
 export type { Municipality };

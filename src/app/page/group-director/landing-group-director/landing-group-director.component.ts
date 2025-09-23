@@ -86,6 +86,8 @@ export class LandingGroupDirectorComponent implements OnInit {
         id: this.modelGroupDirector.id
       };
       
+      console.log("holaaa")
+
       this.serviceGroupDirector.actualizar(updateData).subscribe({
         next: () => {
           Swal.fire("Exitoso", "Grupo actualizado correctamente", "success");
@@ -200,9 +202,9 @@ export class LandingGroupDirectorComponent implements OnInit {
   // activar/desactivar rol
   logical(event: any, id: number) {
     let value: number = event.checked ? 1 : 0;
-    let dataSend = { status: value };
+    // let dataSend = { status: value };
 
-    this.serviceGroupDirector.eliminarLogico(id, dataSend).subscribe({
+    this.serviceGroupDirector.eliminarLogico(id, value).subscribe({
       next: () => {
         this.cargarData(this.idicadorActive);
         this.showNotification('Se ha cambiado el estado');

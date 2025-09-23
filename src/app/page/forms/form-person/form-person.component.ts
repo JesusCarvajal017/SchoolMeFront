@@ -358,7 +358,10 @@ export class FormPersonComponent implements OnInit,OnChanges {
         this.router.navigate(['/dashboard/todos']);
         this.alertService.mensage = "usuario creado exitosamente";
         this.alertService.showDepositAlert();
-      }
+      }, 
+      error(err) {
+        console.log(err);
+      },
     });
 
   }
