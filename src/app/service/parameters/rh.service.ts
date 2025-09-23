@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CreateModelRh, Rh } from '../../models/parameters/rh.model';
+import { CreateModelRh, Rh } from '../../models/parameters/Rh';
 import { ModelLogicalDelete } from '../../global/model/logicalDelete.model';
 import { GenericService } from '../api/generic.service';
 

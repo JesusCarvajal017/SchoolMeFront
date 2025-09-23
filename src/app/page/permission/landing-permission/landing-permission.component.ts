@@ -198,9 +198,8 @@ export class LandingPermissionComponent implements OnInit {
   // activar/desactivar permission
   logical(event: any, id: number) {
     let value: number = event.checked ? 1 : 0;
-    let dataSend = { status: value };
 
-    this.servicePermission.eliminarLogico(id, dataSend).subscribe({
+    this.servicePermission.eliminarLogico(id, value).subscribe({
       next: () => {
         this.cargarData(this.idicadorActive);
         this.showNotification('Se ha cambiado el estado');

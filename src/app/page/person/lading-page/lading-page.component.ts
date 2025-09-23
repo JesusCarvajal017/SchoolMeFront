@@ -21,9 +21,10 @@ import Swal from 'sweetalert2';
 
 // servicios y modelos
 import { PersonService } from '../../../service/person.service';
-import { Person } from '../../../models/security/person.model';
+import { FormPersonValue, Person, PersonComplete } from '../../../models/security/person.model';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FormPersonComponent } from "../../forms/form-person/form-person.component";
+import { FormTodosComponent } from "../../forms/form-todos/form-todos.component";
 
 @Component({
   standalone: true,
@@ -44,12 +45,16 @@ import { FormPersonComponent } from "../../forms/form-person/form-person.compone
     // TuiAutoFocus,
     TuiDialog,
     TuiHint,
-    TuiInputModule
+    TuiInputModule,
+    FormTodosComponent
 ],
   templateUrl: './lading-page.component.html',
   styleUrl: './lading-page.component.css',
 })
 export class LadingPageComponent implements OnInit {
+
+ model?: PersonComplete = undefined;
+
 
   // Atributos importantes de modulo
   persons: Person[] = [];
@@ -81,11 +86,16 @@ export class LadingPageComponent implements OnInit {
   pageSize: number = 6; // 10 por página
   totalPages: number = 1;
 
-  constructor(private serviceEntity: PersonService, private router: Router) {
-    this.cargarData();
-  }
 
-  ngOnInit(): void {}
+  // ================= servicios api =======================
+  serviceEntity =  inject(PersonService);
+  roter = inject(Router);
+
+
+  ngOnInit(): void {
+    this.cargarData();
+
+  }
 
   // notificación de estado
   protected showNotification(message: string): void {
@@ -99,9 +109,11 @@ export class LadingPageComponent implements OnInit {
 
   // cargar personas desde el servicio
   cargarData(status : number = 1) {
-    this.serviceEntity.obtenerTodos(status).subscribe((data) => {
-      this.persons = data;
-      this.applyFilters();
+    this.serviceEntity.obtenerTodos(status).subscribe({
+      next:(data) => {
+        this.persons = data;
+        this.applyFilters();
+      }
     });
   }
 
@@ -148,22 +160,80 @@ export class LadingPageComponent implements OnInit {
   // activar/desactivar persona
   logical(event: any, id: number) {
     let value: number = event.checked ? 1 : 0;
-    let dataSend = { status: value };
+  
 
-    // this.serviceEntity.eliminarLogico(id, dataSend).subscribe({
-    //   next: () => {
-    //     this.cargarData();
-    //     this.showNotification('Se ha cambiado el estado');
-    //   },
-    // });
+    this.serviceEntity.eliminarLogico(id, value).subscribe({
+      next: () => {
+        this.cargarData(this.idicadorActive);
+        this.showNotification('Se ha cambiado el estado');
+        console.log(this.idicadorActive);
+      },
+    });
   }
 
-  // eliminar persona
+  // Eliminar registro de la entidad
   deleteRegister(id: number) {
-    this.serviceEntity.eliminar(id).subscribe(() => {
-      Swal.fire('Exitoso', 'El registro ha sido eliminado correctamente', 'success');
-      this.cargarData();
+    this.serviceEntity.eliminar(id).subscribe({
+      next: ()=>{
+        Swal.fire('Exitoso', 'El registro ha sido eliminado correctamente', 'success');
+        this.cargarData();
+
+      },
+      error : (error)=> {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error.error.detail,
+          // footer: '<a href="#">Why do I have this issue?</a>'
+        });
+        console.log(error);
+      } 
     });
+  }
+
+
+
+
+
+
+  // =================================================== Metodos de los modales ==================================================
+
+  //NUEVO MÉTODO para manejar el submit del formulario
+  handleEpsSubmit(data: PersonComplete): void {
+    
+    // if (this.isEditMode && this.modelEps) {
+
+    //   // Actualizar rol existente
+    //   const updateData: CreateModelEps = {
+    //     ...data,
+    //     id: this.modelEps.id
+    //   };
+      
+    //   this.serviceEps.actualizar(updateData).subscribe({
+    //     next: () => {
+    //       Swal.fire("Exitoso", "eps actualizado correctamente", "success");
+    //       this.closeModal();
+    //       this.cargarData(this.idicadorActive); // Recargar la lista
+    //     },
+    //     error: (err) => {
+    //       Swal.fire("Error", "No se pudo actualizar la eps", "error");
+    //       console.error(err);
+    //     }
+    //   });
+    // } else {
+    //   // Crear nuevo rol
+    //   this.serviceEps.crear(data).subscribe({
+    //     next: () => {
+    //       Swal.fire("Exitoso", "Eps creado correctamente", "success");
+    //       this.closeModal();
+    //       this.cargarData(this.idicadorActive); // Recargar la lista
+    //     },
+    //     error: (err) => {
+    //       Swal.fire("Error", "No se pudo crear la eps", "error");
+    //       console.error(err);
+    //     }
+    //   });
+    // }
   }
 
 }

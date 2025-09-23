@@ -233,9 +233,8 @@ onPageClick(page: number | string): void {
   // activar/desactivar rol
   logical(event: any, id: number) {
     let value: number = event.checked ? 1 : 0;
-    let dataSend = { status: value };
 
-    this.serviceMunicipality.eliminarLogico(id, dataSend).subscribe({
+    this.serviceMunicipality.eliminarLogico(id, value).subscribe({
       next: () => {
         this.cargarData(this.idicadorActive);
         this.showNotification('Se ha cambiado el estado');

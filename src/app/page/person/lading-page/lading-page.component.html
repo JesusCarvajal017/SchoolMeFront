@@ -59,7 +59,7 @@
       </tr>
     </thead>
     <tbody>
-      @for (item of paginatedPersons; track $index) {
+      @for (item of paginatedPersons; track item.id) {
         <tr>
           <td>{{ ($index + 1) + (currentPage - 1) * pageSize }}</td>
           <td>{{ item.fisrtName}} {{ item.secondName }}</td>
@@ -132,40 +132,22 @@
 
 <ng-template
     let-observer
-    [tuiDialogOptions]="{label: titleForm, size: 'm'}"
+    [tuiDialogOptions]="{label: titleForm, size: 'l'}"
     [(tuiDialog)]="open"
 >
-
-
-
-
-    <!-- <app-form-person [title]="title" [actionDescriptio]="'Actualizar'" [model]="model" (posteoForm)="editEntity($event)"></app-form-person> -->
-    <!-- <div class="col-12">
-      <button class="btn btn-primary ">holaaaa</button>
-    </div> -->
-    <!-- <form
-        (ngSubmit)="observer.complete()"
-    >
-        <p>This abstracts away service and subscription</p>
-        <tui-input
-            formControlName="exampleControl"
-            tuiAutoFocus
-        >
-            Some value
-        </tui-input>
-        <p>
-            <button
-                tuiButton
-                type="submit"
-            >
-                Ok
-            </button>
-        </p>
-    </form> -->
-    <!-- <button
-                tuiButton
-                type="submit"
-            >
-                Ok
+    <div class="modal-content">
+        <!-- <app-form-todos 
+            [title]="titleForm" 
+            [actionDescriptio]="titleForm"
+            [model]="model"
+            (posteoForm)="handleEpsSubmit($event)">
+        </app-form-todos >
+         -->
+        <!-- Botón para cerrar modal -->
+        <div class="modal-actions mt-3">
+            <!-- <button type="button" mat-stroked-button (click)="closeModal()">
+                Cancelar
             </button> -->
+        </div>
+    </div>
 </ng-template>

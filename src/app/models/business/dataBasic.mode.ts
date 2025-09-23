@@ -13,7 +13,7 @@ export interface DataBasic {
 
 export interface CreateDataBasic {
   status: number;
-  personId: number;
+  personId?: number;
   rhId: number;
   adress: string;
   brithDate: string;      // si es fecha real, conviene Date

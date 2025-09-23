@@ -34,7 +34,7 @@ export class GenericService<T, TCreate, Delte> {
     return this.http.delete<void>(`${this.urlBase}/${id}`);
   }
   
-  public eliminarLogico(id: number, data: any): Observable<void> {
-    return this.http.patch<void>(`${this.urlBase}/logical/${id}`, data);
+  public eliminarLogico(id: number, status: number): Observable<void> {
+    return this.http.delete<void>(`${this.urlBase}/${id}/${status}` );
   }
 }

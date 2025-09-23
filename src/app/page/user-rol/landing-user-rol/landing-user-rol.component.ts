@@ -260,9 +260,8 @@ export class LandingUserRolComponent implements OnInit {
   // activar/desactivar asignación
   logical(event: any, id: number): void {
     let value: number = event.checked ? 1 : 0;
-    let dataSend = { status: value };
 
-    this.serviceUserRol.eliminarLogico(id, dataSend).subscribe({
+    this.serviceUserRol.eliminarLogico(id, value).subscribe({
       next: () => {
         this.cargarData(this.idicadorActive);
         this.showNotification(`Asignación ${value === 1 ? 'activada' : 'desactivada'} correctamente`);
