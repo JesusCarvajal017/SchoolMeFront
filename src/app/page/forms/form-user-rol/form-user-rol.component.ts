@@ -1,7 +1,6 @@
 import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -32,7 +31,6 @@ import { Rol } from '../../../models/security/rol.model';
     ReactiveFormsModule,
     MatButtonModule,
     MatSlideToggleModule,
-    MatSelectModule,
 
     TuiTextfieldControllerModule,
     TuiInputModule,
@@ -40,16 +38,9 @@ import { Rol } from '../../../models/security/rol.model';
     TuiTextfield,
     TuiDataList,
     TuiHint,
-    // TuiCheckbox, 
     MatIconModule,
 
     TuiDataListWrapper,
-    // TuiTooltip
-
-
-
-
-
   ],
   templateUrl: './form-user-rol.component.html',
   styleUrl: './form-user-rol.component.css'
@@ -60,7 +51,7 @@ export class FormUserRolComponent implements OnInit, OnChanges {
   title: string = '';
 
   @Input({ required: true })
-  actionDescriptio !: string;
+  actionDescriptio!: string;
 
   @Input()
   model?: UserRol;
@@ -91,7 +82,6 @@ export class FormUserRolComponent implements OnInit, OnChanges {
     this.loadRoles();
     this.cargarUser();
     this.cargarRol();
-
   }
 
   ngOnChanges(): void {
@@ -183,7 +173,6 @@ export class FormUserRolComponent implements OnInit, OnChanges {
     return this.userListById.get(id) ?? '';
   };
 
-
   cargarUser(): void {
     this.userService.obtenerTodos().subscribe(data => {
       this.userList = data;
@@ -201,7 +190,6 @@ export class FormUserRolComponent implements OnInit, OnChanges {
     return this.rolListById.get(id) ?? '';
   };
 
-
   cargarRol(): void {
     this.rolService.obtenerTodos().subscribe(data => {
       this.rolList = data;
@@ -209,6 +197,3 @@ export class FormUserRolComponent implements OnInit, OnChanges {
     });
   }
 }
-
-
-
