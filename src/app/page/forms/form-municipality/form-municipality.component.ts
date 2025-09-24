@@ -15,7 +15,7 @@ import { TuiDataListWrapper } from '@taiga-ui/kit';
 import { MatIconModule } from "@angular/material/icon";
 import { CommonModule } from '@angular/common';
 
-import { MunicipalityService } from '../../../service/parameters/municipality.service';
+import { MunicipalityService } from '../../../service/parameters/Municipality.service';
 import { DepartamentServices } from '../../../service/parameters/Departament.service';
 import { Departament } from '../../../models/parameters/Departament.model';
 

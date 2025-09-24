@@ -16,7 +16,7 @@ export class SidebarService {
 
   public getSidebarItems(): Observable<SidebarItem[]> {
   
-    return this.http.get<SidebarItem[]>('http://localhost:5052/api/Menu?rolId=1').pipe();
+    return this.http.get<SidebarItem[]>('http://localhost:5052/api/View/Menu?rolId=1').pipe();
   }
   
 }

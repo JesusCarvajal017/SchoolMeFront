@@ -147,9 +147,8 @@ export class LandingUserComponent implements OnInit {
   // activar/desactivar usuario
   logical(event: any, id: number) {
     let value: number = event.checked ? 1 : 0;
-    let dataSend = { status: value };
 
-    this.serviceUser.eliminarLogico(id, dataSend).subscribe({
+    this.serviceUser.eliminarLogico(id, value).subscribe({
       next: () => {
         this.cargarData(this.idicadorActive);
         this.showNotification('Se ha cambiado el estado');

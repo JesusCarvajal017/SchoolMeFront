@@ -3,7 +3,7 @@ import { CreateModelRol, Rol } from '../../../models/security/rol.model';
 import { Router, RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
 import { FormRhComponent } from '../../forms/form-rh/form-rh.component';
-import { CreateModelRh, Rh } from '../../../models/parameters/rh.model';
+import { CreateModelRh, Rh } from '../../../models/parameters/Rh';
 import { RhService } from '../../../service/parameters/rh.service';
 
 @Component({

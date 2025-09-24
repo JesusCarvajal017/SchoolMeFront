@@ -54,12 +54,11 @@
                     <ng-template #dropdown>
                         <tui-data-list>
                             <a
-                                href="https://github.com/taiga-family/taiga-ui"
                                 iconStart="assets/icons/github.svg"
                                 new
                                 rel="noreferrer"
-                                target="_blank"
                                 tuiOption
+                                (click)="cerrarSession()"
                             >
                                 <mat-icon class="m-1">exit_to_app</mat-icon>
                                 Salir
@@ -93,9 +92,7 @@
 
         <!-- Contenido dinámico (rutas) -->
         <section class="rounded content-area p-4">
-          
           <router-outlet></router-outlet>
-          
         </section>
       </main>
     </div>

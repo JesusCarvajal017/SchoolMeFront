@@ -9,6 +9,7 @@ import { SidebarItem } from '../../models/sidebar-item.model';
 import { TuiAvatar } from "@taiga-ui/kit";
 import { SidebarService } from '../../service/sidebar.service';
 import { RouterModule } from "@angular/router";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,6 +18,8 @@ import { RouterModule } from "@angular/router";
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
+
+  router = inject(Router);
 
   sidebarItems: SidebarItem[] = [];
 
@@ -33,6 +36,12 @@ export class DashboardComponent {
       this.sidebarItems = items;
 
     });
+  }
+
+
+  cerrarSession() : void{
+    localStorage.clear();
+    this.router.navigate(['/login']);     
   }
 
 }

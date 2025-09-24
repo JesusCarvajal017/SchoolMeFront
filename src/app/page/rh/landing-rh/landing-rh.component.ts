@@ -21,7 +21,7 @@ import Swal from 'sweetalert2';
 
 // servicios y modelos
 import { RhService } from '../../../service/parameters/rh.service';
-import { Rh, CreateModelRh } from '../../../models/parameters/rh.model'; // Agregar CreateModelRol
+import { Rh, CreateModelRh } from '../../../models/parameters/Rh'; // Agregar CreateModelRol
 import { FormControl, FormGroup } from '@angular/forms';
 import { FormRhComponent } from "../../forms/form-rh/form-rh.component";
 
@@ -197,9 +197,8 @@ export class LandingRhComponent implements OnInit {
   // activar/desactivar rol
   logical(event: any, id: number) {
     let value: number = event.checked ? 1 : 0;
-    let dataSend = { status: value };
 
-    this.serviceRh.eliminarLogico(id, dataSend).subscribe({
+    this.serviceRh.eliminarLogico(id, value).subscribe({
       next: () => {
         this.cargarData(this.idicadorActive);
         this.showNotification('Se ha cambiado el estado');
