@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Person } from '../../../../models/security/person.model';
+import { Person, PersonOrigin } from '../../../../models/security/person.model';
 import { PersonService } from '../../../../service/person.service';
 import { User, UserService } from '../../../../service/user.service';
 
@@ -8,7 +8,7 @@ import { User, UserService } from '../../../../service/user.service';
 
 interface UserProfile {
   user: User;
-  person: Person;
+  person: PersonOrigin;
 }
 
 interface InfoItem {
@@ -36,7 +36,7 @@ export class ProfileComponent implements OnInit {
 
   // Datos
   userProfile: UserProfile | null = null;
-  profileImageUrl = 'assets/images/default-avatar.jpg';
+  profileImageUrl = './icons/default.png';
 
   ngOnInit(): void {
     this.loadUserProfile();
@@ -62,7 +62,7 @@ export class ProfileComponent implements OnInit {
         }
 
         this.personService.obtenerPorId(personId).subscribe({
-          next: (person: Person) => {
+          next: (person: PersonOrigin) => {
             this.userProfile = { user, person };
             // Si tu backend guarda el nombre del archivo de la foto en User, ajusta aquí:
             // if ((user as any).photo) this.profileImageUrl = `assets/images/profiles/${(user as any).photo}`;

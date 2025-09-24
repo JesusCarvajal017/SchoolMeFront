@@ -36,10 +36,10 @@
                 <div class="profile-image-section">
                   <div class="profile-image-wrapper position-relative">
                     <img 
-                      [src]="profileImageUrl || 'assets/images/default-avatar.jpg'" 
+                      [src]="profileImageUrl || './icons/default.png'" 
                       [alt]="fullName"
                       class="profile-image"
-                      (error)="profileImageUrl = 'assets/images/default-avatar.jpg'"
+                      (error)="profileImageUrl = './icons/default.png'"
                     />
                     
                     <!-- Status Dot -->

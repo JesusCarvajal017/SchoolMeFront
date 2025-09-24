@@ -7,7 +7,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
-import {Person } from '../../../models/security/person.model';
+import {Person, PersonOrigin } from '../../../models/security/person.model';
 import { RouterLink } from '@angular/router';
 
 import { TuiHeader} from '@taiga-ui/layout';
@@ -45,7 +45,7 @@ export class FormUserComponent implements OnInit, OnChanges {
   isChecked = true;
   
   servicePerson = inject(PersonService);
-  personas: Person[] = [];  
+  personas: PersonOrigin[] = [];  
 
 
   private readonly formBuilder = inject(FormBuilder);

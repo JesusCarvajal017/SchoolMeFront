@@ -9,7 +9,7 @@ import { GenericService } from './api/generic.service';
   providedIn: 'root'
 })
 
-export class PersonService extends GenericService<Person, CreateModelPerson, ModelLogicalDelete> {
+export class PersonService extends GenericService<PersonOrigin, CreateModelPerson, ModelLogicalDelete> {
   constructor() { 
     super('Person')
   }
