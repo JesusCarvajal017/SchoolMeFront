@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-editar-person',
-  imports: [FormPersonComponent],
+  imports: [],
   templateUrl: './editar-person.component.html',
   styleUrl: './editar-person.component.css'
 })

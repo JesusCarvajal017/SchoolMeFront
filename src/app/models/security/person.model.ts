@@ -1,9 +1,25 @@
 import { TuiDay } from "@taiga-ui/cdk/date-time";
-import { CreateDataBasic, DataBasic } from "../business/dataBasic.mode";
+import { CreateDataBasic, DataBasic, DataBasicComplete } from "../business/dataBasic.mode";
 
 
 export interface Person{
-    id: number;
+  id: number;
+  status: number;
+  documentTypeId: number;
+  identification: number;
+  fisrtName: string;
+  secondName: string;
+  lastName: string;
+  secondLastName: string;
+  phone: number;
+  gender: number;
+  dataBasic: CreateDataBasic;
+
+}
+
+
+export interface PersonOrigin{
+   id: number;
     documentTypeId: number;
     identification: string;
     fisrtName: string;
@@ -16,23 +32,10 @@ export interface Person{
     // age: number;
     status: number;
 
- 
 }
 
 export interface CreateModelPerson{
-    identification?: number;
-    fisrtName: string;
-    secondName: string;
-    lastName: string;
-    secondLastName: string;
-    documentTypeId: number;
-    phone: number;
-    gender: number;
-    // age: number;
-    status: number;
-}
-
-export interface PersonComplete {
+  id?: number;
   status: number;
   documentTypeId: number;
   identification: number;
@@ -45,6 +48,22 @@ export interface PersonComplete {
   dataBasic: CreateDataBasic;
 }
 
+export interface PersonComplete {
+  id?: number;
+  status: number;
+  documentTypeId: number;
+  identification: number;
+  fisrtName: string;
+  secondName: string;
+  lastName: string;
+  secondLastName: string;
+  phone: number;
+  gender: number;
+  dataBasic: DataBasicComplete;
+}
+
+
+// modelo para el formulario reactivo
 export type FormPersonValue = {
   status: boolean;
   documentTypeId: number | null;
@@ -57,7 +76,7 @@ export type FormPersonValue = {
   gender: number | null;
   rhId: number | null;
   adress: string;
-  brithDate: TuiDay | null;           // 👈 importante
+  brithDate: TuiDay | null;       
   stratumStatus: boolean;
   materialStatusId: number | null;
   epsId: number | null;

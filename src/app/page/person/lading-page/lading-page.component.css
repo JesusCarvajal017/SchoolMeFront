@@ -3,9 +3,10 @@ header h1 {
   font-size: 20px;
   font-weight: 600;
 }
-header .count {
+
+.count {
   text-align: center;
-  width: 8%;
+  width: 100px;
   border: 1.5px solid #000;
   border-radius: 10px;
   font-size: 14px;
@@ -13,6 +14,16 @@ header .count {
   margin-left: 8px;
   font-weight: bold;
   /* display: inline-block; */
+}
+
+.titulo-tabla{
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 25px !important;
+}
+
+.container-duo{
+  display: flex;
+  align-items: center;
 }
 
 .btn-add {
@@ -25,6 +36,7 @@ header .count {
   font-weight: 500;
   color: #333;
   text-decoration: none;
+  /* width: 100px !important; */
 }
 .btn-add mat-icon {
   font-size: 20px;

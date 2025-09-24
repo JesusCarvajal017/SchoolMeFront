@@ -22,7 +22,7 @@ import Swal from 'sweetalert2';
 // servicios y modelos
 // import { MunicipalityService } from '../../../service/parameters/municipality.service'; // Agregar CreateModelRol
 import { FormMunicipalityComponent } from "../../forms/form-municipality/form-municipality.component";
-import { MunicipalityService } from '../../../service/parameters/municipality.service';
+import { MunicipalityService } from '../../../service/parameters/Municipality.service';
 import { CreateModelMunicipality, Municipality } from '../../../models/parameters/Municipality.model';
 
 @Component({

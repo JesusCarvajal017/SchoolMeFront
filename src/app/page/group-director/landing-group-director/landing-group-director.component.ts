@@ -79,6 +79,7 @@ export class LandingGroupDirectorComponent implements OnInit {
 
   // NUEVO MÉTODO para manejar el submit del formulario
   handleGroupDirectorSubmit(data: CreateModelGroupDirector): void {
+    
     if (this.isEditMode && this.modelGroupDirector) {
       // Actualizar rol existente
       const updateData: CreateModelGroupDirector = {
