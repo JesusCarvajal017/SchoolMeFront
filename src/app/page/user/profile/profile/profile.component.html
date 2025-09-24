@@ -1,0 +1,188 @@
+<div class="profile-wrapper">
+  <div class="container-fluid h-100">
+    <div class="row h-100 justify-content-center align-items-center">
+      <div class="col-12">
+        
+        <!-- Loading State -->
+        <div *ngIf="isLoading" class="profile-card">
+          <div class="d-flex justify-content-center align-items-center" style="height: 400px;">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Error State -->
+        <div *ngIf="hasError && !isLoading" class="profile-card">
+          <div class="text-center py-5">
+            <i class="bi bi-exclamation-triangle-fill text-danger" style="font-size: 3rem;"></i>
+            <h3 class="mt-3 text-muted">Error al cargar el perfil</h3>
+            <p class="text-muted">{{ errorMessage }}</p>
+            <button class="btn btn-primary" (click)="reloadProfile()">
+              <i class="bi bi-arrow-clockwise me-2"></i>Reintentar
+            </button>
+          </div>
+        </div>
+
+        <!-- Main Profile Content -->
+        <div *ngIf="!isLoading && !hasError && userProfile" class="profile-card">
+          <div class="row g-0 h-100">
+            
+            <!-- Left Panel - Profile Summary -->
+            <div class="col-md-4 col-lg-3">
+              <div class="profile-sidebar">
+                
+                <!-- Profile Image Section -->
+                <div class="profile-image-section">
+                  <div class="profile-image-wrapper position-relative">
+                    <img 
+                      [src]="profileImageUrl || 'assets/images/default-avatar.jpg'" 
+                      [alt]="fullName"
+                      class="profile-image"
+                      (error)="profileImageUrl = 'assets/images/default-avatar.jpg'"
+                    />
+                    
+                    <!-- Status Dot -->
+                    <span class="status-indicator" [ngClass]="statusClass"></span>
+                    
+                    <!-- Upload Button -->
+                    <div class="upload-overlay">
+                      <input 
+                        type="file" 
+                        id="profileImageInput" 
+                        accept="image/*" 
+                        (change)="onImageUpload($event)"
+                        class="d-none"
+                        #profileImageInput
+                      />
+                      <button 
+                        class="btn btn-sm btn-dark upload-btn"
+                        (click)="profileImageInput.click()"
+                      >
+                        <i class="bi bi-camera"></i>
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <!-- User Name & Status -->
+                  <div class="profile-name-section">
+                    <h2 class="profile-name">{{ fullName }}</h2>
+                    <span class="status-badge" [ngClass]="statusClass">
+                      <i class="bi" [ngClass]="statusClass === 'online' ? 'bi-circle-fill' : 'bi-circle'"></i>
+                      {{ statusText }}
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="quick-stats">
+                  <div class="stat-item">
+                    <i class="bi bi-calendar-plus text-primary"></i>
+                    <div>
+                      <small class="text-muted">Miembro desde</small>
+                      <div class="fw-semibold">{{ memberSince }}</div>
+                    </div>
+                  </div>
+                  
+                  <div class="stat-item" *ngIf="userProfile.user.status !== 1">
+                    <i class="bi bi-clock text-warning"></i>
+                    <div>
+                      <small class="text-muted">Última conexión</small>
+                      <div class="fw-semibold">{{ lastSeenText }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Panel - Profile Details -->
+            <div class="col-md-8 col-lg-9">
+              <div class="profile-content">
+                
+                <!-- Header -->
+                <div class="profile-header">
+                  <div>
+                    <h1 class="h3 mb-1">Información del Perfil</h1>
+                    <p class="text-muted mb-0">Detalles de tu cuenta y datos personales</p>
+                  </div>
+                  
+                  <button class="btn btn-outline-primary">
+                    <i class="bi bi-pencil-square me-2"></i>Editar
+                  </button>
+                </div>
+
+                <!-- Profile Information Grid -->
+                <div class="profile-info-grid">
+                  <div 
+                    *ngFor="let item of infoList; let i = index" 
+                    class="info-card"
+                    [class.animate-in]="!isLoading"
+                    [style.animation-delay.ms]="i * 100"
+                  >
+                    <div class="info-icon">
+                      <i class="bi" [ngClass]="item.icon"></i>
+                    </div>
+                    
+                    <div class="info-content">
+                      <label class="info-label">{{ item.label }}</label>
+                      <div class="info-value">
+                        <!-- Email link -->
+                        <a 
+                          *ngIf="item.type === 'email'" 
+                          [href]="'mailto:' + item.value" 
+                          class="text-decoration-none"
+                        >
+                          {{ item.value }}
+                        </a>
+                        
+                        <!-- Phone link -->
+                        <a 
+                          *ngIf="item.type === 'phone'" 
+                          [href]="'tel:' + item.value" 
+                          class="text-decoration-none"
+                        >
+                          {{ item.value }}
+                        </a>
+                        
+                        <!-- Regular text -->
+                        <span *ngIf="!item.type || (item.type !== 'email' && item.type !== 'phone')">
+                          {{ item.value }}
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <!-- Copy button -->
+                    <button 
+                      class="copy-btn btn btn-sm btn-outline-secondary"
+                      (click)="copyToClipboard(item.value)"
+                      title="Copiar"
+                    >
+                      <i class="bi bi-copy"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Actions Section -->
+                <div class="profile-actions mt-4">
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <button class="btn btn-primary w-100">
+                        <i class="bi bi-gear me-2"></i>Datos Personales
+                      </button>
+                    </div>
+                    <div class="col-md-6">
+                      <button class="btn btn-outline-secondary w-100">
+                        <i class="bi bi-shield-check me-2"></i>Configuracion y seguridad
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>  
+            </div>
+          </div> <!-- row -->
+        </div> <!-- End Main Profile Content -->
+
+      </div>
+    </div>
+  </div>
+</div>
