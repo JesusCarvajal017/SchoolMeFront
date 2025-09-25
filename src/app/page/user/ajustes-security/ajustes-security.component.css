@@ -1,7 +1,7 @@
 /* ====== Card principal ====== */
 .ajustes-card {
-  background: #1e1e50;
-  color: #fff;
+  background: #ffffff93;
+  color: #000000;
   border-radius: 12px;
   padding: 2rem;
   max-width: 1200px;
@@ -15,7 +15,7 @@
   font-weight: 600;
   margin-bottom: 2rem;
   text-align: center;
-  color: #fff;
+  color: #000000;
 }
 
 /* ====== Grid de dos columnas ====== */
@@ -171,5 +171,75 @@ input:focus {
 @media (max-width: 768px) {
   .ajustes-grid {
     grid-template-columns: 1fr;
+  }
+}
+/* ====== Cartas con degradado azul oscuro y animación ====== */
+.ajustes-section {
+  background: linear-gradient(135deg, #1e1e50, #242471);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 0 0 2px transparent;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.ajustes-section:hover {
+  box-shadow: 0 0 0 3px #4f46e5;
+  transform: translateY(-4px);
+  border-color: #6366f1;
+}
+
+/* ====== Formularios ====== */
+.ajustes-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.ajustes-form label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #cbd5f7;
+}
+
+.ajustes-form input {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #4f46e5;
+  background-color: #111827;
+  color: #fff;
+  transition: border-color 0.3s;
+}
+
+.ajustes-form input:focus {
+  border-color: #6366f1;
+}
+
+/* ====== Botones alineados horizontalmente ====== */
+.ajustes-form .btn-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.btn-primary {
+  background: linear-gradient(90deg, #4c1d95, #5b21b6, #6366f1);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(90deg, #5b21b6, #6366f1, #4c1d95);
+}
+
+/* ====== Responsive con Bootstrap ====== */
+@media (max-width: 768px) {
+  .ajustes-grid {
+    display: flex;
+    flex-direction: column;
   }
 }
