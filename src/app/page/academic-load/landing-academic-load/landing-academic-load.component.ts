@@ -43,10 +43,8 @@ import { FormAcademicLoadComponent } from "../../forms/form-academic-load/form-a
     // RouterLink,
     SweetAlert2Module,
     // TuiButton,
-    TuiDialog,
     TuiHint,
-    TuiInputModule,
-    FormAcademicLoadComponent
+    TuiInputModule
 ],
   templateUrl: './landing-academic-load.component.html',
   styleUrl: './landing-academic-load.component.css',

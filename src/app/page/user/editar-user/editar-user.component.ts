@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-editar-user',
-  imports: [FormUserComponent],
+  imports: [],
   templateUrl: './editar-user.component.html',
   styleUrl: './editar-user.component.css'
 })

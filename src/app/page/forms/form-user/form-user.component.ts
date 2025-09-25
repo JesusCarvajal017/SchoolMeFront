@@ -30,7 +30,6 @@ import { AlertApp } from '../../../utilities/alert-taiga';
     ReactiveFormsModule,
     MatButtonModule,
     MatSlideToggleModule,
-    RouterLink,
     TuiTitle,
     TuiHeader,
     TuiInputModule,
@@ -43,7 +42,6 @@ import { AlertApp } from '../../../utilities/alert-taiga';
     TuiIcon,
     TuiPassword,
     TuiTextfield,
-    TuiTooltip,
     TuiButton,
     TuiError
   ],
