@@ -8,6 +8,7 @@ import { AuthMainService } from '../../../../service/auth/auth-main.service';
 import { environment } from '../../../../../environments/environment.development';
 import { GenderType } from '../../../../global/model/enumGenero';
 import { RouterLink } from '@angular/router';
+import Swal from 'sweetalert2';
 
 
 interface UserProfile {
@@ -78,15 +79,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     this.userService.obtenerPorId(currentUserId).subscribe({
       next: (user: User) => {
-        const personId = this.authService.getCurrentPersonId();
-        if (!personId && personId !== 0) {
-          this.hasError = true;
-          this.errorMessage = 'El usuario no tiene persona asociada.';
-          this.isLoading = false;
-          return;
-        }
 
-        this.personService.obtenerPersonData(personId).subscribe({
+        //carga de informacion
+        this.personService.obtenerPersonData(user.personId).subscribe({
           next: (personData: PersonData) => {
             this.userProfile = { user, person: personData };
             this.loadProfileImage(user);
@@ -108,37 +103,23 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   // HAZ ESTE MÉTODO PÚBLICO: lo llamas desde el template en (error)
-  resolveProfileImage(user: User | undefined, person?: PersonData): string {
-    if (!user) {
-      const initial = (person?.fisrtName?.charAt(0) || 'U').toUpperCase();
-      return `https://via.placeholder.com/120/6366f1/ffffff?text=${initial}`;
-    }
-
+  resolveProfileImage(user: User | undefined): string {
     const photo = (user as any)?.photo as string | undefined;
 
-    if (photo && photo.startsWith('http')) {
-      let url = photo;
-      if (url.includes('localhost')) {
-        url = url.replace('localhost', (environment as any).uri || 'localhost');
-      }
-      return url;
-    }
-
     if (photo) {
-      return `${environment.apiUrl}/images/profiles/${photo}`;
+      return user!.photo;
     }
-
-    const initial = (person?.fisrtName?.charAt(0) || 'U').toUpperCase();
-    return `https://via.placeholder.com/120/6366f1/ffffff?text=${initial}`;
+    return `./icons/default.png`;
   }
 
   private loadProfileImage(user: User): void {
-    this.profileImageUrl = this.resolveProfileImage(user, this.userProfile?.person);
+    this.profileImageUrl = this.resolveProfileImage(user);
   }
 
   // Subir imagen de perfil
   async onImageUpload(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
+
     if (input.files && input.files[0] && this.userProfile) {
       const file = input.files[0];
 
@@ -155,6 +136,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
       // Preview inmediato
       const reader = new FileReader();
+      
       reader.onload = (e) => {
         this.profileImageUrl = e.target?.result as string;
       };
@@ -169,9 +151,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
           if (result.photo) {
             this.userProfile.user.photo = result.photo;
           }
-          this.profileImageUrl = this.resolveProfileImage(this.userProfile.user, this.userProfile.person);
-          this.authService.updateCurrentUser({ photo: this.userProfile.user.photo as any });
+
+          this.profileImageUrl = this.resolveProfileImage(this.userProfile.user);
           this.showSuccessMessage('Imagen de perfil actualizada correctamente');
+          this.loadUserProfile();
         } else {
           this.showErrorMessage('Error al subir la imagen. Intenta nuevamente.');
           this.loadProfileImage(this.userProfile.user);
@@ -187,16 +170,19 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   // Event handler para fallback de imagen rota
   onImageError(): void {
-    this.profileImageUrl = this.resolveProfileImage(this.userProfile?.user, this.userProfile?.person);
+    this.profileImageUrl = this.resolveProfileImage(this.userProfile?.user);
   }
 
   // Helpers
   private showSuccessMessage(message: string): void {
-    console.log('✅', message);
+     Swal.fire("Exitoso", message, "success");
   }
   private showErrorMessage(message: string): void {
-    console.error('❌', message);
-    alert(message);
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: message
+    });
   }
 
   // Computed
@@ -224,6 +210,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   get infoList() {
+
+
+
     if (!this.userProfile) return [];
     const { user, person } = this.userProfile;
 

@@ -5,6 +5,7 @@ export interface User {
     password: string;
     photo: string;
     status: number;
+    personId: number,
 }
 
 export interface CreateModelUser{
