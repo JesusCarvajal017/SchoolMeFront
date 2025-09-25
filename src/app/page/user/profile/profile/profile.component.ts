@@ -7,6 +7,8 @@ import { User, UserService } from '../../../../service/user.service';
 import { AuthMainService } from '../../../../service/auth/auth-main.service';
 import { environment } from '../../../../../environments/environment.development';
 import { GenderType } from '../../../../global/model/enumGenero';
+import { RouterLink } from '@angular/router';
+
 
 interface UserProfile {
   user: User;
@@ -16,7 +18,7 @@ interface UserProfile {
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
