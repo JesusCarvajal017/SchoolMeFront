@@ -21,100 +21,112 @@ import Swal from 'sweetalert2';
 
 // servicios y modelos
 import { PersonService } from '../../../service/person.service';
-import { FormPersonValue, Person, PersonComplete } from '../../../models/security/person.model';
+import { CreateModelPerson, FormPersonValue, Person, PersonComplete, PersonOrigin } from '../../../models/security/person.model';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FormPersonComponent } from "../../forms/form-person/form-person.component";
 import { FormTodosComponent } from "../../forms/form-todos/form-todos.component";
+import { AlertApp } from '../../../utilities/alert-taiga';
+import { ListadoGenericoComponent } from "../../../components/listado-generico/listado-generico.component";
+import { EnitdadGenericoComponent } from "../../../components/enitdad-generico/enitdad-generico.component";
 
 @Component({
   standalone: true,
   selector: 'app-lading-page',
   imports: [
     CommonModule,
-    TuiTitle,
     MatSidenavModule,
     MatCardModule,
-    TuiHeader,
     TuiButtonGroup,
     TuiAppearance,
     MatIconModule,
     MatSlideToggleModule,
     MatButtonModule,
-    RouterLink,
     SweetAlert2Module,
     // TuiAutoFocus,
     TuiDialog,
     TuiHint,
     TuiInputModule,
-    FormTodosComponent
+    FormTodosComponent,
+    ListadoGenericoComponent
 ],
   templateUrl: './lading-page.component.html',
   styleUrl: './lading-page.component.css',
 })
 export class LadingPageComponent implements OnInit {
 
- model?: PersonComplete = undefined;
+  // ============================= MODELOS ===============================
+  model?: PersonComplete;
+  persons?: PersonOrigin[];
+  filteredPersons?: PersonOrigin[] = [];
 
-
-  // Atributos importantes de modulo
-  persons: Person[] = [];
-  filteredPersons: Person[] = [];
+  // ========================= idicadores y apoyos =========================
   idicadorActive : number = 1;
+  idperson !: number; 
+
+  // acciones a realizar 
+  // 0: ninguna, 1 : crear, 2 : actualizar
+  action!: number;
 
   // titulo de los modales, segun la acción a relizar del crud
   titleForm!: string;
 
-  
-  //  ======================= funcionalidad del modal del taiga =======================
-  protected open = false;
-
-  protected modalCommand(title: string): void { 
-      this.titleForm = title;
-      this.open = true;
-  }
-  //  ======================= end =======================
-
-
-  // servicio de alerta de taiga
-  private readonly alerts = inject(TuiAlertService);
-
-  // búsqueda
+  // configuracion tablas
   searchTerm: string = '';
 
-  // paginación
+  // configuracion tablas : paginación
   currentPage: number = 1;
   pageSize: number = 6; // 10 por página
   totalPages: number = 1;
 
+  //  ======================= start modal ======================
 
-  // ================= servicios api =======================
-  serviceEntity =  inject(PersonService);
+    protected open = false;
+
+    // metodo que abre el modal
+    protected  modalCommand(title: string, id: number = 0): void { 
+      if(id != 0){
+        // cargado model para la actualización
+        this.idperson = id;
+        this.queryId(id);
+        // console.log(this.model)
+
+        this.action = 2;
+      
+      }else{
+        this.clearData();
+      }
+
+      this.titleForm = title;
+      this.open = true;
+    }
+
+    closeModal(): void {
+      this.open = false;
+      this.clearData();
+    }
+
+  //  ======================= end modal =======================================
+
+  // =========================== servicios helper  ==========================
+  private readonly alerts = inject(TuiAlertService);
+  alertService = inject(AlertApp);
+
   roter = inject(Router);
 
+  // ================= start servicios api =======================
+  serviceEntity =  inject(PersonService);
+
+  // ================= end servicios api =======================
 
   ngOnInit(): void {
     this.cargarData();
-
   }
+
+  // =================================== funcionalidades transversales ===================================
 
   // notificación de estado
   protected showNotification(message: string): void {
     this.alerts.open(message, { label: 'Se a cambiado el estado!' }).subscribe();
-  }
-
-  cambiarStatus(status : number){
-    this.idicadorActive = status;
-    this.cargarData(this.idicadorActive);
-  }
-
-  // cargar personas desde el servicio
-  cargarData(status : number = 1) {
-    this.serviceEntity.obtenerTodos(status).subscribe({
-      next:(data) => {
-        this.persons = data;
-        this.applyFilters();
-      }
-    });
   }
 
   // búsqueda
@@ -123,12 +135,12 @@ export class LadingPageComponent implements OnInit {
     this.applyFilters();
   }
 
-  // aplicar búsqueda + paginación
+   // aplicar búsqueda + paginación
   applyFilters() {
     let filtered = this.persons;
 
     if (this.searchTerm.trim() !== '') {
-      filtered = this.persons.filter((p) =>
+      filtered = this.persons?.filter((p) =>
         `${p.fisrtName} ${p.secondName} ${p.lastName} ${p.secondLastName} ${p.identification} ${p.phone}`
           .toLowerCase()
           .includes(this.searchTerm)
@@ -136,7 +148,7 @@ export class LadingPageComponent implements OnInit {
     }
 
     this.filteredPersons = filtered;
-    this.totalPages = Math.ceil(this.filteredPersons.length / this.pageSize);
+    this.totalPages = Math.ceil(this.filteredPersons!.length / this.pageSize);
 
     // corregir página actual si es mayor al total
     if (this.currentPage > this.totalPages) {
@@ -147,7 +159,7 @@ export class LadingPageComponent implements OnInit {
   // obtener personas de la página actual
   get paginatedPersons() {
     const start = (this.currentPage - 1) * this.pageSize;
-    return this.filteredPersons.slice(start, start + this.pageSize);
+    return this.filteredPersons?.slice(start, start + this.pageSize);
   }
 
   // cambiar de página
@@ -157,11 +169,51 @@ export class LadingPageComponent implements OnInit {
     }
   }
 
+  // =================================== metodos del componente ===================================s
+  cambiarStatus(status : number){
+    this.idicadorActive = status;
+    this.cargarData(this.idicadorActive);
+  }
+
+  // cargad data de entidad : Person
+  cargarData(status : number = 1) {
+    this.serviceEntity.obtenerTodosOrigin(status).subscribe({
+      next:(data) => {
+        this.persons = data;
+        // console.log(this.persons)
+        this.applyFilters();
+      }
+    });
+  }
+
+  queryId(id: number) : void {
+    this.serviceEntity.ObtenerComplete(id).subscribe({
+      next: (data)=>{
+        // carga de data
+        this.model = data;
+      }
+    });
+  }
+
+  createPerson(data : PersonComplete): void {
+    // metodo de creacion
+    this.serviceEntity.crear(data).subscribe({
+      next: (data)=> {
+        // this.idPerson = data.id;
+        this.alertService.mensage = "se registrado el usuario";
+        this.alertService.showDepositAlert();
+      },
+      error: err => {
+        console.log('errores en la api')
+      }
+    });
+  }
+
+
   // activar/desactivar persona
   logical(event: any, id: number) {
     let value: number = event.checked ? 1 : 0;
   
-
     this.serviceEntity.eliminarLogico(id, value).subscribe({
       next: () => {
         this.cargarData(this.idicadorActive);
@@ -191,49 +243,45 @@ export class LadingPageComponent implements OnInit {
     });
   }
 
-
-
-
-
+  clearData() : void{
+    this.model =  null!;
+    this.idperson = 0;
+  }
 
   // =================================================== Metodos de los modales ==================================================
 
-  //NUEVO MÉTODO para manejar el submit del formulario
-  handleEpsSubmit(data: PersonComplete): void {
-    
-    // if (this.isEditMode && this.modelEps) {
+  // ejecutador de accion del formulario de componente
+  handleEpsSubmit(data: CreateModelPerson): void {
 
-    //   // Actualizar rol existente
-    //   const updateData: CreateModelEps = {
-    //     ...data,
-    //     id: this.modelEps.id
-    //   };
-      
-    //   this.serviceEps.actualizar(updateData).subscribe({
-    //     next: () => {
-    //       Swal.fire("Exitoso", "eps actualizado correctamente", "success");
-    //       this.closeModal();
-    //       this.cargarData(this.idicadorActive); // Recargar la lista
-    //     },
-    //     error: (err) => {
-    //       Swal.fire("Error", "No se pudo actualizar la eps", "error");
-    //       console.error(err);
-    //     }
-    //   });
-    // } else {
-    //   // Crear nuevo rol
-    //   this.serviceEps.crear(data).subscribe({
-    //     next: () => {
-    //       Swal.fire("Exitoso", "Eps creado correctamente", "success");
-    //       this.closeModal();
-    //       this.cargarData(this.idicadorActive); // Recargar la lista
-    //     },
-    //     error: (err) => {
-    //       Swal.fire("Error", "No se pudo crear la eps", "error");
-    //       console.error(err);
-    //     }
-    //   });
-    // }
+    if(this.model){
+      this.model.id = this.idperson;
+      // actualizar
+      this.serviceEntity.actulizarComplete(this.idperson,data).subscribe({
+        next: () =>{
+          Swal.fire("Exitoso", "persona actualizado correctamente", "success");
+          this.closeModal();
+          this.cargarData();
+        }, 
+        error: (err) => {
+          console.log(err);
+          console.log(this.model)
+        }
+      });
+      // console.log(data)
+    }else{
+      // registrar
+      this.serviceEntity.crearComplete(data).subscribe({
+        next: () =>{
+          Swal.fire("Exitoso", "persona actualizado correctamente", "success");
+          this.closeModal();
+          this.cargarData();
+        }, 
+        error: (err) => {
+          console.log(err);
+        }
+      });
+    }
+
   }
 
 }

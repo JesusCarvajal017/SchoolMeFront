@@ -15,7 +15,7 @@ import { TuiDataListWrapper, TuiPassword, TuiTooltip } from '@taiga-ui/kit';
 
 // Importar modelos y servicios
 import { CreateModolUser2, User } from '../../../models/security/user.model';
-import { Person } from '../../../models/security/person.model';
+import { Person, PersonOrigin } from '../../../models/security/person.model';
 import { UserService } from '../../../service/user.service';
 import { PersonService } from '../../../service/person.service';
 import { AlertApp } from '../../../utilities/alert-taiga';
@@ -68,6 +68,12 @@ export class FormUserComponent implements OnInit, OnChanges {
   @Output()
   posteoForm = new EventEmitter<CreateModolUser2>();
 
+  isChecked = true;
+  
+  servicePerson = inject(PersonService);
+  personas: PersonOrigin[] = [];  
+
+
   // ======================= end salidas de componente =======================
 
   // =========================== start servicios ========================================
@@ -82,7 +88,7 @@ export class FormUserComponent implements OnInit, OnChanges {
   // ================================== start propiedades ==================================
   
   // Listas para los dropdowns
-  personList: Person[] = [];
+  personList: PersonOrigin[] = [];
   loadingPersons = false;
 
   // crear un url temporal para mostrar imagen

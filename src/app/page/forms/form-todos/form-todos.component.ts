@@ -27,7 +27,7 @@ import { DocumentsType } from '../../../models/parameters/DocumentType.model';
 import { CreateDataBasic, DataBasic } from '../../../models/business/dataBasic.mode';
 import { Departament } from '../../../models/parameters/Departament.model';
 import {DepartamentServices } from '../../../service/parameters/Departament.service';
-import { MunicipalityService } from '../../../service/parameters/municipality.service';
+import { MunicipalityService } from '../../../service/parameters/Municipality.service';
 import { Municipality } from '../../../models/parameters/Municipality.model';
 import { Rh } from '../../../models/parameters/Rh';
 import { RhService } from '../../../service/parameters/rh.service';
@@ -39,7 +39,6 @@ import { Eps } from '../../../models/parameters/eps.model';
 import { EpsService } from '../../../service/parameters/eps.service';
 import { TuiDay } from '@taiga-ui/cdk/date-time';
 import { formatTuiDay, parseTuiDay } from '../../../utilities/helpers/dataDayTaiga';
-import { CreateModolUser2 } from '../../../models/security/user.model';
 import { DataBasicService } from '../../../service/business/dataBasic.service';
 import { UserService } from '../../../service/user.service';
 import { AddressValid } from '../../../utilities/validations/validaciones';
@@ -50,7 +49,7 @@ import { AddressValid } from '../../../utilities/validations/validaciones';
     FormsModule, MatFormFieldModule,
     MatInputModule, ReactiveFormsModule,
     MatButtonModule, MatSlideToggleModule,
-    TuiTitle, TuiHeader, MatSelectModule,
+    MatSelectModule,
     TuiInputModule,
     TuiSelectModule,
     TuiTextfieldControllerModule,
@@ -73,22 +72,16 @@ import { AddressValid } from '../../../utilities/validations/validaciones';
 })
 export class FormTodosComponent {
 
-
-
-  
   // ======================= start entradas de componente =======================
-  @Input({required: true})
-  title: string = '';
-
   @Input({required: true})
   actionDescriptio !: string;
 
   @Input()
   model?: PersonComplete = undefined;
 
+  @Output()
+  posteoForm = new EventEmitter<CreateModelPerson>();
   // ======================= end entradas de componente =======================
-
-
 
   // ======================= start salidas de componente =======================
 
@@ -97,8 +90,6 @@ export class FormTodosComponent {
   // posteoForm = new EventEmitter<CreateModelPerson>();
 
   // ======================= end salidas de componente =======================
-
-
   // ======================== start propiedades de configuración ========================
 
   activadorUser = new FormControl<boolean>(false, { nonNullable: true });
@@ -173,7 +164,6 @@ export class FormTodosComponent {
   private readonly dataBasicForm = inject(FormBuilder);
   private readonly userBuilderForm = inject(FormBuilder);
 
-
   // ================================ end formularios reactivos ================================
 
 
@@ -204,10 +194,8 @@ export class FormTodosComponent {
 
 
   // ==================================== start manejador de errores ==================================================
-
   ObtenerErrorCampoAndres() : string {
       let adress = this.form.controls.adress;
-
 
       if(adress.hasError('required')){
         return "el campo debe estar lleno"
@@ -221,38 +209,37 @@ export class FormTodosComponent {
   }
 
 
-
-
   // ==================================== end manejador de errores ==================================================
   ngOnChanges(): void {
-  if (!this.model) return;
+    if (!this.model) return;
+      const day = this.model.dataBasic?.brithDate ? parseTuiDay(this.model.dataBasic.brithDate) : null;
 
-  // texto -> TuiDay | null
-    const day = this.model.dataBasic?.brithDate ? parseTuiDay(this.model.dataBasic.brithDate) : null;
-
-    this.form.patchValue({
-      fisrtName: this.model.fisrtName,
-      secondName: this.model.secondName,
-      lastName: this.model.lastName,
-      secondLastName: this.model.secondLastName,
-      identification: this.model.identification ?? null,
-      documentTypeId: this.model.documentTypeId ?? null,
-      phone: this.model.phone ?? null,
-      gender: this.model.gender ?? null,
-      rhId: this.model.dataBasic?.rhId ?? null,
-      adress: this.model.dataBasic?.adress ?? '',
-      stratumStatus: !!this.model.dataBasic?.stratumStatus,
-      materialStatusId: this.model.dataBasic?.materialStatusId ?? null,
-      epsId: this.model.dataBasic?.epsId ?? null,
-      munisipalityId: this.model.dataBasic?.munisipalityId ?? null,
-      departamentId: null, // si aplica
-      // 👇 este SÍ es TuiDay | null
-      brithDate: day,
-      status: !!this.model.status ? true : false,
-    });
-    //this.form.patchValue(values); // cargar los datos en el formulario
+      this.form.patchValue({
+        fisrtName: this.model.fisrtName,
+        secondName: this.model.secondName,
+        lastName: this.model.lastName,
+        secondLastName: this.model.secondLastName,
+        identification: this.model.identification ?? null,
+        documentTypeId: this.model.documentTypeId ?? null,
+        phone: this.model.phone ?? null,
+        gender: this.model.gender ?? null,
+        rhId: this.model.dataBasic?.rhId ?? null,
+        adress: this.model.dataBasic?.adress ?? '',
+        stratumStatus: !!this.model.dataBasic?.stratumStatus,
+        materialStatusId: this.model.dataBasic?.materialStatusId ?? null,
+        epsId: this.model.dataBasic?.epsId ?? null,
+        munisipalityId: this.model.dataBasic?.munisipalityId ?? null,
+        departamentId: this.model.dataBasic.departamentId, // si aplica
+        brithDate: day,
+        status: !!this.model.status ? true : false
+      });
+    
+      
+      // sincroniza estado visual
+      this.form.markAsPristine();
+      this.form.updateValueAndValidity({ emitEvent: false });
+    // this.form.patchValue(values); // cargar los datos en el formulario
   }
-
 
   // =================================== start metodos del componente ===================================
 
@@ -260,8 +247,8 @@ export class FormTodosComponent {
     // extraccion data del fomulario
     let dataForm = this.form.getRawValue();
 
-    let preparacionData : PersonComplete = {
-
+    let preparacionData : CreateModelPerson = {
+      id: this.model?.id, 
       fisrtName: dataForm.fisrtName,
       secondName : dataForm.secondName,
       lastName: dataForm.lastName,
@@ -275,27 +262,17 @@ export class FormTodosComponent {
         brithDate: dataForm.brithDate ? formatTuiDay(dataForm.brithDate) : '',
         status: dataForm.status ? 1 : 0,
         stratumStatus: dataForm.stratumStatus ? 1 : 0,
-        personId: this.idPerson,
+        personId: this.model?.id,
         rhId: dataForm.rhId ?? 0,
         materialStatusId: dataForm.materialStatusId ?? 0, 
         epsId: dataForm.epsId ?? 0,
         munisipalityId: dataForm.munisipalityId ?? 0,
-        adress: dataForm.adress
+        adress: dataForm.adress,
+        id: this.model?.dataBasic.id
       }
     }
 
-    this.servicesPerson.crear(preparacionData).subscribe({
-      next: (data)=> {
-        // console.log(data)
-        this.idPerson = data.id;
-        this.alertService.mensage = "se registrado el usuario";
-        this.alertService.showDepositAlert();
-      },
-      error: err => {
-        // const errores = 
-        console.log('errores en la api')
-      }
-    });
+    this.posteoForm.emit(preparacionData);
   }
 
   createDataBasic() : void{
@@ -403,10 +380,23 @@ export class FormTodosComponent {
   };
 
   cargarMunicipio() : void {
+    if(this.model){
+      this.servicesMuncipality.MunicipiosDepart(this.model.dataBasic.departamentId).subscribe({
+        next: (data)=> {
+
+          this.municipality = data; 
+          // console.log(this.municipality)
+        },
+        error: (err)=>{
+          console.log(err)
+        }
+      });
+    }
+
     this.form.controls.departamentId.valueChanges.subscribe(val => {
       this.servicesMuncipality.MunicipiosDepart(val).subscribe(data =>{
         this.municipality = data;
-        console.log(this.municipality)
+        // console.log(this.municipality)
           this.municipalityNameById = new Map(this.municipality.map(d => [d.id, d.name]));
       });
     });    

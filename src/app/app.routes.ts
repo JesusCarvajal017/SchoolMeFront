@@ -23,6 +23,7 @@ import { LandingEpsComponent } from './page/eps/landing-eps/landing-eps.componen
 import { LandingMunicipalityComponent } from './page/municipality/landing-municipality/landing-municipality.component';
 import { LandingRhComponent } from './page/rh/landing-rh/landing-rh.component';
 import { LandingGroupsComponent } from './page/groups/landing-groups/landing-groups.component';
+import { ProfileComponent } from './page/user/profile/profile/profile.component';
 import { LandingHomeComponent } from './page/home/landing-home/landing-home.component';
 import { LandingGroupDirectorComponent } from './page/group-director/landing-group-director/landing-group-director.component';
 import { LandingAcademicLoadComponent } from './page/academic-load/landing-academic-load/landing-academic-load.component';
@@ -59,8 +60,9 @@ export const routes: Routes = [
             { path: 'municipio', component: LandingMunicipalityComponent, canActivate: [esAdminGuard]},
             { path: 'rh',  component: LandingRhComponent, canActivate: [esAdminGuard]},
             { path: 'grupos', component: LandingGroupsComponent, canActivate: [esAdminGuard]},
+            { path: 'perfil', component: ProfileComponent, canActivate: [esAdminGuard] },
             {path: 'directorGrupo', component: LandingGroupDirectorComponent, canActivate: [esAdminGuard]},
-            {path: 'cargaAcademica', component: LandingAcademicLoadComponent, canActivate: [esAdminGuard]},
+            {path: 'cargaAcademica', component: LandingAcademicLoadComponent, canActivate: [esAdminGuard]}
 
         ]
     },

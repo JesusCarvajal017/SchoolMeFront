@@ -1,13 +1,13 @@
 import { Component, inject, Input, numberAttribute, OnInit } from '@angular/core';
 import { FormPersonComponent } from '../../forms/form-person/form-person.component';
-import { CreateModelPerson, Person } from '../../../models/security/person.model';
+import { CreateModelPerson, Person, PersonOrigin } from '../../../models/security/person.model';
 import { PersonService } from '../../../service/person.service';
 import { Router, RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-editar-person',
-  imports: [FormPersonComponent],
+  imports: [],
   templateUrl: './editar-person.component.html',
   styleUrl: './editar-person.component.css'
 })
@@ -16,8 +16,8 @@ export class EditarPersonComponent implements OnInit {
   @Input({transform: numberAttribute})
   id!: number;
 
-  person: Person[] = [];
-  model?: Person;
+  person: PersonOrigin[] = [];
+  model?: PersonOrigin;
 
   servviceEntity = inject(PersonService); 
   router = inject(Router);

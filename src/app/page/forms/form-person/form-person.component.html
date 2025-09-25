@@ -8,7 +8,6 @@
 <div class="col-12 row">
     <div class="col-md-8">
         <mat-stepper [linear]="isLinear" #stepper>
-
             <mat-step [stepControl]="form" [editable]="isEditable">
                 <form [formGroup]="form" (submit)="createPerson()">
                     <!-- titulo -->

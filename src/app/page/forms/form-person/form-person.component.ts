@@ -28,7 +28,6 @@ import {MatStepperModule} from '@angular/material/stepper';
 import { DocumentsType } from '../../../models/parameters/DocumentType.model';
 import { Departament } from '../../../models/parameters/Departament.model';
 import {DepartamentServices } from '../../../service/parameters/Departament.service';
-import { MunicipalityService } from '../../../service/parameters/municipality.service';
 import { Municipality } from '../../../models/parameters/Municipality.model';
 import { Rh } from '../../../models/parameters/Rh';
 import { RhService } from '../../../service/parameters/rh.service';
@@ -44,7 +43,8 @@ import { CreateModolUser2 } from '../../../models/security/user.model';
 import { DataBasicService } from '../../../service/business/dataBasic.service';
 import { UserService } from '../../../service/user.service';
 import { AddressValid } from '../../../utilities/validations/validaciones';
-import { CreateDataBasic, DataBasic } from '../../../models/business/dataBasic.mode';
+import { CreateDataBasic, DataBasic } from '../../../models/business/dataBasic.mode'; 
+import { MunicipalityService } from '../../../service/parameters/Municipality.service';
 
 // import { createIdToNameStringify } from '../../../utilities/selectId';
 
@@ -285,28 +285,28 @@ export class FormPersonComponent implements OnInit,OnChanges {
     // extraccion data del fomulario
     let dataForm = this.form.getRawValue();
 
-    let preparacionData : CreateModelPerson = {
-      ...dataForm,
-      identification: dataForm.identification ?? undefined,
-      documentTypeId: dataForm.documentTypeId ?? 0,
-      phone: dataForm.phone ?? 0,
-      gender: dataForm.gender ?? 0,
-      status: this.form.controls['status'].value ? 1 : 0
-    }
+    // let preparacionData : CreateModelPerson = {s
+    //   ...dataForm,
+    //   identification: dataForm.identification ?? undefined,
+    //   documentTypeId: dataForm.documentTypeId ?? 0,
+    //   phone: dataForm.phone ?? 0,
+    //   gender: dataForm.gender ?? 0,
+    //   status: this.form.controls['status'].value ? 1 : 0
+    // }
 
-    this.servicesPerson.crear(preparacionData).subscribe({
-      next: (data)=> {
-        // console.log(data)
-        this.idPerson = data.id;
-        this.alertService.mensage = "se registrado el usuario";
-        this.alertService.showDepositAlert();
-      },
-      error: err => {
-        // const errores = 
-        console.log('errores en la api')
-      }
+    // this.servicesPerson.crear(preparacionData).subscribe({
+    //   next: (data)=> {
+    //     // console.log(data)
+    //     this.idPerson = data.id;
+    //     this.alertService.mensage = "se registrado el usuario";
+    //     this.alertService.showDepositAlert();
+    //   },
+    //   error: err => {
+    //     // const errores = 
+    //     console.log('errores en la api')
+    //   }
 
-    });
+    // });
   }
 
   createDataBasic() : void{
@@ -397,17 +397,7 @@ export class FormPersonComponent implements OnInit,OnChanges {
     // console.log(capture)
   }
 
-
-
-
-
   // =================================== end metodos del componente ===================================
-  
-
-
-
-
-
 
   // ==================================================== parche  de selects =================================================
 
@@ -430,7 +420,6 @@ export class FormPersonComponent implements OnInit,OnChanges {
     const id = typeof v === 'string' ? Number(v) : v;
     return this.DepartamentNameById.get(id) ?? '';
   };
-
 
   cargarDepartamento() : void {
     this.servicesDepartament.obtenerTodos().subscribe(data =>{
