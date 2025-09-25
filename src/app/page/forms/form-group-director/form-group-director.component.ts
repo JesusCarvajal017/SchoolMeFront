@@ -4,7 +4,7 @@ import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angu
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { CreateModelUserRol, UserRol } from '../../../models/security/user-rol.model';
+import { CreateModelGroupDirector, GroupDirector } from '../../../models/business/group-director.model';
 import { RouterLink } from '@angular/router';
 
 import { TuiHeader } from '@taiga-ui/layout';
@@ -16,10 +16,8 @@ import { MatIconModule } from "@angular/material/icon";
 import { CommonModule } from '@angular/common';
 
 // Importar servicios para obtener usuarios y roles
+import { TeacherService, Teacher } from '../../../service/parameters/teacher.service';
 import { GroupsService } from '../../../service/parameters/groups.service';
-import { TeacherService } from '../../../service/parameters/teacher.service';
-import { Teacher } from '../../../models/parameters/teacher.model';
-import { CreateModelGroupDirector, GroupDirector } from '../../../models/business/group-director.model';
 import { Groups } from '../../../models/parameters/groups.model';
 
 
@@ -62,33 +60,108 @@ export class FormGroupDirectorComponent implements OnInit, OnChanges {
   posteoForm = new EventEmitter<CreateModelGroupDirector>();
 
   // Listas para los dropdowns
-  groups: Groups[] = [];
   teachers: Teacher[] = [];
+  groups: Groups[] = [];
+
+  // Loading states
+  loadingTeachers = false;
+  loadingGroups = false;
 
   private readonly formBuilder = inject(FormBuilder);
-  private readonly groupsService = inject(GroupsService);
   private readonly teacherService = inject(TeacherService);
+  private readonly groupsService = inject(GroupsService);
 
   form = this.formBuilder.nonNullable.group({
-    groupsId: [0, { validators: [Validators.required, Validators.min(1)] }],
     teacherId: [0, { validators: [Validators.required, Validators.min(1)] }],
+    groupsId: [0, { validators: [Validators.required, Validators.min(1)] }],
     status: [true],
   });
 
   ngOnInit(): void {
-    this.cargarGroup();
+    this.loadUsers();
+    this.loadRoles();
     this.cargarTeacher();
+    this.cargarGroup();
   }
 
   ngOnChanges(): void {
     if (this.model) {
       let values = {
-        groupsId: this.model.groupId,
         teacherId: this.model.teacherId,
+        groupsId: this.model.groupId,
         status: this.model.status == 1 ? true : false,
       }
       this.form.patchValue(values);
     }
+  }
+
+  // Cargar usuarios desde el servicio
+  loadUsers(): void {
+    this.loadingTeachers = true;
+    this.teacherService.obtenerTodos(1).subscribe({
+      next: (data) => {
+        this.teachers = data;
+        this.loadingTeachers = false;
+      },
+      error: (err) => {
+        console.error('Error cargando usuarios:', err);
+        this.loadingTeachers = false;
+      }
+    });
+  }
+
+  // Cargar roles desde el servicio
+  loadRoles(): void {
+    this.loadingGroups = true;
+    this.groupsService.obtenerTodos(1).subscribe({
+      next: (data) => {
+        this.groups = data;
+        this.loadingGroups = false;
+      },
+      error: (err) => {
+        console.error('Error cargando roles:', err);
+        this.loadingGroups = false;
+      }
+    });
+  }
+
+  // Obtener nombre del usuario seleccionado
+  getSelectedTeacherName(): string {
+    const teacherId = this.form.get('teacherId')?.value;
+    const teacher = this.teachers.find(u => u.id === teacherId);
+    return teacher ? teacher.fullName : '';
+  }
+
+  // Obtener nombre del rol seleccionado
+  getSelectedGroupsName(): string {
+    const groupsId = this.form.get('groupsId')?.value;
+    const group = this.groups.find(r => r.id === groupsId);
+    return group ? group.name : '';
+  }
+
+  // Función principal para emitir los valores del formulario
+  emitirValoresForm(): void {
+    if (this.form.valid) {
+      let capture = this.form.getRawValue();
+
+      const dataGroupDirector: CreateModelGroupDirector = {
+        id: this.model?.id || 0,
+        teacherId: capture.teacherId,
+        groupId: capture.groupsId,
+        fisrtName: this.getSelectedTeacherName(),
+        groupName: this.getSelectedGroupsName(),
+        status: capture.status ? 1 : 0,
+        secondName: '',
+        lastName: '',
+        secondLastName: ''
+      }
+
+      this.posteoForm.emit(dataGroupDirector);
+    }
+  }
+
+  guardarCambios(): void {
+    this.emitirValoresForm();
   }
 
   // solucion de los select taiga

@@ -8,6 +8,5 @@ export interface CreateModelTeacher{
     id: number;
     personId: number;
     fullName: string;
-    secondLastName: string;
     status: number;
 }
