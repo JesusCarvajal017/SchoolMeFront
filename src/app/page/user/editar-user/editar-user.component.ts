@@ -31,7 +31,7 @@ export class EditarUserComponent implements OnInit{
   }
 
 
-  guardarCambios(data: CreateModelUser){
+  guardarUsuario(data: CreateModelUser){
     let dataUpdate : any = {
       ...data,
       id: this.id

@@ -27,6 +27,7 @@ import { ProfileComponent } from './page/user/profile/profile/profile.component'
 import { LandingHomeComponent } from './page/home/landing-home/landing-home.component';
 import { LandingGroupDirectorComponent } from './page/group-director/landing-group-director/landing-group-director.component';
 import { AjustesSecurityComponent } from './page/user/ajustes-security/ajustes-security.component';
+import { LandingAcademicLoadComponent } from './page/academic-load/landing-academic-load/landing-academic-load.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -63,6 +64,8 @@ export const routes: Routes = [
             { path: 'perfil', component: ProfileComponent, canActivate: [esAdminGuard] },
             { path: 'ajustes-security', component: AjustesSecurityComponent },
             {path: 'directorGrupo', component: LandingGroupDirectorComponent, canActivate: [esAdminGuard]}
+            {path: 'directorGrupo', component: LandingGroupDirectorComponent, canActivate: [esAdminGuard]},
+            {path: 'cargaAcademica', component: LandingAcademicLoadComponent, canActivate: [esAdminGuard]}
 
         ]
     },

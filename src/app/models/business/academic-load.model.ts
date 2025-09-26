@@ -1,22 +1,22 @@
 export interface AcademicLoad {
     id: number;
     teacherId: number;
-    teacherName: string;
+    fullName: string;
     subjectId: number;
     subjectName: string;
     groupId: number;
-    nameGroup: string;
-    day: string;
+    groupName: string;
+    days: string;
     status: number;
 }
 export interface CreateModelAcademicLoad{
     id: number;
     teacherId: number;
-    teacherName: string;
+    fullName: string;
     subjectId: number;
     subjectName: string;
     groupId: number;
     groupName: string;
-    day: string;
+    days: string;
     status: number;
 }

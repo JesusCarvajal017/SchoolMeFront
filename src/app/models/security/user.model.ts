@@ -3,7 +3,8 @@ export interface User {
     id: number;
     email: string;
     password: string;
-    photo: string;
+    photo: File;
+    personId: number;
     status: number;
     personId: number,
 }
@@ -15,6 +16,7 @@ export interface CreateModelUser{
 }
 
 export interface CreateModolUser2{
+    id?: number,
     photo?: File,
     email: string;
     password: string;

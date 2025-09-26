@@ -1,1 +1,5 @@
-<app-form-user [title]="title" (posteoForm)="guardarCambios($event)" [actionDescription]="'Registrar'"></app-form-user>
+<app-form-user 
+    [title]="'Crear Usuario'" 
+    [actionDescriptio]="'Registrar'"
+    (posteoForm)="guardarUsuario($event)">
+</app-form-user>

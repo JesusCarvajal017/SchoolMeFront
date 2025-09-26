@@ -102,6 +102,14 @@ public updateUserEmail(userId: number, email: string, personId: number, status: 
     
     return formData;
   }
+
+  // Agregar este método a tu UserService
+public updateUserComplete(id: number, user: CreateModolUser2): Observable<any> {
+  const formData = this.construirFormData(user);
+  return this.http.put(`${this.urlBase}/${id}`, formData);
+}
+
+
 }
 
 
