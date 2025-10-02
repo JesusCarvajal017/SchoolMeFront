@@ -63,8 +63,8 @@ export const routes: Routes = [
             { path: 'grupos', component: LandingGroupsComponent, canActivate: [esAdminGuard]},
             { path: 'perfil', component: ProfileComponent, canActivate: [esAdminGuard] },
             { path: 'ajustes-security', component: AjustesSecurityComponent },
-            {path: 'directorGrupo', component: LandingGroupDirectorComponent, canActivate: [esAdminGuard]}
             {path: 'directorGrupo', component: LandingGroupDirectorComponent, canActivate: [esAdminGuard]},
+
             {path: 'cargaAcademica', component: LandingAcademicLoadComponent, canActivate: [esAdminGuard]}
 
         ]

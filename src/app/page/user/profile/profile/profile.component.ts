@@ -23,86 +23,73 @@ interface UserProfile {
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent implements OnInit, OnDestroy {
+export class ProfileComponent implements OnInit {
+
+  // ****************** servicios ******************
   private userService = inject(UserService);
   private personService = inject(PersonService);
   private authService = inject(AuthMainService);
+
+
   private destroy$ = new Subject<void>();
 
+  // ****************** pripiedades de contro o indicadores de funciones ******************
   isLoading = true;
   hasError = false;
   errorMessage = '';
   isUploadingImage = false;
 
-  userProfile: UserProfile | null = null;
   profileImageUrl = './icons/default.png';
 
+  // ********************* modelos *********************
+  userProfile: UserProfile | null = null;
+
   ngOnInit(): void {
-    if (!this.authService.isAuthenticated()) {
-      this.hasError = true;
-      this.errorMessage = 'Usuario no autenticado. Por favor inicia sesión.';
-      this.isLoading = false;
-      return;
-    }
-
-    this.authService.currentUser$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(user => {
-        if (user && this.authService.isAuthenticated()) {
-          this.loadUserProfile();
-        } else if (this.authService.isAuthenticated()) {
-          this.authService.refreshUserFromToken();
-        }
-      });
-
     this.loadUserProfile();
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
+  // carga la información del perfil
+  public loadUserProfile(): void {
 
-  // HAZ ESTE MÉTODO PÚBLICO: lo usas en el botón "Reintentar" del HTML
-  loadUserProfile(): void {
     this.isLoading = true;
     this.hasError = false;
     this.errorMessage = '';
 
-    const currentUserId = this.authService.getCurrentUserId();
-    if (!currentUserId) {
-      this.hasError = true;
-      this.errorMessage = 'Usuario no autenticado.';
-      this.isLoading = false;
-      return;
-    }
+    // obteneindo el id de usuario 
+    let idUser : number = this.authService.obtenerIdUser();
 
-    this.userService.obtenerPorId(currentUserId).subscribe({
+    // consulta la data de usuario
+    this.userService.obtenerPorId(idUser).subscribe({
       next: (user: User) => {
+        console.log(user);
 
-        //carga de informacion
+        //carga de informacion de la persona, con el id de person
         this.personService.obtenerPersonData(user.personId).subscribe({
           next: (personData: PersonData) => {
             this.userProfile = { user, person: personData };
+
             this.loadProfileImage(user);
             this.isLoading = false;
+            console.log(personData);
           },
-          error: () => {
+          error: (err) => {
             this.hasError = true;
             this.errorMessage = 'No se pudo cargar la información personal.';
             this.isLoading = false;
+            console.log(err)
           }
         });
       },
       error: () => {
+        console.log("no funciona la data")
         this.hasError = true;
         this.errorMessage = 'No se pudo cargar el perfil del usuario.';
         this.isLoading = false;
       }
     });
   }
-
-  // HAZ ESTE MÉTODO PÚBLICO: lo llamas desde el template en (error)
+ 
+  // obtencion de data de img de usuario
   resolveProfileImage(user: User | undefined): string {
     const photo = (user as any)?.photo as string | undefined;
 
@@ -112,6 +99,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     return `./icons/default.png`;
   }
 
+  // funcion de puente obtencion img user
   private loadProfileImage(user: User): void {
     this.profileImageUrl = this.resolveProfileImage(user);
   }
@@ -210,9 +198,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   get infoList() {
-
-
-
     if (!this.userProfile) return [];
     const { user, person } = this.userProfile;
 

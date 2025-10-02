@@ -51,35 +51,29 @@
                   <div class="col-2 d-flex justify-content-end">
                     <tui-avatar tuiDropdownHover tuiDropdownMobile="Contact Us" tuiIconButton type="button" [tuiDropdown]="dropdown" src="@tui.user" size="m"/>
 
+                    <!-- despligue de menu de perfil -->
                     <ng-template #dropdown>
-                        <tui-data-list>
-                            <a
-                                iconStart="assets/icons/github.svg"
-                                new
-                                rel="noreferrer"
-                                tuiOption
-                                (click)="cerrarSession()"
-                            >
-                                <mat-icon class="m-1">exit_to_app</mat-icon>
-                                Salir
-                            </a>
-                            
-                        </tui-data-list>
-                    
-
-                    
-                        <tui-data-list>
-                            <a
-                                [routerLink]="['/dashboard/perfil']"
-                                iconStart="assets/icons/github.svg"
-                                tuiOption
-                            >
-                                <mat-icon class="m-1">Users</mat-icon>
-                                Perfil
-                            </a>
-                            
-                        </tui-data-list>
-                    </ng-template>
+                      <tui-data-list>
+                        <a
+                          [routerLink]="['/dashboard/perfil']"
+                          iconStart="assets/icons/github.svg"
+                          tuiOption
+                          >
+                          <mat-icon class="m-1">account_circle</mat-icon>
+                          Perfil
+                        </a>
+                      </tui-data-list>
+                      <tui-data-list>
+                          <a
+                              tuiOption
+                              (click)="cerrarSession()"
+                          >
+                              <mat-icon class="m-1">exit_to_app</mat-icon>
+                              Salir
+                          </a>
+                          
+                      </tui-data-list>
+                  </ng-template>
                     
                   </div>
                       <!-- </section> -->
