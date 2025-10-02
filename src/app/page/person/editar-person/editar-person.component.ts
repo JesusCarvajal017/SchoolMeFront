@@ -1,5 +1,4 @@
 import { Component, inject, Input, numberAttribute, OnInit } from '@angular/core';
-import { FormPersonComponent } from '../../forms/form-person/form-person.component';
 import { CreateModelPerson, Person, PersonOrigin } from '../../../models/security/person.model';
 import { PersonService } from '../../../service/person.service';
 import { Router, RouterLink } from '@angular/router';

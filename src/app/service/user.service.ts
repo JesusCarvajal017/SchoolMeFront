@@ -52,16 +52,16 @@ export class UserService extends GenericService<User, CreateModelUser, ModelLogi
   }
 
   // Cambiar contraseña
-public changePassword(idUser: number, passwordNew: string, passwordConfirm: string): Observable<boolean> {
-  const payload = { idUser, passwordNew, passwordConfirm };
-  return this.http.post<boolean>(`${this.urlBase}/passwordUpdate`, payload);
-}
+  public changePassword(idUser: number, passwordNew: string, passwordConfirm: string): Observable<boolean> {
+    const payload = { idUser, passwordNew, passwordConfirm };
+    return this.http.post<boolean>(`${this.urlBase}/passwordUpdate`, payload);
+  }
 
-// Actualizar correo electrónico
-public updateUserEmail(userId: number, email: string, personId: number, status: number): Observable<User> {
-  const payload = { id: userId, email, personId, status };
-  return this.http.patch<User>(`${this.urlBase}`, payload);
-}
+  // Actualizar correo electrónico
+  public updateUserEmail(userId: number, email: string, personId: number, status: number): Observable<User> {
+    const payload = { id: userId, email, personId, status };
+    return this.http.patch<User>(`${this.urlBase}`, payload);
+  }
 
   // Método para actualizar usuario completo (sin cambiar imagen si no se proporciona)
   public updateUserProfile(userId: number, userData: Partial<CreateModolUser2>): Observable<any> {
@@ -102,6 +102,14 @@ public updateUserEmail(userId: number, email: string, personId: number, status: 
     
     return formData;
   }
+
+  // Agregar este método a tu UserService
+  public updateUserComplete(id: number, user: CreateModolUser2): Observable<any> {
+    const formData = this.construirFormData(user);
+    return this.http.put(`${this.urlBase}/${id}`, formData);
+  }
+
+
 }
 
 

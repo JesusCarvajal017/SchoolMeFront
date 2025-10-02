@@ -4,6 +4,7 @@ export interface User {
     email: string;
     password: string;
     photo: string;
+    personId: number;
     status: number;
 }
 
@@ -14,6 +15,7 @@ export interface CreateModelUser{
 }
 
 export interface CreateModolUser2{
+    id?: number,
     photo?: File,
     email: string;
     password: string;

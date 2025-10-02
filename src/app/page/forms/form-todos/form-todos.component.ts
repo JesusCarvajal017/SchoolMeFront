@@ -248,9 +248,9 @@ export class FormTodosComponent {
     let dataForm = this.form.getRawValue();
 
     let preparacionData : CreateModelPerson = {
-      id: this.model?.id, 
+      id: this.model?.id,
       fisrtName: dataForm.fisrtName,
-      secondName : dataForm.secondName,
+      secondName: dataForm.secondName,
       lastName: dataForm.lastName,
       secondLastName: dataForm.secondLastName,
       identification: dataForm.identification ?? 0,
@@ -264,12 +264,13 @@ export class FormTodosComponent {
         stratumStatus: dataForm.stratumStatus ? 1 : 0,
         personId: this.model?.id,
         rhId: dataForm.rhId ?? 0,
-        materialStatusId: dataForm.materialStatusId ?? 0, 
+        materialStatusId: dataForm.materialStatusId ?? 0,
         epsId: dataForm.epsId ?? 0,
         munisipalityId: dataForm.munisipalityId ?? 0,
         adress: dataForm.adress,
         id: this.model?.dataBasic.id
-      }
+      },
+      fullName: ''
     }
 
     this.posteoForm.emit(preparacionData);

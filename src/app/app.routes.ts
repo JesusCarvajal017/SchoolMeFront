@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { LadingPageComponent } from './page/person/lading-page/lading-page.component';
 import { NotFoundComponent } from './page/not-found/not-found/not-found.component';
-import { CrearPersonComponent } from './page/person/crear-person/crear-person.component';
 import { EditarPersonComponent } from './page/person/editar-person/editar-person.component';
 import { LandingUserComponent } from './page/user/landing-user/landing-user.component';
 import { CrearUserComponent } from './page/user/crear-user/crear-user.component';
@@ -27,6 +26,10 @@ import { ProfileComponent } from './page/user/profile/profile/profile.component'
 import { LandingHomeComponent } from './page/home/landing-home/landing-home.component';
 import { LandingGroupDirectorComponent } from './page/group-director/landing-group-director/landing-group-director.component';
 import { AjustesSecurityComponent } from './page/user/ajustes-security/ajustes-security.component';
+import { LandingAcademicLoadComponent } from './page/academic-load/landing-academic-load/landing-academic-load.component';
+import { LandingStudentComponent } from './page/student/landing-student/landing-student.component';
+import { LandingTeacherComponent } from './page/teacher/landing-teacher/landing-teacher.component';
+import { LandingAttendantsComponent } from './page/attendants/landing-attendants/landing-attendants.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -42,7 +45,6 @@ export const routes: Routes = [
         children: [
             { path: '', component: LandingHomeComponent, canActivate: [esAdminGuard]  },
             { path: 'todos', component: LadingPageComponent, canActivate: [esAdminGuard]  },
-            { path: 'todos/crear', component: CrearPersonComponent },
             { path: 'todos/editar/:id', component: EditarPersonComponent, canActivate: [esAdminGuard]},
             { path: 'usuarios', component: LandingUserComponent , canActivate: [esAdminGuard]},
             { path: 'user/crear', component: CrearUserComponent},
@@ -62,7 +64,11 @@ export const routes: Routes = [
             { path: 'grupos', component: LandingGroupsComponent, canActivate: [esAdminGuard]},
             { path: 'perfil', component: ProfileComponent, canActivate: [esAdminGuard] },
             { path: 'ajustes-security', component: AjustesSecurityComponent },
-            {path: 'directorGrupo', component: LandingGroupDirectorComponent, canActivate: [esAdminGuard]}
+            {path: 'directorGrupo', component: LandingGroupDirectorComponent, canActivate: [esAdminGuard]},
+            {path: 'cargaAcademica', component: LandingAcademicLoadComponent, canActivate: [esAdminGuard]},
+            {path: 'ninos', component: LandingStudentComponent, canActivate: [esAdminGuard]},
+            {path: 'docentes' , component: LandingTeacherComponent, canActivate: [esAdminGuard]},
+            {path: 'acudientes' , component: LandingAttendantsComponent, canActivate: [esAdminGuard]}
 
         ]
     },

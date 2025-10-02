@@ -110,11 +110,29 @@ header .count {
 .custom-table tr:hover td {
   background: #f7f7f7;
 }
+/* Columna de acciones */
 .actions-col {
   display: flex;
-  gap: 8px;
+  justify-content: center;  /* centra horizontal */
+  align-items: center;      /* centra vertical */
+  gap: 6px;                 /* espacio entre iconos */
+}
+
+/* Forzar que todos los botones sean iguales */
+.actions-col button[mat-icon-button] {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
   align-items: center;
 }
+
+
+
+
 
 /* Paginación */
 .pagination {

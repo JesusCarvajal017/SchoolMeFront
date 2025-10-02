@@ -14,12 +14,12 @@ import Swal from 'sweetalert2';
   styleUrl: './crear-user.component.css'
 })
 export class CrearUserComponent {
-  title = 'Registar Usuario';
+  title = 'Registrar Usuario';
 
   router = inject(Router);
   serviceUser = inject(UserService);
 
-  guardarCambios(data: CreateModelUser){
+  guardarUsuario(data: CreateModelUser){
     this.serviceUser.crear(data).subscribe({
       next: () => {
         Swal.fire("Exitoso", "Registro exitoso", "success"); // alerta de swalalert

@@ -21,7 +21,7 @@
   <div class="col-12 row ">
     <div class="col-6">
       <div class="tabs">
-        <button [ngClass]="{'active' : idicadorActive}" (click)="cambiarStatus(1)" >Activos</button>
+        <button [ngClass]="{'active' : idicadorActive}" (click)="cambiarStatus(1)">Activos</button>
         <button [ngClass]="{'active' : idicadorActive == 0}" (click)="cambiarStatus(0)">Inactivos</button>
       </div>
     </div>
@@ -30,12 +30,7 @@
       <div class="actions">
         <div class="search-box m-1">
           <mat-icon>search</mat-icon>
-          <input
-            #searchInput
-            type="text"
-            placeholder="Buscar..."
-            (input)="onSearch(searchInput.value)"
-          />
+          <input #searchInput type="text" placeholder="Buscar..." (input)="onSearch(searchInput.value)" />
         </div>
       </div>
     </div>
@@ -54,36 +49,32 @@
     </thead>
     <tbody>
       @for (item of paginatedUsers; track $index) {
-        <tr>
-          <td>{{ ($index + 1) + (currentPage - 1) * pageSize }}</td>
-          <td>{{ item.acronym }}</td>
-          <td>{{ item.name }}</td>
+      <tr>
+        <td>{{ ($index + 1) + (currentPage - 1) * pageSize }}</td>
+        <td>{{ item.acronym }}</td>
+        <td>{{ item.name }}</td>
 
-          <td>
-            <mat-slide-toggle
-              [checked]="item.status === 1"
-              (change)="logical($event, item.id)"
-            ></mat-slide-toggle>
-          </td>
-          <td class="actions-col">
-            <a mat-icon-button>
-              <!-- CAMBIO: Pasar el item al modal para edición -->
-              <mat-icon (click)="modalCommand('Editar tipo de documento', item)">edit</mat-icon>
-            </a>
-            <button
-              mat-icon-button
-              [swal]="{
-                title: 'Confirmacion',
-                text: '¿Deseas borrar este registro?',
-                showCancelButton: true
-              }"
-              (confirm)="deleteRegister(item.id)"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
+        <td>
+          <mat-slide-toggle [checked]="item.status === 1" (change)="logical($event, item.id)"></mat-slide-toggle>
+        </td>
+        <td class="actions-col">
+          <button mat-icon-button (click)="modalCommand('Editar grado', item)">
+            <mat-icon>edit</mat-icon>
+          </button>
+
+          <button mat-icon-button [swal]="{
+            title: 'Confirmacion',
+            text: '¿Deseas borrar este registro?',
+            showCancelButton: true
+          }" (confirm)="deleteRegister(item.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+
+          <button mat-icon-button>
             <mat-icon>more_vert</mat-icon>
-          </td>
-        </tr>
+          </button>
+        </td>
+      </tr>
       }
     </tbody>
   </table>
@@ -94,34 +85,21 @@
       &lt;
     </button>
 
-    <button
-      *ngFor="let page of [].constructor(totalPages); let i = index"
-      (click)="changePage(i + 1)"
-      [class.active]="currentPage === i + 1"
-    >
+    <button *ngFor="let page of [].constructor(totalPages); let i = index" (click)="changePage(i + 1)"
+      [class.active]="currentPage === i + 1">
       {{ i + 1 }}
     </button>
 
-    <button
-      (click)="changePage(currentPage + 1)"
-      [disabled]="currentPage === totalPages"
-    >
+    <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">
       &gt;
     </button>
   </div>
 </section>
 
-<ng-template
-    let-observer
-    [tuiDialogOptions]="{label: titleForm, size: 'l'}"
-    [(tuiDialog)]="open"
->
-    <div class="modal-content">
-        <app-form-document-type 
-            [title]="titleForm" 
-            [actionDescriptio]="isEditMode ? 'Actualizar' : 'Crear'"
-            [model]="modelDocument"
-            (posteoForm)="handleDocumentTypeSubmit($event)">
-        </app-form-document-type>
-    </div>
+<ng-template let-observer [tuiDialogOptions]="{label: titleForm, size: 'l'}" [(tuiDialog)]="open">
+  <div class="modal-content">
+    <app-form-document-type [title]="titleForm" [actionDescriptio]="isEditMode ? 'Actualizar' : 'Crear'"
+      [model]="modelDocument" (posteoForm)="handleDocumentTypeSubmit($event)">
+    </app-form-document-type>
+  </div>
 </ng-template>

@@ -63,13 +63,12 @@ export class AjustesSecurityComponent {
 
   // Cambiar contraseña
   submitPassword(): void {
-    if (!this.auth.isAuthenticated()) return;
     if (this.passwordForm.invalid) {
       this.openResultModal('Por favor completa correctamente los campos de contraseña', 'error');
       return;
     }
 
-    const idUser = this.auth.getCurrentUserId();
+    const idUser = this.auth.obtenerIdUser();
     if (!idUser) {
       this.openResultModal('No se encontró el usuario autenticado', 'error');
       return;
@@ -97,15 +96,15 @@ export class AjustesSecurityComponent {
   }
 
   // Cambiar correo
-  submitEmail(): void {
-    if (!this.auth.isAuthenticated()) return;
+  async submitEmail() {
     if (this.emailForm.invalid) {
       this.openResultModal('Por favor ingresa un correo válido', 'error');
       return;
     }
 
-    const idUser = this.auth.getCurrentUserId();
-    const personId = this.auth.getCurrentPersonId();
+    const idUser = this.auth.obtenerIdUser();
+    const personId = await this.auth.obtenerIdPerson();
+
     if (!idUser || !personId) {
       this.openResultModal('No se encontró el usuario o persona autenticada', 'error');
       return;
