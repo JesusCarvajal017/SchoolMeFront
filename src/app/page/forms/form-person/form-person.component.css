@@ -1,14 +1,22 @@
+.container-photo{
+    position: relative ;
+    /* overflow: hidden; */
+}
+
 .avatar-user{
     width: 150px;
     height: 150px;
     background-color: rgb(221, 221, 221);
     border-radius: 50%;
     border: 2px solid var(--primary);
-    position: relative ;
+    /* position: relative ; */
+    overflow: hidden;
 }
 
 .avatar-user img{
     width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .avatar-user-not{
@@ -23,11 +31,9 @@
     width: 100%;
 }
 
-
-
 .edit-photo{
     position: absolute !important;
-    bottom: 5px;  /* 👈 distancia desde abajo */
+    bottom: 15px;  /* 👈 distancia desde abajo */
     right: 5px;   
 
     display: flex;
@@ -36,10 +42,14 @@
     width: 27px;
     height: 27px;
     border-radius: 5px;
-    background-color: rgb(12, 77, 255);
+    background-color: rgb(89, 132, 250);
+    /* z-index: 10000; */
 }
 .icon-photo{
-    color: #2b2b2b;
+    color: #ffffff;
+    &:hover{
+        color: #ffffff70;
+    }
 }
 
 

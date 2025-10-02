@@ -59,7 +59,7 @@ export class LandingEpsComponent implements OnInit {
   idicadorActive : number = 1;
 
   // titulo de los modales, segun la acción a relizar del crud
-  titleEps!: string;
+  titleAction!: string;
 
   // NUEVAS PROPIEDADES PARA EL MODAL
   modelEps?: Eps; // Para editar un rol existente
@@ -70,7 +70,7 @@ export class LandingEpsComponent implements OnInit {
 
   // MÉTODO ACTUALIZADO para manejar creación y edición
   protected modalCommand(title: string, eps?: Eps): void { 
-      this.titleEps = title;
+      this.titleAction = title;
       this.isEditMode = !!eps; // true si rol existe, false si es undefined
       this.modelEps = eps; // undefined para crear, objeto Rol para editar
       this.open = true;
@@ -198,9 +198,9 @@ export class LandingEpsComponent implements OnInit {
   // activar/desactivar rol
   logical(event: any, id: number) {
     let value: number = event.checked ? 1 : 0;
-    let dataSend = { status: value };
 
-    this.serviceEps.eliminarLogico(id, dataSend).subscribe({
+
+    this.serviceEps.eliminarLogico(id, value).subscribe({
       next: () => {
         this.cargarData(this.idicadorActive);
         this.showNotification('Se ha cambiado el estado');

@@ -24,6 +24,9 @@ import { LandingMunicipalityComponent } from './page/municipality/landing-munici
 import { LandingRhComponent } from './page/rh/landing-rh/landing-rh.component';
 import { LandingGroupsComponent } from './page/groups/landing-groups/landing-groups.component';
 import { ProfileComponent } from './page/user/profile/profile/profile.component';
+import { LandingHomeComponent } from './page/home/landing-home/landing-home.component';
+import { LandingGroupDirectorComponent } from './page/group-director/landing-group-director/landing-group-director.component';
+import { AjustesSecurityComponent } from './page/user/ajustes-security/ajustes-security.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -37,6 +40,7 @@ export const routes: Routes = [
         component: DashboardComponent,
         canActivate: [esAdminGuard],
         children: [
+            { path: '', component: LandingHomeComponent, canActivate: [esAdminGuard]  },
             { path: 'todos', component: LadingPageComponent, canActivate: [esAdminGuard]  },
             { path: 'todos/crear', component: CrearPersonComponent },
             { path: 'todos/editar/:id', component: EditarPersonComponent, canActivate: [esAdminGuard]},
@@ -57,6 +61,8 @@ export const routes: Routes = [
             { path: 'rh',  component: LandingRhComponent, canActivate: [esAdminGuard]},
             { path: 'grupos', component: LandingGroupsComponent, canActivate: [esAdminGuard]},
             { path: 'perfil', component: ProfileComponent, canActivate: [esAdminGuard] },
+            { path: 'ajustes-security', component: AjustesSecurityComponent },
+            {path: 'directorGrupo', component: LandingGroupDirectorComponent, canActivate: [esAdminGuard]}
 
         ]
     },

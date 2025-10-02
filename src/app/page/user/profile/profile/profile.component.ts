@@ -1,71 +1,95 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Person } from '../../../../models/security/person.model';
+import { Subject, takeUntil } from 'rxjs';
+import { PersonData } from '../../../../models/security/person.model';
 import { PersonService } from '../../../../service/person.service';
 import { User, UserService } from '../../../../service/user.service';
-
+import { AuthMainService } from '../../../../service/auth/auth-main.service';
+import { environment } from '../../../../../environments/environment.development';
+import { GenderType } from '../../../../global/model/enumGenero';
+import { RouterLink } from '@angular/router';
 
 
 interface UserProfile {
   user: User;
-  person: Person;
-}
-
-interface InfoItem {
-  icon: string;
-  label: string;
-  value: string;
-  type?: 'text' | 'email' | 'phone' | 'date';
+  person: PersonData;
 }
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
   private userService = inject(UserService);
   private personService = inject(PersonService);
+  private authService = inject(AuthMainService);
+  private destroy$ = new Subject<void>();
 
-  // Estado
   isLoading = true;
   hasError = false;
   errorMessage = '';
+  isUploadingImage = false;
 
-  // Datos
   userProfile: UserProfile | null = null;
-  profileImageUrl = 'assets/images/default-avatar.jpg';
+  profileImageUrl = './icons/default.png';
 
   ngOnInit(): void {
+    if (!this.authService.isAuthenticated()) {
+      this.hasError = true;
+      this.errorMessage = 'Usuario no autenticado. Por favor inicia sesión.';
+      this.isLoading = false;
+      return;
+    }
+
+    this.authService.currentUser$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(user => {
+        if (user && this.authService.isAuthenticated()) {
+          this.loadUserProfile();
+        } else if (this.authService.isAuthenticated()) {
+          this.authService.refreshUserFromToken();
+        }
+      });
+
     this.loadUserProfile();
   }
 
-  // Carga de perfil (User -> Person)
-  private loadUserProfile(): void {
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  // HAZ ESTE MÉTODO PÚBLICO: lo usas en el botón "Reintentar" del HTML
+  loadUserProfile(): void {
     this.isLoading = true;
     this.hasError = false;
     this.errorMessage = '';
 
-    const currentUserId = 1; // TODO: reemplazar por ID real desde tu AuthService
+    const currentUserId = this.authService.getCurrentUserId();
+    if (!currentUserId) {
+      this.hasError = true;
+      this.errorMessage = 'Usuario no autenticado.';
+      this.isLoading = false;
+      return;
+    }
 
     this.userService.obtenerPorId(currentUserId).subscribe({
       next: (user: User) => {
-        const personId = this.getPersonIdForUser(user);
-
+        const personId = this.authService.getCurrentPersonId();
         if (!personId && personId !== 0) {
           this.hasError = true;
-          this.errorMessage = 'El usuario no tiene persona asociada (ajusta el mapeo).';
+          this.errorMessage = 'El usuario no tiene persona asociada.';
           this.isLoading = false;
           return;
         }
 
-        this.personService.obtenerPorId(personId).subscribe({
-          next: (person: Person) => {
-            this.userProfile = { user, person };
-            // Si tu backend guarda el nombre del archivo de la foto en User, ajusta aquí:
-            // if ((user as any).photo) this.profileImageUrl = `assets/images/profiles/${(user as any).photo}`;
+        this.personService.obtenerPersonData(personId).subscribe({
+          next: (personData: PersonData) => {
+            this.userProfile = { user, person: personData };
+            this.loadProfileImage(user);
             this.isLoading = false;
           },
           error: () => {
@@ -83,35 +107,96 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  // Mapeo de User -> personId
-  // Ajusta esta función según tu backend:
-  // - Si User trae personId, úsalo: return (user as any).personId;
-  // - Si User y Person comparten el mismo id, usa user.id;
-  private getPersonIdForUser(user: User): number {
-    const maybePersonId = (user as any).personId;
-    return typeof maybePersonId === 'number' ? maybePersonId : user.id;
+  // HAZ ESTE MÉTODO PÚBLICO: lo llamas desde el template en (error)
+  resolveProfileImage(user: User | undefined, person?: PersonData): string {
+    if (!user) {
+      const initial = (person?.fisrtName?.charAt(0) || 'U').toUpperCase();
+      return `https://via.placeholder.com/120/6366f1/ffffff?text=${initial}`;
+    }
+
+    const photo = (user as any)?.photo as string | undefined;
+
+    if (photo && photo.startsWith('http')) {
+      let url = photo;
+      if (url.includes('localhost')) {
+        url = url.replace('localhost', (environment as any).uri || 'localhost');
+      }
+      return url;
+    }
+
+    if (photo) {
+      return `${environment.apiUrl}/images/profiles/${photo}`;
+    }
+
+    const initial = (person?.fisrtName?.charAt(0) || 'U').toUpperCase();
+    return `https://via.placeholder.com/120/6366f1/ffffff?text=${initial}`;
   }
 
-  // Acciones
-  reloadProfile(): void {
-    this.loadUserProfile();
+  private loadProfileImage(user: User): void {
+    this.profileImageUrl = this.resolveProfileImage(user, this.userProfile?.person);
   }
 
-  onImageUpload(event: Event): void {
+  // Subir imagen de perfil
+  async onImageUpload(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
+    if (input.files && input.files[0] && this.userProfile) {
       const file = input.files[0];
+
+      if (!file.type.startsWith('image/')) {
+        this.showErrorMessage('Por favor selecciona un archivo de imagen válido.');
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        this.showErrorMessage('La imagen debe ser menor a 5MB.');
+        return;
+      }
+
+      this.isUploadingImage = true;
+
+      // Preview inmediato
       const reader = new FileReader();
-      reader.onload = (e) => (this.profileImageUrl = e.target?.result as string);
+      reader.onload = (e) => {
+        this.profileImageUrl = e.target?.result as string;
+      };
       reader.readAsDataURL(file);
-      // TODO: Subir al backend (FormData) si lo necesitas
+
+      // Subir al backend con FormData { Id, Photo }
+      try {
+        const result = await (this.userService as any).uploadUserPhoto(this.userProfile.user.id, file);
+        this.isUploadingImage = false;
+
+        if (result?.ok) {
+          if (result.photo) {
+            this.userProfile.user.photo = result.photo;
+          }
+          this.profileImageUrl = this.resolveProfileImage(this.userProfile.user, this.userProfile.person);
+          this.authService.updateCurrentUser({ photo: this.userProfile.user.photo as any });
+          this.showSuccessMessage('Imagen de perfil actualizada correctamente');
+        } else {
+          this.showErrorMessage('Error al subir la imagen. Intenta nuevamente.');
+          this.loadProfileImage(this.userProfile.user);
+        }
+      } catch (err) {
+        console.error('Error subiendo imagen:', err);
+        this.isUploadingImage = false;
+        this.loadProfileImage(this.userProfile.user);
+        this.showErrorMessage('Error al subir la imagen. Intenta nuevamente.');
+      }
     }
   }
 
-  copyToClipboard(text: string): void {
-    navigator.clipboard?.writeText(text).then(() => {
-      console.log('Copiado al portapapeles');
-    });
+  // Event handler para fallback de imagen rota
+  onImageError(): void {
+    this.profileImageUrl = this.resolveProfileImage(this.userProfile?.user, this.userProfile?.person);
+  }
+
+  // Helpers
+  private showSuccessMessage(message: string): void {
+    console.log('✅', message);
+  }
+  private showErrorMessage(message: string): void {
+    console.error('❌', message);
+    alert(message);
   }
 
   // Computed
@@ -120,8 +205,7 @@ export class ProfileComponent implements OnInit {
     const p = this.userProfile.person;
     const names = [p.fisrtName, p.secondName].filter(Boolean).join(' ');
     const lastNames = [p.lastName, p.secondLastName].filter(Boolean).join(' ');
-    const full = `${names} ${lastNames}`.trim();
-    return full || 'Usuario';
+    return `${names} ${lastNames}`.trim() || 'Usuario';
   }
 
   get statusText(): string {
@@ -132,32 +216,22 @@ export class ProfileComponent implements OnInit {
     return this.userProfile?.user.status === 1 ? 'online' : 'offline';
   }
 
-  get memberSince(): string {
-    // Si no tienes createdAt, usa la fecha actual como placeholder
-    return new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+  get genderText(): string {
+    const g = this.userProfile?.person.gender;
+    if (g === null || g === undefined) return 'No especificado';
+    const gender = GenderType.find(item => item.id === g);
+    return gender ? gender.name : 'No especificado';
   }
 
-  get lastSeenText(): string {
-    return this.userProfile?.user.status === 1 ? 'Ahora' : 'Desconocido';
-  }
-
-  get infoList(): InfoItem[] {
+  get infoList() {
     if (!this.userProfile) return [];
     const { user, person } = this.userProfile;
 
-    const items: InfoItem[] = [
-      { icon: 'bi-envelope-fill', label: 'Correo electrónico', value: user.email, type: 'email' },
-      { icon: 'bi-credit-card-fill', label: person.acronymDocument, value: person.identification },
-      { icon: 'bi-gender-ambiguous', label: 'Género', value: person.gender === 1 ? 'Masculino' : person.gender === 2 ? 'Femenino' : 'Otro' }
+    return [
+      { icon: 'bi-envelope-fill', label: 'Correo', value: user.email || 'No especificado', type: 'email' },
+      { icon: 'bi-credit-card-fill', label: person.acronymDocument || 'Documento', value: person.identification?.toString() || 'No especificado' },
+      { icon: 'bi-gender-ambiguous', label: 'Género', value: this.genderText },
+      { icon: 'bi-telephone-fill', label: 'Teléfono', value: person.phone?.toString() || 'No especificado', type: 'phone' }
     ];
-
-    if (person.phone) {
-      items.push({ icon: 'bi-telephone-fill', label: 'Teléfono', value: person.phone, type: 'phone' });
-    }
-
-    // Añade aquí más campos cuando existan en tu modelo/endpoint:
-    // EPS, Municipio, RH, etc., si tu Person actual los expone.
-
-    return items;
   }
 }
