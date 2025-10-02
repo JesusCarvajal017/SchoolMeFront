@@ -44,7 +44,6 @@ import { ListadoGenericoComponent } from "../../../components/listado-generico/l
     // RouterLink,
     SweetAlert2Module,
     // TuiButton,
-    TuiDialog,
     TuiHint,
     TuiInputModule,
     ListadoGenericoComponent
