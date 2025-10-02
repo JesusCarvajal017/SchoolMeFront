@@ -17,7 +17,7 @@
                     <section class="container-login">
                         <form (submit)="loguear()" class="form-login" [formGroup]="form" >
                             <tui-textfield>
-                                <label tuiLabel>Email</label>
+                                <label tuiLabel>Correo electronico</label>
                                 <input
                                     tuiTextfield
                                     type="email"
@@ -32,7 +32,7 @@
                             }
                         
                             <tui-textfield>
-                                <label tuiLabel>Password</label>
+                                <label tuiLabel>Contraseña</label>
                                 <input
                                     tuiTextfield
                                     type="password"
@@ -45,9 +45,6 @@
                                     [error]="obtenerErrorPassword()"
                                 />
                             }
-                            <div class="col-12 d-flex justify-content-end">
-                                <span class="fs-6"> <a class="a-enlace">¿Olvidaste tu contraseña?</a></span>
-                            </div>
                             <div class="col-12 d-grid gap-1">
                                 <button [disabled]="form.invalid && !isLoader"  class="btn btn-primary w-100" type="submit">Ingresar</button>
                                 <!-- <button (click)="redirectToGoogle()" class="btn btn-light w-100" type="submit">
@@ -89,12 +86,12 @@
                             </div> -->
                             <div class="col-12 row d-flex justify-content-center">
                                 <div class="col-12 mb-2">
-                                    <h2 class="text-center">Login</h2>
+                                    <h2 class="text-center">Iniciar sesión</h2>
                                 </div>
                                 <section class="container-login">
                                     <form (submit)="loguear()" class="form-login" [formGroup]="form" >
                                         <tui-textfield>
-                                            <label tuiLabel>Email</label>
+                                            <label tuiLabel>Correo electronico</label>
                                             <input
                                                 tuiTextfield
                                                 type="email"
@@ -109,7 +106,7 @@
                                         }
                                     
                                         <tui-textfield>
-                                            <label tuiLabel>Password</label>
+                                            <label tuiLabel>Contraseña</label>
                                             <input
                                                 tuiTextfield
                                                 type="password"
@@ -122,9 +119,7 @@
                                                 [error]="obtenerErrorPassword()"
                                             />
                                         }
-                                        <div class="col-12 d-flex justify-content-end">
-                                            <span class="fs-6"> <a class="a-enlace">¿Olvidaste tu contraseña?</a></span>
-                                        </div>
+
                                         <div class="col-12 d-grid gap-1">
                                             <button [disabled]="form.invalid && !isLoader"  class="btn btn-primary w-100" type="submit">Ingresar</button>
                                             <!-- <button (click)="redirectToGoogle()" class="btn btn-light w-100" type="submit">
@@ -145,8 +140,5 @@
                 </div>
             </div>
         </div>
-        
-        
-
     </div>
 </tui-root>

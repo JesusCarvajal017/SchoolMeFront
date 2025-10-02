@@ -61,18 +61,21 @@
                         (change)="logical($event, item.id)"></mat-slide-toggle>
                 </td>
                 <td class="actions-col">
-                    <a mat-icon-button>
-                        <!-- CAMBIO: Pasar el item al modal para edición -->
-                        <mat-icon (click)="modalCommand('Editar grado', item)">edit</mat-icon>
-                    </a>
+                    <button mat-icon-button (click)="modalCommand('Editar grado', item)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+
                     <button mat-icon-button [swal]="{
-                title: 'Confirmacion',
-                text: '¿Deseas borrar este registro?',
-                showCancelButton: true
-              }" (confirm)="deleteRegister(item.id)">
+            title: 'Confirmacion',
+            text: '¿Deseas borrar este registro?',
+            showCancelButton: true
+          }" (confirm)="deleteRegister(item.id)">
                         <mat-icon>delete</mat-icon>
                     </button>
-                    <mat-icon>more_vert</mat-icon>
+
+                    <button mat-icon-button>
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
                 </td>
             </tr>
             }
@@ -96,17 +99,10 @@
     </div>
 </section>
 
-<ng-template
-    let-observer
-    [tuiDialogOptions]="{label: titleGroups, size: 'l'}"
-    [(tuiDialog)]="open"
->
+<ng-template let-observer [tuiDialogOptions]="{label: titleGroups, size: 'l'}" [(tuiDialog)]="open">
     <div class="modal-content">
-        <app-form-group-director 
-            [title]="titleGroups" 
-            [actionDescriptio]="isEditMode ? 'Actualizar' : 'Crear'"
-            [model]="modelGroupDirector"
-            (posteoForm)="handleGroupDirectorSubmit($event)">
-        </app-form-group-director> 
+        <app-form-group-director [title]="titleGroups" [actionDescriptio]="isEditMode ? 'Actualizar' : 'Crear'"
+            [model]="modelGroupDirector" (posteoForm)="handleGroupDirectorSubmit($event)">
+        </app-form-group-director>
     </div>
-</ng-template> 
+</ng-template>

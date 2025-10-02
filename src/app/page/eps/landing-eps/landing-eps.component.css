@@ -3,6 +3,7 @@ header h1 {
   font-size: 20px;
   font-weight: 600;
 }
+
 header .count {
   font-size: 14px;
   color: #666;
@@ -21,6 +22,7 @@ header .count {
   color: #333;
   text-decoration: none;
 }
+
 .btn-add mat-icon {
   font-size: 20px;
 }
@@ -31,6 +33,7 @@ header .count {
   gap: 10px;
   margin-bottom: 15px;
 }
+
 .tabs button {
   padding: 6px 14px;
   border-radius: 20px;
@@ -39,6 +42,7 @@ header .count {
   cursor: pointer;
   font-size: 14px;
 }
+
 .tabs button.active {
   background: #000;
   color: white;
@@ -52,6 +56,7 @@ header .count {
   align-items: center;
   margin-bottom: 15px;
 }
+
 .search-box {
   display: flex;
   align-items: center;
@@ -59,17 +64,20 @@ header .count {
   border-radius: 8px;
   padding: 6px 10px;
 }
+
 .search-box mat-icon {
   font-size: 20px;
   margin-right: 5px;
   color: #666;
 }
+
 .search-box input {
   border: none;
   outline: none;
   background: transparent;
   font-size: 14px;
 }
+
 .filter-btn {
   display: flex;
   align-items: center;
@@ -81,6 +89,7 @@ header .count {
   cursor: pointer;
   font-size: 14px;
 }
+
 .filter-btn mat-icon {
   font-size: 18px;
 }
@@ -91,9 +100,11 @@ header .count {
   border-collapse: separate;
   border-spacing: 0 8px;
 }
+
 .custom-table thead {
   background: #f9f9f9;
 }
+
 .custom-table th {
   text-align: left;
   padding: 12px;
@@ -101,20 +112,41 @@ header .count {
   font-weight: 600;
   color: #555;
 }
+
 .custom-table td {
   padding: 12px;
   font-size: 14px;
   background: white;
   border-bottom: 1px solid #eee;
 }
+
 .custom-table tr:hover td {
   background: #f7f7f7;
 }
+
+/* Columna de acciones */
 .actions-col {
   display: flex;
-  gap: 8px;
+  justify-content: center;
+  /* centra horizontal */
+  align-items: center;
+  /* centra vertical */
+  gap: 6px;
+  /* espacio entre iconos */
+}
+
+/* Forzar que todos los botones sean iguales */
+.actions-col button[mat-icon-button] {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
   align-items: center;
 }
+
 
 /* Paginación */
 .pagination {
@@ -123,6 +155,7 @@ header .count {
   gap: 6px;
   margin-top: 15px;
 }
+
 .pagination button {
   border: 1px solid #ddd;
   background: white;
@@ -130,15 +163,18 @@ header .count {
   border-radius: 6px;
   cursor: pointer;
 }
+
 .pagination button.active {
   background: #3f51b5;
   color: white;
   border: none;
 }
+
 .pagination button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
 /* Agregar estos estilos a tu landing-rol.component.css existente */
 
 /* Estilos para el modal */
@@ -162,7 +198,7 @@ header .count {
 }
 
 /* Ocultar el botón cancelar del formulario cuando está en modal */
-::ng-deep .modal-content .form-page > div:last-child a {
+::ng-deep .modal-content .form-page>div:last-child a {
   display: none;
 }
 

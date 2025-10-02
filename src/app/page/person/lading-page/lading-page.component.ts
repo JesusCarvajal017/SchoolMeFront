@@ -23,7 +23,6 @@ import Swal from 'sweetalert2';
 import { PersonService } from '../../../service/person.service';
 import { CreateModelPerson, FormPersonValue, Person, PersonComplete, PersonOrigin } from '../../../models/security/person.model';
 import { FormControl, FormGroup } from '@angular/forms';
-import { FormPersonComponent } from "../../forms/form-person/form-person.component";
 import { FormTodosComponent } from "../../forms/form-todos/form-todos.component";
 import { AlertApp } from '../../../utilities/alert-taiga';
 import { ListadoGenericoComponent } from "../../../components/listado-generico/listado-generico.component";

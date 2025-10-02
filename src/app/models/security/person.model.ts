@@ -12,6 +12,7 @@ export interface Person{
   lastName: string;
   secondLastName: string;
   phone: number;
+  fullName: string;
   gender: number;
   dataBasic: CreateDataBasic;
 
@@ -23,6 +24,7 @@ export interface PersonOrigin{
     documentTypeId: number;
     identification: string;
     fisrtName: string;
+    fullName: string;
     secondName: string;
     lastName: string;
     secondLastName: string;
@@ -41,6 +43,7 @@ export interface CreateModelPerson{
   identification: number;
   fisrtName: string;
   secondName: string;
+  fullName: string;
   lastName: string;
   secondLastName: string;
   phone: number;
@@ -51,6 +54,7 @@ export interface CreateModelPerson{
 export interface PersonComplete {
   id?: number;
   status: number;
+  fullName: string;
   documentTypeId: number;
   identification: number;
   fisrtName: string;
