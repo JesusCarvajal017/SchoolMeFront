@@ -25,6 +25,7 @@ import { LandingGroupsComponent } from './page/groups/landing-groups/landing-gro
 import { ProfileComponent } from './page/user/profile/profile/profile.component';
 import { LandingHomeComponent } from './page/home/landing-home/landing-home.component';
 import { LandingGroupDirectorComponent } from './page/group-director/landing-group-director/landing-group-director.component';
+import { AjustesSecurityComponent } from './page/user/ajustes-security/ajustes-security.component';
 import { LandingAcademicLoadComponent } from './page/academic-load/landing-academic-load/landing-academic-load.component';
 import { LandingStudentComponent } from './page/student/landing-student/landing-student.component';
 import { LandingTeacherComponent } from './page/teacher/landing-teacher/landing-teacher.component';
@@ -62,6 +63,7 @@ export const routes: Routes = [
             { path: 'rh',  component: LandingRhComponent, canActivate: [esAdminGuard]},
             { path: 'grupos', component: LandingGroupsComponent, canActivate: [esAdminGuard]},
             { path: 'perfil', component: ProfileComponent, canActivate: [esAdminGuard] },
+            { path: 'ajustes-security', component: AjustesSecurityComponent },
             {path: 'directorGrupo', component: LandingGroupDirectorComponent, canActivate: [esAdminGuard]},
             {path: 'cargaAcademica', component: LandingAcademicLoadComponent, canActivate: [esAdminGuard]},
             {path: 'ninos', component: LandingStudentComponent, canActivate: [esAdminGuard]},
