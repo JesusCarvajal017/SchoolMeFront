@@ -23,7 +23,7 @@ import { MatIconModule } from "@angular/material/icon";
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatStepperModule} from '@angular/material/stepper';
 
-import { DocumentsType } from '../../../models/parameters/DocumentType.model';
+import { DocumentType } from '../../../models/parameters/DocumentType.model';
 import { CreateDataBasic, DataBasic } from '../../../models/business/dataBasic.mode';
 import { Departament } from '../../../models/parameters/Departament.model';
 import {DepartamentServices } from '../../../service/parameters/Departament.service';
@@ -123,7 +123,7 @@ export class FormTodosComponent {
   // =========================== end services ========================================
   
   // objeto de tipo documento == models
-  documentTypeList : DocumentsType[] = [];
+  documentTypeList : DocumentType[] = [];
   
   dataBasic : DataBasic[] = [];
 
