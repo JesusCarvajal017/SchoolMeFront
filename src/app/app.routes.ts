@@ -29,6 +29,8 @@ import { LandingAcademicLoadComponent } from './page/business/academic-load/land
 import { LandingStudentComponent } from './page/paramaters/student/landing-student/landing-student.component';
 import { LandingTeacherComponent } from './page/paramaters/teacher/landing-teacher/landing-teacher.component';
 import { LandingAttendantsComponent } from './page/business/attendants/landing-attendants/landing-attendants.component';
+import { AjustesSecurityComponent } from './page/security/user/ajustes-security/ajustes-security.component';
+
 
 export const routes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -62,6 +64,7 @@ export const routes: Routes = [
             { path: 'rh',  component: LandingRhComponent, canActivate: [esAdminGuard]},
             { path: 'grupos', component: LandingGroupsComponent, canActivate: [esAdminGuard]},
             { path: 'perfil', component: ProfileComponent, canActivate: [esAdminGuard] },
+            { path: 'ajustes-security', component: AjustesSecurityComponent },
             {path: 'directorGrupo', component: LandingGroupDirectorComponent, canActivate: [esAdminGuard]},
             {path: 'cargaAcademica', component: LandingAcademicLoadComponent, canActivate: [esAdminGuard]},
             {path: 'ninos', component: LandingStudentComponent, canActivate: [esAdminGuard]},

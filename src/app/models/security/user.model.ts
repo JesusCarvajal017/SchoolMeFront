@@ -3,7 +3,7 @@ export interface User {
     id: number;
     email: string;
     password: string;
-    photo: File;
+    photo: string;
     personId: number;
     status: number;
 }
