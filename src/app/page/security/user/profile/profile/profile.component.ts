@@ -1,21 +1,15 @@
 import { Component, OnInit, inject, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-<<<<<<< HEAD:src/app/page/security/user/profile/profile/profile.component.ts
 import { Person, PersonOrigin } from '../../../../../models/security/person.model';
+import { Subject, takeUntil } from 'rxjs';
+import { PersonData } from '../../../../../models/security/person.model';
 import { PersonService } from '../../../../../service/person.service';
 import { User, UserService } from '../../../../../service/user.service';
-
-=======
-import { Subject, takeUntil } from 'rxjs';
-import { PersonData } from '../../../../models/security/person.model';
-import { PersonService } from '../../../../service/person.service';
-import { User, UserService } from '../../../../service/user.service';
-import { AuthMainService } from '../../../../service/auth/auth-main.service';
-import { environment } from '../../../../../environments/environment.development';
-import { GenderType } from '../../../../global/model/enumGenero';
+import { AuthMainService } from '../../../../../service/auth/auth-main.service';
+import { environment } from '../../../../../../environments/environment.development';
+import { GenderType } from '../../../../../global/model/enumGenero';
 import { RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
->>>>>>> 427a937e34fddb47adce43f5a85a9516943f9320:src/app/page/user/profile/profile/profile.component.ts
 
 
 interface UserProfile {
