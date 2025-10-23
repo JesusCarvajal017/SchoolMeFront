@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { CredencialesUsuario, RespondAuth } from '../../global/dtos/seguridad';
-import { Observable, tap, BehaviorSubject, firstValueFrom } from 'rxjs';
+import { Observable, tap, firstValueFrom, catchError, throwError } from 'rxjs';
 import { jwtDecode } from "jwt-decode";
 import { UserService } from '../user.service';
 
@@ -11,10 +11,10 @@ interface DecodedToken {
   id: number;
   email: string;
   personId?: number;
-  rol?: string;
+  rol?: string; 
   exp: number;
   iat: number;
-  [key: string]: any; // Para otros campos que pueda tener tu JWT
+  [key: string]: any;
 }
 
 // Interface para el usuario actual
@@ -31,7 +31,7 @@ export class AuthMainService {
   // **************** servicios ****************
   private http = inject(HttpClient);
   private urlBase = environment.apiUrl;
-  private userServices  = inject(UserService);
+  private userServices = inject(UserService);
 
   // ***************** Claves para localStorage *****************
   private readonly llaveToken = 'toke';
@@ -45,37 +45,57 @@ export class AuthMainService {
 
     // enpoint al cual apunta para iniciar sesión
     return this.http.post<RespondAuth>(`${this.urlBase}/Auth`, credenciales)
-      // efectos segundarios para guardar información y dar persistencia
       .pipe(
         tap(responseAuth => {
           try {
+            console.log('responseAuth recibido:', responseAuth);
+
+            // ===== VALIDACIÓN CRÍTICA: Verificar que el token existe y es válido =====
+            if (!responseAuth || !responseAuth.token || typeof responseAuth.token !== 'string') {
+              throw new Error('Respuesta inválida del servidor');
+            }
 
             // desencriptando informacion del claims de jwt backend
-            const descodificado : CurrentUser = jwtDecode(responseAuth.token);
+            const descodificado: DecodedToken = jwtDecode(responseAuth.token);
             let id = Number(descodificado.id);
 
-            // obteniendo informacion del usuario quien se registra
-            this.userServices.obtenerPorId(id).subscribe(
-              {
-                next:(data) => {
-                  
-                }
-              }
-            )
-
             console.log('Token decodificado:', descodificado);
-            
+
+            // Guardar el rol del token
+            if (descodificado.rol) {
+              this.guardarRol(descodificado.rol);
+            }
+
             // ========================= Guardar token y datos del usuario =========================
 
             // ********** guardar el token localstorage **********
             this.guardaToken(responseAuth);
 
-            // *********  **********
+            // ********** guardar usuario actual **********
             this.guardarUsuarioActual(id);
 
+            // obteniendo informacion del usuario quien se registra
+            this.userServices.obtenerPorId(id).subscribe({
+              next: (data) => {
+                // tu lógica existente aquí
+              },
+              error: (err) => {
+                console.error('Error obteniendo información del usuario:', err);
+              }
+            });
+
           } catch (error) {
-            console.error('Error decodificando token:', error);
+            console.error('Error procesando autenticación:', error);
+            // Limpiar cualquier dato que se haya guardado
+            this.logout();
+            // Re-lanzar el error para que lo capture el componente
+            throw error;
           }
+        }),
+        catchError(error => {
+          console.error('Error en login:', error);
+          // Asegurar que el error llegue al componente
+          return throwError(() => new Error('Credenciales incorrectas'));
         })
       );
   }
@@ -87,9 +107,14 @@ export class AuthMainService {
   }
 
   // Guardar datos del usuario actual
-  private guardarUsuarioActual(idUser : number) {
+  private guardarUsuarioActual(idUser: number) {
     // guadando en el localstorage el id del usuario
     localStorage.setItem(this.llaveUsuario, idUser.toString());
+  }
+
+  //  Guardar el rol
+  private guardarRol(rol: string) {
+    localStorage.setItem(this.llaveRol, rol);
   }
 
   // Verificar si está logueado
@@ -117,7 +142,6 @@ export class AuthMainService {
     localStorage.removeItem(this.llaveExpiracion);
     localStorage.removeItem(this.llaveRol);
     localStorage.removeItem(this.llaveUsuario);
-    
   }
 
   // Obtener token
@@ -125,9 +149,20 @@ export class AuthMainService {
     return localStorage.getItem(this.llaveToken);
   }
 
-  // Obtener rol
+  // Obtener ID del usuario
   obtenerIdUser(): number {
     return Number(localStorage.getItem(this.llaveUsuario));
+  }
+
+  // Obtener el rol como número
+  obtenerRolId(): number {
+    const rol = localStorage.getItem(this.llaveRol);
+    return rol ? Number(rol) : 1; // Por defecto 1 si no existe
+  }
+
+  // Obtener el rol como string (por si lo necesitas)
+  obtenerRol(): string | null {
+    return localStorage.getItem(this.llaveRol);
   }
 
   async obtenerIdPerson(): Promise<number> {
@@ -143,6 +178,4 @@ export class AuthMainService {
       return 0;
     }
   }
-
-
 }

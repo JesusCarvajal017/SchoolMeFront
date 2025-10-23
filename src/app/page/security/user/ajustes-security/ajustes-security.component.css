@@ -243,3 +243,224 @@ input:focus {
     flex-direction: column;
   }
 }
+/* ========== ESTILOS PARA MODALES ========== */
+/* Agregar estos estilos a tu ajustes-security.component.css */
+
+/* Overlay del modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Contenedor del modal */
+.modal-dialog {
+  width: 90%;
+  max-width: 500px;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Contenido del modal */
+.modal-content {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+/* Header del modal */
+.modal-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.btn-close {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.btn-close:hover {
+  background-color: #f3f4f6;
+  color: #1f2937;
+}
+
+/* Body del modal */
+.modal-body {
+  padding: 24px;
+  color: #374151;
+  font-size: 0.95rem;
+}
+
+.modal-body p {
+  margin: 0;
+}
+
+/* Footer del modal */
+.modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* Estilos para modal de confirmación */
+.confirm-modal .modal-header {
+  background-color: #fff7ed;
+  border-bottom-color: #fed7aa;
+}
+
+.confirm-modal .modal-title {
+  color: #ea580c;
+}
+
+/* Estilos para modal de resultado según tipo */
+.modal-success .modal-header {
+  background-color: #f0fdf4;
+  border-bottom-color: #bbf7d0;
+}
+
+.modal-success .modal-title {
+  color: #16a34a;
+}
+
+.modal-error .modal-header {
+  background-color: #fef2f2;
+  border-bottom-color: #fecaca;
+}
+
+.modal-error .modal-title {
+  color: #dc2626;
+}
+
+.modal-warning .modal-header {
+  background-color: #fffbeb;
+  border-bottom-color: #fde68a;
+}
+
+.modal-warning .modal-title {
+  color: #d97706;
+}
+
+/* Botones del modal */
+.modal-footer .btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 100px;
+}
+
+.modal-footer .btn-primary {
+  background-color: #2563eb;
+  color: white;
+}
+
+.modal-footer .btn-primary:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.modal-footer .btn-secondary {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+.modal-footer .btn-secondary:hover {
+  background-color: #d1d5db;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+  .modal-dialog {
+    width: 95%;
+    margin: 10px;
+  }
+
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding: 16px;
+  }
+
+  .modal-footer {
+    flex-direction: column;
+  }
+
+  .modal-footer .btn {
+    width: 100%;
+  }
+}
+
+/* Loading spinner para los botones */
+.loading-spinner::after {
+  content: "Procesando...";
+  animation: dots 1.5s infinite;
+}
+
+@keyframes dots {
+  0%, 20% {
+    content: "Procesando.";
+  }
+  40% {
+    content: "Procesando..";
+  }
+  60%, 100% {
+    content: "Procesando...";
+  }
+}

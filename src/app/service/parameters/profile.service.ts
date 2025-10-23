@@ -10,7 +10,7 @@ import { UserProfile } from '../../models/security/profile.model';
   providedIn: 'root'
 })
 export class ProfileService {
-  private url = `${environment.apiUrl}/User/Profile`;
+  private url = `${environment.imgUrl}/User/Profile`;
 
   constructor(private http: HttpClient) {}
 

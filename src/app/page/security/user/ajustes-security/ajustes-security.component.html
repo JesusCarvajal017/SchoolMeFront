@@ -79,3 +79,60 @@
     </div>
   </div>
 </div>
+<!-- Agregar estos modales al final de tu HTML, después del cierre de .ajustes-wrapper -->
+
+<!-- Modal de Confirmación -->
+<div class="modal-overlay" *ngIf="showConfirmModal" (click)="closeConfirmModal()">
+  <div class="modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content confirm-modal">
+      <div class="modal-header">
+        <h4 class="modal-title">⚠️ Confirmar Acción</h4>
+        <button type="button" class="btn-close" (click)="closeConfirmModal()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p style="white-space: pre-line; line-height: 1.6;">{{ confirmMessage }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeConfirmModal()">
+          Cancelar
+        </button>
+        <button type="button" class="btn btn-primary" (click)="confirmActionHandler()">
+          Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Resultado -->
+<div class="modal-overlay" *ngIf="showResultModal" (click)="closeResultModal()">
+  <div class="modal-dialog" (click)="$event.stopPropagation()">
+    <div 
+      class="modal-content result-modal"
+      [class.modal-success]="modalType === 'success'"
+      [class.modal-error]="modalType === 'error'"
+      [class.modal-warning]="modalType === 'warning'"
+    >
+      <div class="modal-header">
+        <h4 class="modal-title">
+          <span *ngIf="modalType === 'success'">✅ Éxito</span>
+          <span *ngIf="modalType === 'error'">❌ Error</span>
+          <span *ngIf="modalType === 'warning'">⚠️ Atención</span>
+        </h4>
+        <button type="button" class="btn-close" (click)="closeResultModal()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p style="white-space: pre-line; line-height: 1.6;">{{ modalMessage }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="closeResultModal()">
+          Aceptar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

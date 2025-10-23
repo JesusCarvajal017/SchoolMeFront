@@ -20,33 +20,21 @@ import {TuiRoot} from '@taiga-ui/core';
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    // TuiInputModule, 
     TuiIcon, 
     TuiPassword, 
     TuiTextfield,
-    // TuiCardLarge,
     TuiError,
     MatProgressSpinnerModule,
     TuiRoot, 
-    // RouterLink
   ],
   templateUrl: './login-main.component.html',
   styleUrl: './login-main.component.css'
 })
 export class LoginMainComponent  {
-    private readonly alerts = inject(TuiAlertService);
- 
-    protected showNotification(): void {
-      this.alerts
-        .open('<strong>Acceso denegado</strong>', {label: 'Credenciales incorrectas!', appearance: 'warning'})
-        .subscribe();
-    }
-  
+  private readonly alerts = inject(TuiAlertService);
   securityauth = inject(AuthMainService); 
   router = inject(Router);
   isLoader = false;
-
-
 
   private formBuilder = inject(FormBuilder);
 
@@ -55,6 +43,19 @@ export class LoginMainComponent  {
     password : ["", {validators: [Validators.required]}]
   });
 
+  /**
+   * Muestra una notificación de error cuando las credenciales son incorrectas
+   */
+  protected showNotification(): void {
+    this.alerts
+      .open('Las credenciales ingresadas son incorrectas. Por favor, verifica tu correo y contraseña.', {
+        label: 'Acceso denegado',
+        appearance: 'error',
+        autoClose: 5000
+      })
+      .subscribe();
+  }
+
   obtenerErrorEmail(): string {
     let email = this.form.controls.email;
 
@@ -62,13 +63,17 @@ export class LoginMainComponent  {
       return "Digite el correo electronico";
     }
 
+    if(email.hasError('email')){
+      return "Ingrese un correo electrónico válido";
+    }
+
     return "";
   }
 
   obtenerErrorPassword(): string {
-    let email = this.form.controls.password;
+    let password = this.form.controls.password;
 
-    if(email.hasError('required')){
+    if(password.hasError('required')){
       return "Digite la contraseña";
     }
 
@@ -76,6 +81,12 @@ export class LoginMainComponent  {
   }
 
   loguear(){
+    // Validar el formulario antes de enviar
+    if(this.form.invalid){
+      this.form.markAllAsTouched();
+      return;
+    }
+
     this.isLoader = true; 
     let capture = this.form.getRawValue(); 
 
@@ -84,19 +95,25 @@ export class LoginMainComponent  {
         password : capture.password!
     }
 
-    // this.securityauth.logout();
     this.securityauth.login(data).subscribe({
-      next: () =>{
+      next: () => {
         this.isLoader = false;
-        this.router.navigate(['/dashboard'])
+        // Opcional: Mostrar mensaje de éxito
+        this.alerts
+          .open('Has iniciado sesión correctamente', {
+            label: '¡Bienvenido!',
+            appearance: 'success',
+            autoClose: 3000
+          })
+          .subscribe();
+        
+        this.router.navigate(['/dashboard']);
       },
-      error: (err) =>{
+      error: (err) => {
         this.isLoader = false;
+        console.error('Error en login:', err);
         this.showNotification();
-        
-        
       }
-    })
+    });
   } 
-
 }

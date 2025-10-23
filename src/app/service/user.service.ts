@@ -33,7 +33,7 @@ export class UserService extends GenericService<User, CreateModelUser, ModelLogi
       formData.append('Id', String(userId));          // igual que en Swagger
       formData.append('Photo', file, file.name);      // IFormFile en backend
 
-      const response = await fetch(`${environment.apiUrl}/User/photoUpdate`, {
+      const response = await fetch(`${environment.imgUrl} User/photoUpdate`, {
         method: 'POST',
         body: formData
         // ⚠️ No pongas Content-Type manualmente, fetch lo hace solo
