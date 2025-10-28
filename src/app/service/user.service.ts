@@ -26,14 +26,14 @@ export class UserService extends GenericService<User, CreateModelUser, ModelLogi
   }
 
 
-// Subir foto de perfil
+  // Subir foto de perfil (CORREGIDO - siguiendo patrón del commit antiguo)
   public async uploadUserPhoto(userId: number, file: File): Promise<{ ok: boolean; photo?: string }> {
     try {
       const formData = new FormData();
       formData.append('Id', String(userId));          // igual que en Swagger
       formData.append('Photo', file, file.name);      // IFormFile en backend
 
-      const response = await fetch(`${environment.imgUrl} User/photoUpdate`, {
+      const response = await fetch(`${environment.apiUrl}/User/photoUpdate`, {
         method: 'POST',
         body: formData
         // ⚠️ No pongas Content-Type manualmente, fetch lo hace solo
@@ -108,9 +108,6 @@ export class UserService extends GenericService<User, CreateModelUser, ModelLogi
     const formData = this.construirFormData(user);
     return this.http.put(`${this.urlBase}/${id}`, formData);
   }
-
-
 }
-
 
 export type { User };
