@@ -69,7 +69,10 @@ export const routes: Routes = [
             {path: 'cargaAcademica', component: LandingAcademicLoadComponent, canActivate: [esAdminGuard]},
             {path: 'ninos', component: LandingStudentComponent, canActivate: [esAdminGuard]},
             {path: 'docentes' , component: LandingTeacherComponent, canActivate: [esAdminGuard]},
-            {path: 'acudientes' , component: LandingAttendantsComponent, canActivate: [esAdminGuard]}
+            {path: 'acudientes' , component: LandingAttendantsComponent, canActivate: [esAdminGuard]},
+            {path: 'aulas' , component: LandingGroupsComponent, canActivate: [esAdminGuard ]},
+            {path: 'agrupación' , component: LandingGradeComponent, canActivate: [esAdminGuard]},
+            {path: 'cargaAcademica' , component: LandingAcademicLoadComponent, canActivate: [esAdminGuard]}
 
         ]
     },
