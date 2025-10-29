@@ -13,7 +13,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { TuiHeader } from '@taiga-ui/layout';
 import { TuiButtonGroup  } from '@taiga-ui/kit';
 import { TuiTitle, TuiAppearance, TuiAlertService, TuiButton, TuiDialog, TuiHint } from '@taiga-ui/core';
-import {TuiInputModule} from '@taiga-ui/legacy';
 
 // terceros
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
@@ -43,7 +42,7 @@ import { FormControl, FormGroup } from '@angular/forms';
     // TuiButton,
     TuiDialog,
     TuiHint,
-    TuiInputModule
+    
   ],
   templateUrl: './landing-user.component.html',
   styleUrl: './landing-user.component.css',
